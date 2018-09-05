@@ -10,7 +10,7 @@ Current was used Jenkins with version 2.121.3
 	* Allow default version to be overriden: true (optional)
 	* Include @Library changes in job recent changes: true (optional)
 	* Select "Modern SCM": Git with parameters:
-		* Project Repository: https://bitbucket.org/pbakulev/jenkins-shared-libraries.git
+		* Project Repository: https://bitbucket.org/bilderlings/jenkins-shared-libraries.git
 		* Credentials: < here is your credentials >
 
 ## Add shared libraries to Jenkinsfile
