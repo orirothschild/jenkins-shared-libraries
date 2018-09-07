@@ -1,29 +1,59 @@
-@Library('shared_library@master') _
+@Library('shared_library@test') _
 
-node('master'){
-    stage('Send slack correct notification'){
+pipeline{
 
-        slack.successBuild()
-        slack.successBuild('')
-        slack.successBuild(null)
-        slack.successBuild('#jenkins_test')
+    agent { node { label 'master' } }
+    stages {
 
-        slack.failedBuild()
-        slack.failedBuild('')
-        slack.failedBuild(null)
-        slack.failedBuild('#jenkins_test')
+        stage('Send slack correct notification as script'){
 
-        slack.failedTests()
-        slack.failedTests('')
-        slack.failedTests(null)
-        slack.failedTests('#jenkins_test')
+            steps {
+                script{
+                    slack.successBuild()
+                    slack.successBuild('')
+                    slack.successBuild(null)
+                    slack.successBuild('#jenkins_test')
+
+                    slack.failedBuild()
+                    slack.failedBuild('')
+                    slack.failedBuild(null)
+                    slack.failedBuild('#jenkins_test')
+
+                    slack.failedTests()
+                    slack.failedTests('')
+                    slack.failedTests(null)
+                    slack.failedTests('#jenkins_test')
+                }
+
+
+                echo "Some"
+            }
+
+        }
+
+        stage('Send slack correct notification as global'){
+
+                    steps {
+
+                            slackSuccessBuild()
+                            slackSuccessBuild('')
+                            slackSuccessBuild(null)
+                            slackSuccessBuild('#jenkins_test')
+
+                            slackFailedBuild()
+                            slackFailedBuild('')
+                            slackFailedBuild(null)
+                            slackFailedBuild('#jenkins_test')
+
+                            slackFailedTests()
+                            slackFailedTests('')
+                            slackFailedTests(null)
+                            slackFailedTests('#jenkins_test')
+
+                    }
+
+                }
+
     }
-
-//    stage('Send slack incorrect notification'){
-//
-//        channelName = 10
-//        slack.successBuild(channelName)
-//
-//    }
 
 }
