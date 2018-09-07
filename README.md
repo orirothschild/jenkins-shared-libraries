@@ -6,7 +6,7 @@ Current was used Jenkins with version 2.121.3
 3. Set following fields:
 	* Name: shared_library (it will be used in Jenkinsfile with anotation @Library)
 	* Default version: master or another branch, tag name from repository
-	* Load implicitly: false (optional)
+	* Load implicitly: false (optional). If checked, scripts will automatically have access to this library without needing to request it via @Library
 	* Allow default version to be overriden: true (optional)
 	* Include @Library changes in job recent changes: true (optional)
 	* Select "Modern SCM": Git with parameters:
@@ -27,9 +27,23 @@ Here is:
 *Full description of Shared Libraries:* [here](https://jenkins.io/doc/book/pipeline/shared-libraries/)  
 
 ## Global variables
-Use this as 'name_of_groovy_class'.'public_method_name'(parameters)
 
-Variables:
+
+Variables for declarative pipeline:
+
+* Send to slack 'successful build' notification:
+	* slackSuccessBuild() - default channel from SlackJenkins configuration
+	* slackSuccessBuild(name_of_channel)
+* Send to slack 'failed build' notification:
+	* slackFailedBuild() - default channel from SlackJenkins configuration
+	* slackFailedBuild(name_of_channel)
+* Send to slack 'failed tests' notification:
+	* slackFailedTests() - default channel from SlackJenkins configuration
+	* slackFailedTests(name_of_channel)
+
+
+Variables for classic pipeline:
+Use this as 'name_of_groovy_class'.'public_method_name'(parameters)
 
 * Send to slack 'successful build' notification:
 	* slack.successBuild() - default channel from SlackJenkins configuration
