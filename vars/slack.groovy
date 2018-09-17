@@ -1,7 +1,7 @@
 
 def successBuild(String slackChannel=null){
 
-    generatedMessage = generateBuildSlackMessage(false)
+    def generatedMessage = generateBuildSlackMessage(false)
     if (slackChannel?.trim()) slackSend color: 'good', message: generatedMessage, channel: slackChannel
     else slackSend color: 'good', message: generatedMessage
 
@@ -9,7 +9,7 @@ def successBuild(String slackChannel=null){
 
 def failedBuild(String slackChannel=null){
 
-    generatedMessage = generateBuildSlackMessage(true)
+    def generatedMessage = generateBuildSlackMessage(true)
     if (slackChannel?.trim()) slackSend color: 'danger', message: generatedMessage, channel: slackChannel
     else slackSend color: 'danger', message: generatedMessage
 
@@ -17,15 +17,15 @@ def failedBuild(String slackChannel=null){
 
 private generateBuildSlackMessage(failed){
 
-    imageName = "${JOB_NAME}".split('/')[0]
-    failedString = failed? 'failed':'passed'
+    def imageName = "${JOB_NAME}".split('/')[0]
+    def failedString = failed? 'failed':'passed'
     "${imageName} branch ${BRANCH_NAME} build ${failedString}! <${env.BUILD_URL}allure/|Allure report> (${env.BUILD_ID})"
 
 }
 
 def failedTests(String slackChannel=null){
 
-    generatedMessage = generateTestsSlackMessage(true)
+    def generatedMessage = generateTestsSlackMessage(true)
     if (slackChannel?.trim()) slackSend color: 'warning', message: generatedMessage, channel: slackChannel
     else slackSend color: 'warning', message: generatedMessage
 
@@ -33,8 +33,8 @@ def failedTests(String slackChannel=null){
 
 private generateTestsSlackMessage(failed){
 
-    imageName = "${JOB_NAME}".split('/')[0]
-    failedString = failed? 'failed':'passed'
+    def imageName = "${JOB_NAME}".split('/')[0]
+    def failedString = failed? 'failed':'passed'
     "${imageName} branch ${BRANCH_NAME} tests ${failedString}! <${env.BUILD_URL}allure/|Allure report> (${env.BUILD_ID})"
 
 }
