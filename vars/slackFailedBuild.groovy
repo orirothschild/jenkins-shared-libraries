@@ -2,8 +2,8 @@
 def call(String slackChannel=null){
 
     def generatedMessage = generateBuildSlackMessage(true)
-    if (slackChannel?.trim()) slackSend color: 'good', message: generatedMessage, channel: slackChannel
-    else slackSend color: 'good', message: generatedMessage
+    if (slackChannel?.trim()) slackSend color: 'danger', message: generatedMessage, channel: slackChannel
+    else slackSend color: 'danger', message: generatedMessage
 
 }
 
