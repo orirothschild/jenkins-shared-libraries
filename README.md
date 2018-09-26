@@ -1,5 +1,4 @@
 # Shared libraries
-Current was used Jenkins with version 2.121.3
 ## Setup Jenkins
 1. Open Jenkins -- Manage Jenkins -- Configure System
 2. Find section "Global Pipeline Libraries"
@@ -10,13 +9,13 @@ Current was used Jenkins with version 2.121.3
 	* Allow default version to be overriden: true (optional)
 	* Include @Library changes in job recent changes: true (optional)
 	* Select "Modern SCM": Git with parameters:
-		* Project Repository: https://bitbucket.org/bilderlings/jenkins-shared-libraries.git
-		* Credentials: < here is your credentials >
+		* Project Repository: https://github.com/bilderlings/jenkins-shared-libraries.git
+		* Credentials: <empty>
 
 ## Add shared libraries to Jenkinsfile
 For using Shared libraries You should add anotation at the beginning of Jenkinsfile: 
 
-@Library(shared_library@master) _
+@Library(jenkins-shared-libraries@master) _
 
 Here is:
 
@@ -31,26 +30,16 @@ Here is:
 
 Variables for declarative pipeline:
 
-* Send to slack 'successful build' notification:
-	* slackSuccessBuild() - default channel from SlackJenkins configuration
-	* slackSuccessBuild(name_of_channel)
-* Send to slack 'failed build' notification:
-	* slackFailedBuild() - default channel from SlackJenkins configuration
-	* slackFailedBuild(name_of_channel)
-* Send to slack 'failed tests' notification:
-	* slackFailedTests() - default channel from SlackJenkins configuration
-	* slackFailedTests(name_of_channel)
-
-
-Variables for classic pipeline:
-Use this as 'name_of_groovy_class'.'public_method_name'(parameters)
-
-* Send to slack 'successful build' notification:
-	* slack.successBuild() - default channel from SlackJenkins configuration
-	* slack.successBuild(name_of_channel)
-* Send to slack 'failed build' notification:
-	* slack.failedBuild() - default channel from SlackJenkins configuration
-	* slack.failedBuild(name_of_channel)
-* Send to slack 'failed tests' notification:
-	* slack.failedTests() - default channel from SlackJenkins configuration
-	* slack.failedTests(name_of_channel)
+* `slack(channel_name(String, optional), allure(Boolean, optional, default: false))`
+	* Required **Multibranch plugin**
+	* **Default channel** will be taken from Slack configuration in Jenkins
+	* Build status will be taken from jenkins variable **currentBuild.currentResult**
+	* Parameter **allure**: true(true, 'true', 'y', 1), false(false, 'false', null, '', ' ', 0, 'no')
+	* Statuses are used: **SUCCESS, FAILURE, UNSTABLE**. Another ones will be ignored and you can see message in log.
+	```groovy
+	post {
+		always {
+			slack('#channel', 'y')
+		}
+	}
+	```
