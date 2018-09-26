@@ -9,7 +9,10 @@ def call(channelParameter = null, allureParameter = null){
     def channel = channelParameter?.toString()?.trim()
     def allure = allureParameter?.toString()?.toBoolean()
     def result = currentBuild.currentResult
-    if (!colorMap().containsKey(result)) return
+    if (!colorMap().containsKey(result)){
+        echo "slackSend is muted. Undefined build status: ${result}"
+        return
+    }
     def slackParams = [
         color: colorMap().get(result),
         message: generateSlackMessage(allure)

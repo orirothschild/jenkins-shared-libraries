@@ -57,13 +57,25 @@ class SlackStatusTests extends GroovyTestCase {
     @Test
     void test_SlackUndefinedStatus_slackSendIsNotExecuted(){
         Helper.setBuildStatus('UNDEFINED', slack_)
-        Map actualParameters = [:]
         def slackSendWasExecuted = false
         slack_.slackSend = { Map map -> slackSendWasExecuted = true; return null}
+        slack_.echo = { str -> return null}
 
         slack_()
 
         assertFalse(slackSendWasExecuted)
+
+    }
+
+    @Test
+    void test_SlackUndefinedStatus_echoSentMessage(){
+        Helper.setBuildStatus('UNDEFINED', slack_)
+        def actualMessage = ""
+        slack_.echo = { str -> actualMessage = str}
+        def expectedMessage = 'slackSend is muted. Undefined build status: UNDEFINED'
+        slack_()
+
+        assertEquals(actualMessage, expectedMessage)
 
     }
 
