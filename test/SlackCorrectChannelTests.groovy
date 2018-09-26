@@ -1,0 +1,74 @@
+import TestData.SlackTestData
+import Utils.Helper
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
+
+@RunWith(Parameterized.class)
+class SlackCorrectChannelTests extends GroovyTestCase {
+
+
+    @Parameterized.Parameters
+    static Collection<Object[]> data(){
+        SlackTestData.suiteParameterChannelCorrectAllureIsCorrect()
+    }
+
+    private slack_ = new slack()
+    private channel
+    private allure
+
+    SlackCorrectChannelTests(List list){
+        this.channel = list[0]
+        this.allure = list[1]
+    }
+
+    @Before
+    void setUp(){
+        def slackVariables = SlackTestData.commonVariables()
+        Helper.setEnvVariable(slackVariables, slack_)
+    }
+
+    @Test
+    void test_SlackSuccessCorrectChannelTest_ChannelIsCorrect(){
+
+        Helper.setBuildStatus('SUCCESS', slack_)
+        Map actualParameters = [:]
+        slack_.slackSend = { Map map -> actualParameters = map; return null}
+        def expectedChannel = channel?.toString()
+
+        slack_(channel, allure)
+
+        assertEquals(expectedChannel, actualParameters['channel'])
+
+    }
+
+    @Test
+    void test_SlackFailedCorrectChannelTest_ChannelIsCorrect(){
+
+        Helper.setBuildStatus('FAILURE', slack_)
+        Map actualParameters = [:]
+        slack_.slackSend = { Map map -> actualParameters = map; return null}
+        def expectedChannel = channel?.toString()
+
+        slack_(channel, allure)
+
+        assertEquals(expectedChannel, actualParameters['channel'])
+
+    }
+
+    @Test
+    void test_SlackUnstableCorrectChannelTest_ChannelIsCorrect(){
+
+        Helper.setBuildStatus('UNSTABLE', slack_)
+        Map actualParameters = [:]
+        slack_.slackSend = { Map map -> actualParameters = map; return null}
+        def expectedChannel = channel?.toString()
+
+        slack_(channel, allure)
+
+        assertEquals(expectedChannel, actualParameters['channel'])
+
+    }
+
+}

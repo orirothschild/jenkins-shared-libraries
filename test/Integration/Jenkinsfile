@@ -1,6 +1,6 @@
 package Integration
 
-@Library('shared_library@test') _
+@Library('shared_library@dev') _
 
 pipeline{
 

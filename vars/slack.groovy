@@ -1,40 +1,38 @@
 
-def successBuild(String slackChannel=null){
+def call(Map params){
+    call(params.channel, params.allure)
+}
 
-    def generatedMessage = generateBuildSlackMessage(false)
-    if (slackChannel?.trim()) slackSend color: 'good', message: generatedMessage, channel: slackChannel
-    else slackSend color: 'good', message: generatedMessage
+static colorMap(){ ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'warning'] }
+
+def call(channelParameter = null, allureParameter = null){
+    def channel = channelParameter?.toString()?.trim()
+    def allure = allureParameter?.toString()?.toBoolean()
+    def result = currentBuild.currentResult
+    if (!colorMap().containsKey(result)) return
+    def slackParams = [
+        color: colorMap().get(result),
+        message: generateSlackMessage(allure)
+    ]
+    if (channel){
+        slackParams.channel = "$channel"
+    }
+    slackSend slackParams
 
 }
 
-def failedBuild(String slackChannel=null){
+static resultMessageMap(){ ['SUCCESS': 'build passed', 'FAILURE': 'build failed', 'UNSTABLE': 'tests failed'] }
 
-    def generatedMessage = generateBuildSlackMessage(true)
-    if (slackChannel?.trim()) slackSend color: 'danger', message: generatedMessage, channel: slackChannel
-    else slackSend color: 'danger', message: generatedMessage
-
-}
-
-private generateBuildSlackMessage(failed){
-
+private generateSlackMessage(Boolean allureIsUsed){
+    def result = currentBuild.currentResult
     def imageName = "${JOB_NAME}".split('/')[0]
-    def failedString = failed? 'failed':'passed'
-    "${imageName} branch ${BRANCH_NAME} build ${failedString}! <${env.BUILD_URL}allure/|Allure report> (${env.BUILD_ID})"
-
+    def resultMessage = resultMessageMap()."${result}"
+    def message
+    message = "${imageName} branch ${BRANCH_NAME} ${resultMessage}!"
+    if (allureIsUsed) {
+        message += " <${BUILD_URL}allure/|Allure report>"
+    }
+    message += " (<${BUILD_URL}|${BUILD_ID}>)"
+    message
 }
 
-def failedTests(String slackChannel=null){
-
-    def generatedMessage = generateTestsSlackMessage(true)
-    if (slackChannel?.trim()) slackSend color: 'warning', message: generatedMessage, channel: slackChannel
-    else slackSend color: 'warning', message: generatedMessage
-
-}
-
-private generateTestsSlackMessage(failed){
-
-    def imageName = "${JOB_NAME}".split('/')[0]
-    def failedString = failed? 'failed':'passed'
-    "${imageName} branch ${BRANCH_NAME} tests ${failedString}! <${env.BUILD_URL}allure/|Allure report> (${env.BUILD_ID})"
-
-}

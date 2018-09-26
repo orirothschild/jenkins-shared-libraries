@@ -9,4 +9,7 @@ class Helper {
         }
     }
 
+    static setBuildStatus(String result, Object obj){
+        obj['currentBuild'] = new Expando(currentResult: result)
+    }
 }
