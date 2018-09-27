@@ -8,24 +8,21 @@ import org.junit.runners.Parameterized
 @RunWith(Parameterized.class)
 class SlackColorTests extends GroovyTestCase {
 
-    @Parameterized.Parameters
-    static Collection<Object[]> data(){
-        def parameters =
-                SlackTestData.suiteParameterChannelCorrectAllureIsCorrect() +
-                        SlackTestData.suiteParameterChannelEmptyAllureIsCorrect() +
-                        SlackTestData.suiteParameterChannelWhitespaceAllureIsCorrect() +
-                        SlackTestData.suiteParametersChannelNullAllureIsCorrect()
-
-        return parameters
+    @Parameterized.Parameters(name = "{0}")
+    static Collection<Object[]> data() {
+        SlackTestData.suite_ChannelIsDefined_AllureIsAny() +
+        SlackTestData.suite_ChannelIsEmpty_AllureIsCorrect() +
+        SlackTestData.suite_ChannelIsWhitespace_AllureIsAny() +
+        SlackTestData.suite_ChannelIsNull_AllureIsAny()
     }
 
     protected channel
     protected allure
     protected slack_ = new slack()
 
-    SlackColorTests(List list){
-        this.channel = list[0]
-        this.allure = list[1]
+    SlackColorTests(list){
+        this.channel = channel
+        this.allure = allure
     }
 
     @Before

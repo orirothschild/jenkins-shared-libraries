@@ -8,19 +8,16 @@ import org.junit.runners.Parameterized
 @RunWith(Parameterized.class)
 class SlackMessageWithAllureTests extends GroovyTestCase {
 
-    private slack_ = new slack()
-    @Parameterized.Parameters
-    static Collection<Object[]> data(){
-        def parameters =
-                SlackTestData.suiteParameterAllureTrueChannelCorrect() +
-                SlackTestData.suiteParameterAllureTrueChannelEmpty() +
-                SlackTestData.suiteParameterAllureTrueChannelNull() +
-                SlackTestData.suiteParameterAllureTrueChannelWhitespace()
-
-        return parameters
+    @Parameterized.Parameters(name = "{0}")
+    static Collection<Object> data(){
+        SlackTestData.suite_ChannelIsDefined_AllureIsTrue() +
+        SlackTestData.suite_ChannelIsNull_AllureIsTrue() +
+        SlackTestData.suite_ChannelIsEmpty_AllureIsTrue() +
+        SlackTestData.suite_ChannelIsWhitespace_AllureIsTrue()
 
     }
 
+    private slack_ = new slack()
     private channel
     private allure
 

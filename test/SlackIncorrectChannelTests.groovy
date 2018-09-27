@@ -9,11 +9,11 @@ import org.junit.runners.Parameterized
 class SlackIncorrectChannelTests extends GroovyTestCase {
 
 
-    @Parameterized.Parameters
-    static Collection<Object[]> data(){
-        SlackTestData.suiteParameterChannelEmptyAllureIsCorrect() +
-        SlackTestData.suiteParameterChannelWhitespaceAllureIsCorrect() +
-        SlackTestData.suiteParametersChannelNullAllureIsCorrect()
+    @Parameterized.Parameters(name = "{0}")
+    static Collection<Object> data(){
+        SlackTestData.suite_ChannelIsEmpty_AllureIsCorrect() +
+        SlackTestData.suite_ChannelIsWhitespace_AllureIsAny() +
+        SlackTestData.suite_ChannelIsNull_AllureIsAny()
     }
 
     private slack_ = new slack()
