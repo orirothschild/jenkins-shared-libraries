@@ -9,8 +9,8 @@ class DockerPushLatest_Tests extends GroovyTestCase {
 
     @Before
     void setUp(){
-        def dockerPushLatestVariables = DockerPushLatestTestData.commonVariables()
-        Helper.setEnvVariable(dockerPushLatestVariables, dockerPushLatest_)
+        def variables = DockerPushLatestTestData.commonVariables()
+        Helper.setEnvVariable(variables, dockerPushLatest_)
     }
 
     @Test

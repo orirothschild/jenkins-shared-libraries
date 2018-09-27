@@ -25,8 +25,8 @@ class Slack_CorrectChannelTests extends GroovyTestCase {
 
     @Before
     void setUp(){
-        def slackVariables = SlackTestData.commonVariables()
-        Helper.setEnvVariable(slackVariables, slack_)
+        def variables = SlackTestData.commonVariables()
+        Helper.setEnvVariable(variables, slack_)
     }
 
     @Test

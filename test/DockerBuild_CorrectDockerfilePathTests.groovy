@@ -1,3 +1,4 @@
+import TestData.DockerBuildTestData
 import TestData.SlackTestData
 import Utils.Helper
 import org.junit.Before
@@ -6,29 +7,24 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class Slack_BuildStatusTests extends GroovyTestCase {
+class DockerPush_CorrectDockerfilePathTests extends GroovyTestCase {
 
     @Parameterized.Parameters(name = "{0}")
-    static Collection<Object[]> data() {
-        SlackTestData.suite_ChannelIsDefined_AllureIsAny() +
-        SlackTestData.suite_ChannelIsEmpty_AllureIsCorrect() +
-        SlackTestData.suite_ChannelIsWhitespace_AllureIsAny() +
-        SlackTestData.suite_ChannelIsNull_AllureIsAny()
+    static Collection<Object> data() {
+        DockerBuildTestData.correctPaths()
     }
 
-    protected channel
-    protected allure
+    protected path
     protected slack_ = new slack()
 
-    Slack_BuildStatusTests(List list){
-        this.channel = list[0]
-        this.allure = list[1]
+    DockerPush_CorrectDockerfilePathTests(String path){
+        this.path = path
     }
 
     @Before
     void setUp(){
-        def variables = SlackTestData.commonVariables()
-        Helper.setEnvVariable(variables, slack_)
+        def slackVariables = SlackTestData.commonVariables()
+        Helper.setEnvVariable(slackVariables, slack_)
     }
 
     @Test
