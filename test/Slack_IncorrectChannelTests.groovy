@@ -6,19 +6,21 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class SlackCorrectChannelTests extends GroovyTestCase {
+class Slack_IncorrectChannelTests extends GroovyTestCase {
 
 
     @Parameterized.Parameters(name = "{0}")
     static Collection<Object> data(){
-        SlackTestData.suite_ChannelIsDefined_AllureIsAny()
+        SlackTestData.suite_ChannelIsEmpty_AllureIsCorrect() +
+        SlackTestData.suite_ChannelIsWhitespace_AllureIsAny() +
+        SlackTestData.suite_ChannelIsNull_AllureIsAny()
     }
 
     private slack_ = new slack()
     private channel
     private allure
 
-    SlackCorrectChannelTests(List list){
+    Slack_IncorrectChannelTests(List list){
         this.channel = list[0]
         this.allure = list[1]
     }
@@ -30,44 +32,41 @@ class SlackCorrectChannelTests extends GroovyTestCase {
     }
 
     @Test
-    void test_SlackSuccessCorrectChannelTest_ChannelIsCorrect(){
+    void test_SlackSuccessIncorrectChannelTest_ChannelIsCorrect(){
 
         Helper.setBuildStatus('SUCCESS', slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
-        def expectedChannel = channel?.toString()
 
         slack_(channel, allure)
 
-        assertEquals(expectedChannel, actualParameters['channel'])
+        assertNull(actualParameters['channel'])
 
     }
 
     @Test
-    void test_SlackFailedCorrectChannelTest_ChannelIsCorrect(){
+    void test_SlackFailedIncorrectChannelTest_ChannelIsCorrect(){
 
         Helper.setBuildStatus('FAILURE', slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
-        def expectedChannel = channel?.toString()
 
         slack_(channel, allure)
 
-        assertEquals(expectedChannel, actualParameters['channel'])
+        assertNull(actualParameters['channel'])
 
     }
 
     @Test
-    void test_SlackUnstableCorrectChannelTest_ChannelIsCorrect(){
+    void test_SlackUnstableIncorrectChannelTest_ChannelIsCorrect(){
 
         Helper.setBuildStatus('UNSTABLE', slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
-        def expectedChannel = channel?.toString()
 
         slack_(channel, allure)
 
-        assertEquals(expectedChannel, actualParameters['channel'])
+        assertNull(actualParameters['channel'])
 
     }
 

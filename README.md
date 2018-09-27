@@ -29,17 +29,37 @@ Here is:
 
 
 Variables for declarative pipeline:
-
-* `slack(channel_name(String, optional), allure(Boolean, optional, default: false))`
+    
+* `bitbucketStatus()`
+```groovy
+post {
+    always {
+        bitbucketStatus()
+    }
+}
+```
+    
+* `slack(channel_name(String, optional), allure(Boolean, optional, default: false))`    
 	* Required **Multibranch plugin**
 	* **Default channel** will be taken from Slack configuration in Jenkins
 	* Build status will be taken from jenkins variable **currentBuild.currentResult**
 	* Parameter **allure**: true(true, 'true', 'y', 1), false(false, 'false', null, '', ' ', 0, 'no')
 	* Statuses are used: **SUCCESS, FAILURE, UNSTABLE**. Another ones will be ignored and you can see message in log.
-	```groovy
-	post {
-		always {
-			slack('#channel', 'y')
-		}
-	}
-	```
+```groovy
+post {
+    always {
+        slack('#channel', 'y')
+    }
+}
+```
+or
+```groovy
+post {
+    unstable {
+        slack('#channel1', 'y')
+    }
+    failure {
+        slack('#channel2', 'no')
+    }
+}
+```

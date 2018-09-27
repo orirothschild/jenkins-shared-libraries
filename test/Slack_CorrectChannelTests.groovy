@@ -6,22 +6,19 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class SlackMessageWithoutAllureTests extends GroovyTestCase {
+class Slack_CorrectChannelTests extends GroovyTestCase {
+
 
     @Parameterized.Parameters(name = "{0}")
     static Collection<Object> data(){
-        SlackTestData.suite_ChannelIsDefined_AllureIsFalse() +
-        SlackTestData.suite_ChannelIsEmpty_AllureIsFalse() +
-        SlackTestData.suite_AllureIsFalse_ChannelIsNull() +
-        SlackTestData.suite_ChannelIsWhitespace_AllureIsFalse()
-
+        SlackTestData.suite_ChannelIsDefined_AllureIsAny()
     }
 
     private slack_ = new slack()
     private channel
     private allure
 
-    SlackMessageWithoutAllureTests(List list){
+    Slack_CorrectChannelTests(List list){
         this.channel = list[0]
         this.allure = list[1]
     }
@@ -33,41 +30,44 @@ class SlackMessageWithoutAllureTests extends GroovyTestCase {
     }
 
     @Test
-    void test_SlackSuccessMessageWithoutAllureTest_MessageIsCorrect(){
+    void test_SlackSuccessCorrectChannelTest_ChannelIsCorrect(){
+
         Helper.setBuildStatus('SUCCESS', slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
-        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! (<FAKE_Build_Url|1234>)'
+        def expectedChannel = channel?.toString()
 
         slack_(channel, allure)
 
-        assertEquals(expectedMessage, actualParameters['message'])
+        assertEquals(expectedChannel, actualParameters['channel'])
 
     }
 
     @Test
-    void test_SlackFailedMessageWithoutAllureTest_MessageIsCorrect(){
+    void test_SlackFailedCorrectChannelTest_ChannelIsCorrect(){
+
         Helper.setBuildStatus('FAILURE', slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
-        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build failed! (<FAKE_Build_Url|1234>)'
+        def expectedChannel = channel?.toString()
 
         slack_(channel, allure)
 
-        assertEquals(expectedMessage, actualParameters['message'])
+        assertEquals(expectedChannel, actualParameters['channel'])
 
     }
 
     @Test
-    void test_SlackUnstableMessageWithoutAllureTest_MessageIsCorrect(){
+    void test_SlackUnstableCorrectChannelTest_ChannelIsCorrect(){
+
         Helper.setBuildStatus('UNSTABLE', slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
-        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name tests failed! (<FAKE_Build_Url|1234>)'
+        def expectedChannel = channel?.toString()
 
         slack_(channel, allure)
 
-        assertEquals(expectedMessage, actualParameters['message'])
+        assertEquals(expectedChannel, actualParameters['channel'])
 
     }
 

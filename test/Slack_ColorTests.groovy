@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class SlackColorTests extends GroovyTestCase {
+class Slack_ColorTests extends GroovyTestCase {
 
     @Parameterized.Parameters(name = "{0}")
     static Collection<Object[]> data() {
@@ -20,9 +20,9 @@ class SlackColorTests extends GroovyTestCase {
     protected allure
     protected slack_ = new slack()
 
-    SlackColorTests(list){
-        this.channel = channel
-        this.allure = allure
+    Slack_ColorTests(List list){
+        this.channel = list[0]
+        this.allure = list[1]
     }
 
     @Before
