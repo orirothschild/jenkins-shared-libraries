@@ -2,10 +2,24 @@ import TestData.BitbucketStatusTestData
 import Utils.Helper
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 
-class BitbucketStatus_BuildStatusTests extends GroovyTestCase {
+@RunWith(Parameterized.class)
+class BitbucketStatus_CustomStatusTests extends GroovyTestCase {
 
     protected bitbucketStatus_ = new bitbucketStatus()
+
+    @Parameterized.Parameters(name = "{0}")
+    static Collection<Object> data() {
+        BitbucketStatusTestData.customBitbucketStatuses()
+    }
+
+    protected String status
+
+    BitbucketStatus_CustomStatusTests(String status){
+        this.status = status
+    }
 
     @Before
     void setUp(){
@@ -20,136 +34,138 @@ class BitbucketStatus_BuildStatusTests extends GroovyTestCase {
     }
 
     @Test
-    void test_BitbucketStatus_BuildSuccessStatus_buildStateIsSuccessful(){
+    void test_BitbucketStatus_BuildSuccessStatus_BitbucketCustomStatus_buildStateIsCustom(){
         Helper.setBuildStatus('SUCCESS', bitbucketStatus_)
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
+        def expectedStatus = "${status}".toString()
 
-        bitbucketStatus_()
+        bitbucketStatus_(status)
 
-        assertEquals('SUCCESSFUL', actualParameters['buildState'])
+        assertEquals(expectedStatus, actualParameters['buildState'])
 
     }
 
     @Test
-    void test_BitbucketStatus_BuildSuccessStatus_commitIdIsCorrect(){
+    void test_BitbucketStatus_BuildSuccessStatus_BitbucketCustomStatus_commitIdIsCorrect(){
         Helper.setBuildStatus('SUCCESS', bitbucketStatus_)
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_()
+        bitbucketStatus_(status)
 
         assertEquals('1111', actualParameters['commitId'])
 
     }
 
     @Test
-    void test_BitbucketStatus_BuildSuccessStatus_repoSlugIsCorrect(){
+    void test_BitbucketStatus_BuildSuccessStatus_BitbucketCustomStatus_repoSlugIsCorrect(){
         Helper.setBuildStatus('SUCCESS', bitbucketStatus_)
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_()
+        bitbucketStatus_(status)
 
         assertEquals('Job_Name', actualParameters['repoSlug'])
 
     }
 
     @Test
-    void test_BitbucketStatus_BuildFailureStatus_buildStateIsFailed(){
+    void test_BitbucketStatus_BuildFailureStatus_BitbucketCustomStatus_buildStateIsCustom(){
         Helper.setBuildStatus('FAILURE', bitbucketStatus_)
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
+        def expectedStatus = "${status}".toString()
 
-        bitbucketStatus_()
+        bitbucketStatus_(status)
 
-        assertEquals('FAILED', actualParameters['buildState'])
+        assertEquals(expectedStatus, actualParameters['buildState'])
 
     }
 
     @Test
-    void test_BitbucketStatus_BuildFailureStatus_commitIdIsCorrect(){
+    void test_BitbucketStatus_BuildFailureStatus_BitbucketCustomStatus_commitIdIsCorrect(){
         Helper.setBuildStatus('FAILURE', bitbucketStatus_)
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-
-        bitbucketStatus_()
+        bitbucketStatus_(status)
 
         assertEquals('1111', actualParameters['commitId'])
 
     }
 
     @Test
-    void test_BitbucketStatus_BuildFailureStatus_repoSlugIsCorrect(){
+    void test_BitbucketStatus_BuildFailureStatus_BitbucketCustomStatus_repoSlugIsCorrect(){
         Helper.setBuildStatus('FAILURE', bitbucketStatus_)
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_()
+        bitbucketStatus_(status)
 
         assertEquals('Job_Name', actualParameters['repoSlug'])
 
     }
 
     @Test
-    void test_BitbucketStatus_BuildUnstableStatus_buildStateIsFailed(){
+    void test_BitbucketStatus_BuildUnstableStatus_BitbucketCustomStatus_buildStateIsCustom(){
         Helper.setBuildStatus('UNSTABLE', bitbucketStatus_)
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
+        def expectedStatus = "${status}".toString()
 
-        bitbucketStatus_()
+        bitbucketStatus_(status)
 
-        assertEquals('FAILED', actualParameters['buildState'])
+        assertEquals(expectedStatus, actualParameters['buildState'])
 
     }
 
     @Test
-    void test_BitbucketStatus_BuildUnstableStatus_commitIdIsCorrect(){
+    void test_BitbucketStatus_BuildUnstableStatus_BitbucketCustomStatus_commitIdIsCorrect(){
         Helper.setBuildStatus('UNSTABLE', bitbucketStatus_)
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_()
+        bitbucketStatus_(status)
 
         assertEquals('1111', actualParameters['commitId'])
 
     }
 
     @Test
-    void test_BitbucketStatus_BuildUnstableStatus_repoSlugIsCorrect(){
+    void test_BitbucketStatus_BuildUnstableStatus_BitbucketCustomStatus_repoSlugIsCorrect(){
         Helper.setBuildStatus('UNSTABLE', bitbucketStatus_)
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_()
+        bitbucketStatus_(status)
 
         assertEquals('Job_Name', actualParameters['repoSlug'])
 
     }
 
     @Test
-    void test_BitbucketStatus_BuildUndefinedStatus_bitbucketStatusNotifyIsNotExecuted(){
+    void test_BitbucketStatus_BuildUndefinedStatus_BitbucketCustomStatus_bitbucketStatusNotifyIsExecuted(){
         Helper.setBuildStatus('UNDEFINED', bitbucketStatus_)
         def bitbucketStatusNotifyWasExecuted = false
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> bitbucketStatusNotifyWasExecuted = true; return null}
         bitbucketStatus_.echo = { str -> return null}
 
-        bitbucketStatus_()
+        bitbucketStatus_(status)
 
-        assertFalse(bitbucketStatusNotifyWasExecuted)
+        assertTrue(bitbucketStatusNotifyWasExecuted)
 
     }
 
     @Test
-    void test_BitbucketStatus_BuildUndefinedStatus_echoSentMessage(){
+    void test_BitbucketStatus_BuildUndefinedStatus_BitbucketCustomStatus_echoDoNotSentMessage(){
         Helper.setBuildStatus('UNDEFINED', bitbucketStatus_)
-        def actualMessage = ""
-        bitbucketStatus_.echo = { str -> actualMessage = str}
-        def expectedMessage = 'bitbucketStatusNotify is muted. Undefined build status: UNDEFINED'
-        bitbucketStatus_()
+        def echoIsExecuted = false
+        bitbucketStatus_.bitbucketStatusNotify = { Map map -> null}
+        bitbucketStatus_.echo = { str -> echoIsExecuted = true; return null }
+        bitbucketStatus_(status)
 
-        assertEquals(actualMessage, expectedMessage)
+        assertFalse(echoIsExecuted)
 
     }
 

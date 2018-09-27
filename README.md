@@ -30,7 +30,9 @@ Here is:
 
 Variables for declarative pipeline:
     
-* `bitbucketStatus()`
+* `bitbucketStatus(status_name(optional))`
+    * Valid status_name: INPROGRESS, SUCCESSFUL, FAILED
+    * If **status_name** is not specified, **status_name** will be related to build status in jenkins.  
 ```groovy
 post {
     always {
@@ -38,7 +40,41 @@ post {
     }
 }
 ```
-    
+or
+```groovy
+steps {
+    bitbucketStatus("INPROGRESS")
+}
+```
+
+* `dockerBuild(docker_file_path(String, optional))`
+    * Required **Multibranch plugin**
+    * Default **docker_file_path**: './Dockerfile'
+    * Exception will thrown for incorrect values of dockerfile: null, '', ' '
+```groovy
+steps {
+    container('docker') {
+        dockerBuild()
+    }
+}
+```
+or
+```groovy
+steps {
+    container('docker') {
+        dockerBuild('./files/DockerFile')
+    }
+}
+```
+* `dockerPushLatest()`
+    * Required **Multibranch plugin**
+```groovy
+steps {
+    container('docker') {
+        dockerPushLatest()
+    }
+}
+```    
 * `slack(channel_name(String, optional), allure(Boolean, optional, default: false))`    
 	* Required **Multibranch plugin**
 	* **Default channel** will be taken from Slack configuration in Jenkins
