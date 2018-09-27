@@ -7,3 +7,11 @@ static Map commonVariables(){ [
         DOCKER_REGISTRY: 'registry.com'
     ]
 }
+
+static correctPaths(){
+    ['some_path', './some_path', '/home/some_path', '.', '\\\\']
+}
+
+static incorrectPaths(){
+    [null, '', ' ']
+}

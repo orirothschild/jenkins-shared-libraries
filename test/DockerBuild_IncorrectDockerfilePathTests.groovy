@@ -1,22 +1,26 @@
 import TestData.DockerBuildTestData
 import Utils.Helper
+import org.junit.Rule
 import org.junit.Before
 import org.junit.Test
+import org.junit.rules.ExpectedException
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class DockerBuild_CorrectDockerfilePathTests extends GroovyTestCase {
+class DockerBuild_IncorrectDockerfilePathTests extends GroovyTestCase {
 
     @Parameterized.Parameters(name = "{0}")
     static Collection<Object> data() {
-        DockerBuildTestData.correctPaths()
+        DockerBuildTestData.incorrectPaths()
     }
+    @Rule
+    public ExpectedException thrown = ExpectedException.none()
 
     protected String path
     protected dockerBuild_ = new dockerBuild()
 
-    DockerBuild_CorrectDockerfilePathTests(String path){
+    DockerBuild_IncorrectDockerfilePathTests(String path){
         this.path = path
     }
 
@@ -27,27 +31,41 @@ class DockerBuild_CorrectDockerfilePathTests extends GroovyTestCase {
     }
 
     @Test
-    void test_DockerBuild_shellCommandDockerBuildIsExecuted(){
+    void test_DockerBuild_exceptionInvalidPath(){
         def actualCommands = []
         dockerBuild_.sh = { command -> actualCommands << command; return null}
-        def expectedCommand = ["docker build . -t registry.com/bilderlings/Job_Name:master-1 -f ${path}".toString()]
+        dockerBuild_.error = { message -> throw new TestInvalidPathException(message.toString())}
+        def expectedMessage = "Invalid docker file path: ${path}".toString()
+        thrown.expect(TestInvalidPathException.class)
+        thrown.expectMessage(expectedMessage)
 
         dockerBuild_(path)
 
-        assertEquals(expectedCommand, actualCommands)
+        assertEquals([], actualCommands)
 
     }
 
     @Test
-    void test_DockerBuild_1shellCommandIsExecuted(){
+    void test_DockerBuild_shellCommandDockerBuildIsNotExecuted(){
         def actualCommands = []
         dockerBuild_.sh = { command -> actualCommands << command; return null}
-        def expectedCommand = "docker build . -t registry.com/bilderlings/Job_Name:master-1 -f ${path}".toString()
+        dockerBuild_.error = { message -> throw new TestInvalidPathException(message.toString())}
 
-        dockerBuild_(path)
+        try {
+            dockerBuild_(path)
+            fail("Expected an TestInvalidPathException to be thrown")
+        }catch(e){
+            assertEquals([], actualCommands)
+        }
 
-        assertLength(1, actualCommands)
 
+
+    }
+
+    class TestInvalidPathException extends Exception{
+        TestInvalidPathException(String message){
+            super(message)
+        }
     }
 
 }
