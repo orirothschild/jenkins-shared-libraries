@@ -3,7 +3,7 @@ import Utils.Helper
 import org.junit.Before
 import org.junit.Test
 
-class BitbucketStatus_BuildStatusTests extends GroovyTestCase {
+class DockerBuild_Tests extends GroovyTestCase {
 
     protected bitbucketStatus_ = new bitbucketStatus()
 

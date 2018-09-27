@@ -1,7 +1,6 @@
 package TestData
 
 static Map commonVariables(){ [
-        COMMIT_ID: "1111",
-        IMAGE_NAME: "image"
+        JOB_NAME: "Job_Name"
     ]
 }

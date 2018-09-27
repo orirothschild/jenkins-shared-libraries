@@ -8,10 +8,12 @@ def call(){
         return
     }
 
+    def imageName = "${JOB_NAME}".split('/')[0]
+    def commitId = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%H'").trim()
     def bitbucketStatusNotifyParams = [
         buildState: buildStateMap().get(result),
-        commitId: "${env.COMMIT_ID}",
-        repoSlug: "${env.IMAGE_NAME}"
+        commitId: "${commitId}",
+        repoSlug: "${imageName}"
     ]
 
     bitbucketStatusNotify bitbucketStatusNotifyParams
