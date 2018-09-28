@@ -32,7 +32,7 @@ class DockerBuild_DefaultDockerfileDefaultImageNameTests extends GroovyTestCase 
     void test_DockerBuild_shellCommandDockerBuildIsExecutedWithDefaultPath(){
         def actualCommands = []
         dockerBuild_.sh = { command -> actualCommands << command; return null}
-        def expectedCommands = ['docker build . -t registry.com/bilderlings/Job_Name:master-1 -f .']
+        def expectedCommands = ['docker build . -t registry.com/bilderlings/Job_Name:master-1 -f ./Dockerfile']
 
         dockerBuild_(path, imageName)
 

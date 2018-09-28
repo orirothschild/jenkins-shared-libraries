@@ -51,7 +51,7 @@ steps {
 * `dockerBuild([dockerfile: docker_file_path, imageName: imagename])`
     * Required **Multibranch plugin**
     * Required variable **env.DOCKER_REGISTRY**
-    * Default **docker_file_path**: '.'
+    * Default **docker_file_path**: './Dockerfile'
     * **docker_file_path**: null, '', ' ' will be set to default
     * Default **imageName**: first part of JOB_NAME
     * **imageName**: null, '', ' ' will be set to default

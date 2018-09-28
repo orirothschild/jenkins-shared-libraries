@@ -17,7 +17,7 @@ class DockerBuild_CommonTests extends GroovyTestCase {
     void test_DockerBuild_NoParameters_DefaultParameters(){
         def actualCommands = []
         dockerBuild_.sh = { command -> actualCommands << command; return null}
-        def expectedCommands = ['docker build . -t registry.com/bilderlings/Job_Name:master-1 -f .']
+        def expectedCommands = ['docker build . -t registry.com/bilderlings/Job_Name:master-1 -f ./Dockerfile']
 
         dockerBuild_()
 

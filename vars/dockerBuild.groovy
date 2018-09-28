@@ -4,7 +4,7 @@ def call(Map params){
 }
 
 def call(String dockerFilePath=null, String imageName=null){
-    def dockerFilePathLocal = '.'
+    def dockerFilePathLocal = './Dockerfile'
     if (dockerFilePath?.trim()){
         dockerFilePathLocal = dockerFilePath
     }
