@@ -25,4 +25,16 @@ class DockerBuild_CommonTests extends GroovyTestCase {
 
     }
 
+    @Test
+    void test_DockerBuild_MapParameter_ParametersAreDispatched(){
+        def actualCommands = []
+        dockerBuild_.sh = { command -> actualCommands << command; return null}
+        def expectedCommands = ['docker build . -t registry.com/bilderlings/imagename:master-1 -f path']
+
+        dockerBuild_ dockerfile: 'path', imageName: 'imagename'
+
+        assertEquals(expectedCommands, actualCommands)
+
+    }
+
 }
