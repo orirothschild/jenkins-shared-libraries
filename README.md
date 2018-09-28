@@ -47,10 +47,14 @@ steps {
 }
 ```
 
-* `dockerBuild(docker_file_path(String, optional))`
+* `dockerBuild(docker_file_path(String, optional), imageName(String, optional))`
+* `dockerBuild([dockerfile: docker_file_path, imageName: imagename])`
     * Required **Multibranch plugin**
-    * Default **docker_file_path**: './Dockerfile'
-    * Exception will thrown for incorrect values of dockerfile: null, '', ' '
+    * Required variable **env.DOCKER_REGISTRY**
+    * Default **docker_file_path**: '.'
+    * **docker_file_path**: null, '', ' ' will be set to default
+    * Default **imageName**: first part of JOB_NAME
+    * **imageName**: null, '', ' ' will be set to default
 ```groovy
 steps {
     container('docker') {
@@ -62,20 +66,40 @@ or
 ```groovy
 steps {
     container('docker') {
-        dockerBuild('./files/DockerFile')
+        dockerBuild('./files/DockerFile', 'any_name')
     }
 }
 ```
-* `dockerPushLatest()`
+or
+```groovy
+steps {
+    container('docker') {
+        dockerBuild dockerfile:'./files/DockerFile'
+        dockerbuild imageName: 'any_name'
+    }
+}
+```
+* `dockerPushLatest(imageName(String, optional))`
     * Required **Multibranch plugin**
+    * Required variable **env.DOCKER_REGISTRY**
+    * Default **imageName**: first part of JOB_NAME
+    * **imageName**: null, '', ' ' will be set to default
 ```groovy
 steps {
     container('docker') {
         dockerPushLatest()
     }
 }
+```  
+```groovy
+steps {
+    container('docker') {
+        dockerPushLatest('any_name')
+    }
+}
 ```    
 * `slack(channel_name(String, optional), allure(Boolean, optional, default: false))`    
+* `slack([channel: channel_name, allure: boolean_value])`    
 	* Required **Multibranch plugin**
 	* **Default channel** will be taken from Slack configuration in Jenkins
 	* Build status will be taken from jenkins variable **currentBuild.currentResult**
@@ -95,7 +119,7 @@ post {
         slack('#channel1', 'y')
     }
     failure {
-        slack('#channel2', 'no')
+        slack channel:'#channel2', allure: false
     }
 }
 ```

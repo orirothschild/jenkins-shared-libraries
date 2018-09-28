@@ -1,9 +1,9 @@
-import TestData.DockerPushLatestTestData
+import TestData.Docker.DockerPushLatestTestData
 import Utils.Helper
 import org.junit.Before
 import org.junit.Test
 
-class DockerPushLatest_Tests extends GroovyTestCase {
+class DockerPushLatest_CommonTests extends GroovyTestCase {
 
     protected dockerPushLatest_ = new dockerPushLatest()
 
@@ -14,7 +14,7 @@ class DockerPushLatest_Tests extends GroovyTestCase {
     }
 
     @Test
-    void test_DockerPushLatest_checkOrderOfCommands(){
+    void test_DockerPushLatest_NoParameters_checkOrderOfCommands(){
         def actualShellCommands = []
         dockerPushLatest_.sh = { command -> actualShellCommands << command; return null}
         def expectedShellCommands = [

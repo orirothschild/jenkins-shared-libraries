@@ -8,7 +8,7 @@ def call(String status=null){
             commitId: "${commitId}",
             repoSlug: "${imageName}"
     ]
-    if (status == null){
+    if (!status?.trim()){
         def result = currentBuild.currentResult
         if (!buildStateMap().containsKey(result)){
             echo "bitbucketStatusNotify is muted. Undefined build status: ${result}"

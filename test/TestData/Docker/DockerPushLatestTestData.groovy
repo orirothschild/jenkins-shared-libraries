@@ -1,4 +1,4 @@
-package TestData
+package TestData.Docker
 
 static Map commonVariables(){ [
         JOB_NAME: 'Job_Name',
@@ -6,12 +6,4 @@ static Map commonVariables(){ [
         BUILD_ID: '1',
         DOCKER_REGISTRY: 'registry.com'
     ]
-}
-
-static correctPaths(){
-    ['some_path', './some_path', '/home/some_path', '.', '\\\\']
-}
-
-static incorrectPaths(){
-    [null, '', ' ']
 }
