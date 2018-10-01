@@ -1,4 +1,4 @@
-import TestData.Docker.DockerPushLatestTestData
+import TestData.Docker.DockerPushTestData
 import TestData.Docker.DockerTestData
 import Utils.Helper
 import org.junit.Before
@@ -23,7 +23,7 @@ class DockerPush_CustomImageNameTests extends GroovyTestCase {
 
     @Before
     void setUp(){
-        def variables = DockerPushLatestTestData.commonVariables()
+        def variables = DockerPushTestData.commonVariables()
         Helper.setEnvVariable(variables, dockerPush_)
     }
 

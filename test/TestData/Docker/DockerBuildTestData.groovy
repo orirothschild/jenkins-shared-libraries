@@ -10,6 +10,13 @@ static Map commonVariables(){ [
     ]
 }
 
+static Map commonVariablesWithoutDockerRegistry(){ [
+        JOB_NAME: 'Job_Name',
+        BRANCH_NAME: 'master',
+        BUILD_ID: '1'
+    ]
+}
+
 static suite_CustomDockerFilePathsWithDefaultImageNames(){
     TestDataCombination.join(customDockerFilePaths(), DockerTestData.defaultImageNames())
 }

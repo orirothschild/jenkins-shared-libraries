@@ -15,6 +15,8 @@ def call(String dockerFilePath=null, String imageName=null){
         imageNameLocal = imageName
     }
     def imageTag = "${BRANCH_NAME}-${BUILD_ID}"
-
+    if (!env.DOCKER_REGISTRY || !DOCKER_REGISTRY) {
+        error 'Variable DOCKER_REGISTRY is not defined'
+    }
     sh "docker build . -t ${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}:${imageTag} -f ${dockerFilePathLocal}"
 }

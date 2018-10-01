@@ -1,4 +1,4 @@
-import TestData.Docker.DockerPushLatestTestData
+import TestData.Docker.DockerPushTestData
 import Utils.Helper
 import org.junit.Before
 import org.junit.Test
@@ -9,7 +9,7 @@ class DockerPush_CommonTests extends GroovyTestCase {
 
     @Before
     void setUp(){
-        def variables = DockerPushLatestTestData.commonVariables()
+        def variables = DockerPushTestData.commonVariables()
         Helper.setEnvVariable(variables, dockerPush_)
     }
 
