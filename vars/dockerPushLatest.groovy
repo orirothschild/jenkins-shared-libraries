@@ -7,7 +7,7 @@ def call(String imageName=null){
         imageNameLocal = imageName
     }
     def imageTag = "${BRANCH_NAME}-${BUILD_ID}"
-    if (!env.DOCKER_REGISTRY || !DOCKER_REGISTRY) {
+    if ("${env.DOCKER_REGISTRY}" == 'null') {
         error 'Variable DOCKER_REGISTRY is not defined'
     }
     sh "docker tag ${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}:${imageTag} ${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}:latest"
