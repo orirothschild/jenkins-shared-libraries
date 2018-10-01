@@ -79,7 +79,27 @@ steps {
     }
 }
 ```
+* `dockerPush(imageName(String, optional))`
+    * Required **Multibranch plugin**
+    * Required variable **env.DOCKER_REGISTRY**
+    * Default **imageName**: first part of JOB_NAME
+    * **imageName**: null, '', ' ' will be set to default
+```groovy
+steps {
+    container('docker') {
+        dockerPush()
+    }
+}
+```  
+```groovy
+steps {
+    container('docker') {
+        dockerPush('any_name')
+    }
+}
+```   
 * `dockerPushLatest(imageName(String, optional))`
+    * *Tag and push* image on latest
     * Required **Multibranch plugin**
     * Required variable **env.DOCKER_REGISTRY**
     * Default **imageName**: first part of JOB_NAME

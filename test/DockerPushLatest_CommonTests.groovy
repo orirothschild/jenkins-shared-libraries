@@ -19,7 +19,6 @@ class DockerPushLatest_CommonTests extends GroovyTestCase {
         dockerPushLatest_.sh = { command -> actualShellCommands << command; return null}
         def expectedShellCommands = [
                 'docker tag registry.com/bilderlings/Job_Name:master-1 registry.com/bilderlings/Job_Name:latest',
-                'docker push registry.com/bilderlings/Job_Name:master-1',
                 'docker push registry.com/bilderlings/Job_Name:latest',
         ]
 

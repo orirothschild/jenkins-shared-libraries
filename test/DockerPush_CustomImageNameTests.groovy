@@ -7,36 +7,35 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class DockerPushLatest_DefaultImageNameTests extends GroovyTestCase {
+class DockerPush_CustomImageNameTests extends GroovyTestCase {
 
     @Parameterized.Parameters(name = "{0}")
     static Collection<Object> data() {
-        DockerTestData.defaultImageNames()
+        DockerTestData.customImageNames()
     }
 
     protected String imageName
-    protected dockerPushLatest_ = new dockerPushLatest()
+    protected dockerPush_ = new dockerPush()
 
-    DockerPushLatest_DefaultImageNameTests(String imageName){
+    DockerPush_CustomImageNameTests(String imageName){
         this.imageName = imageName
     }
 
     @Before
     void setUp(){
         def variables = DockerPushLatestTestData.commonVariables()
-        Helper.setEnvVariable(variables, dockerPushLatest_)
+        Helper.setEnvVariable(variables, dockerPush_)
     }
 
     @Test
     void test_DockerPushLatest_checkOrderOfCommands(){
         def actualShellCommands = []
-        dockerPushLatest_.sh = { command -> actualShellCommands << command; return null}
+        dockerPush_.sh = { command -> actualShellCommands << command; return null}
         def expectedShellCommands = [
-                'docker tag registry.com/bilderlings/Job_Name:master-1 registry.com/bilderlings/Job_Name:latest',
-                'docker push registry.com/bilderlings/Job_Name:latest',
+                "docker push registry.com/bilderlings/${imageName}:master-1".toString()
         ]
 
-        dockerPushLatest_(imageName)
+        dockerPush_(imageName)
 
         assertEquals(expectedShellCommands, actualShellCommands)
 

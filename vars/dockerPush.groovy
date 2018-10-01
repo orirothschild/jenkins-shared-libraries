@@ -7,7 +7,7 @@ def call(String imageName=null){
         imageNameLocal = imageName
     }
     def imageTag = "${BRANCH_NAME}-${BUILD_ID}"
-    sh "docker tag ${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}:${imageTag} ${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}:latest"
-    sh "docker push ${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}:latest"
+
+    sh "docker push ${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}:${imageTag}"
 
 }
