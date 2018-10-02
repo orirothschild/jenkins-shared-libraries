@@ -4,11 +4,13 @@ import groovy.transform.Field
 Map buildStateMap = ['SUCCESS': 'SUCCESSFUL', 'FAILURE': 'FAILED', 'UNSTABLE': 'FAILED']
 
 def call(String status=null){
-    def imageName = "${JOB_NAME}".split('/')[0]
-    def commitId = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%H'").trim()
+    def imageName = new imageName()
+    def commitId = new commitId()
+    imageName.binding = this.binding
+    commitId.binding = this.binding
     def bitbucketStatusNotifyParams = [
-            commitId: "${commitId}",
-            repoSlug: "${imageName}"
+            commitId: "${commitId()}",
+            repoSlug: "${imageName()}"
     ]
     if (!status?.trim()){
         def result = currentBuild.currentResult
