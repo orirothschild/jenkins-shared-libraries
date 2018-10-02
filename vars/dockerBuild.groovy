@@ -1,6 +1,9 @@
 
 def call(Map params){
-    call(params.dockerfile as String, params.imageName as String)
+    if (!params){
+        return call()
+    }
+    return call(params.dockerfile as String, params.imageName as String)
 }
 
 def call(String dockerFilePath=null, String imageName=null){

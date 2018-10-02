@@ -1,5 +1,7 @@
+import groovy.transform.Field
 
-static buildStateMap(){ ['SUCCESS': 'SUCCESSFUL', 'FAILURE': 'FAILED', 'UNSTABLE': 'FAILED'] }
+@Field
+Map buildStateMap = ['SUCCESS': 'SUCCESSFUL', 'FAILURE': 'FAILED', 'UNSTABLE': 'FAILED']
 
 def call(String status=null){
     def imageName = "${JOB_NAME}".split('/')[0]
@@ -10,11 +12,11 @@ def call(String status=null){
     ]
     if (!status?.trim()){
         def result = currentBuild.currentResult
-        if (!buildStateMap().containsKey(result)){
+        if (!buildStateMap.containsKey(result)){
             echo "bitbucketStatusNotify is muted. Undefined build status: ${result}"
             return
         }
-        bitbucketStatusNotifyParams.buildState = "${buildStateMap().get(result)}"
+        bitbucketStatusNotifyParams.buildState = "${buildStateMap.get(result)}"
     }else {
         bitbucketStatusNotifyParams.buildState = "${status}"
     }

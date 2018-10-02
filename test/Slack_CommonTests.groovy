@@ -78,4 +78,30 @@ class Slack_CommonTests extends GroovyTestCase {
 
     }
 
+    @Test
+    void test_Slack_MapParametersIsNull_DefaultValuesAreApplied_ChannelIsNull(){
+        Helper.setBuildStatus('SUCCESS', slack_)
+        Map actualParameters = [:]
+        slack_.slackSend = { Map map -> actualParameters = map; return null}
+
+        slack_ null
+
+        assertNull(actualParameters['channel'])
+
+    }
+
+    @Test
+    void test_Slack_MapParametersIsNull_DefaultValuesAreApplied_MessageIsCorrect(){
+        Helper.setBuildStatus('SUCCESS', slack_)
+        Map actualParameters = [:]
+        slack_.slackSend = { Map map -> actualParameters = map; return null}
+
+        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! (<FAKE_Build_Url|1234>)'
+
+        slack_ null
+
+        assertEquals(expectedMessage, actualParameters['message'])
+
+    }
+
 }

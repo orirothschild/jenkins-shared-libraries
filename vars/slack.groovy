@@ -1,13 +1,18 @@
+import groovy.transform.Field
+
+@Field
+Map colorMap = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'warning']
 
 def call(Map params){
-    call(params.channel, params.allure)
+    if (!params){
+        return call()
+    }
+    return call(params.channel, params.allure)
 }
 
-static colorMap(){ ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'warning'] }
-
-def call(channelParameter = null, allureParameter = null){
+def call(String channelParameter = null, allureParameter = null){
     def result = currentBuild.currentResult
-    if (!colorMap().containsKey(result)){
+    if (!colorMap.containsKey(result)){
         echo "slackSend is muted. Undefined build status: ${result}"
         return
     }
@@ -15,7 +20,7 @@ def call(channelParameter = null, allureParameter = null){
     def allure = allureParameter?.toString()?.toBoolean()
 
     def slackParams = [
-        color: colorMap().get(result),
+        color: colorMap.get(result),
         message: generateSlackMessage(allure)
     ]
     if (channel){
