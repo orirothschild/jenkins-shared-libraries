@@ -28,7 +28,8 @@ class Slack_IncorrectChannelTests extends GroovyTestCase {
     @Before
     void setUp(){
         def variables = SlackTestData.commonVariables()
-        Helper.setEnvVariable(variables, slack_)
+        Helper.setEnvVariables(variables, slack_)
+        InjectVars.injectTo(slack_,'imageName')
     }
 
     @Test

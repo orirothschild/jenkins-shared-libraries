@@ -34,12 +34,9 @@ static resultMessageMap(){ ['SUCCESS': 'build passed', 'FAILURE': 'build failed'
 
 private generateSlackMessage(Boolean allureIsUsed){
     def result = currentBuild.currentResult
-    def imageName = new imageName()
-    imageName.binding = this.binding
-    def imageNameLocal = "${imageName()}"
     def resultMessage = resultMessageMap()."${result}"
     def message
-    message = "${imageNameLocal} branch ${BRANCH_NAME} ${resultMessage}!"
+    message = "${imageName()} branch ${BRANCH_NAME} ${resultMessage}!"
     if (allureIsUsed) {
         message += " <${BUILD_URL}allure/|Allure report>"
     }

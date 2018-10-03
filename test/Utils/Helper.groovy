@@ -2,7 +2,7 @@ package Utils
 
 class Helper {
 
-    static setEnvVariable(Map variables, Object... objs){
+    static setEnvVariables(Map variables, Object... objs){
         objs.each { obj ->
             obj.env = variables
             variables.each { k, v ->

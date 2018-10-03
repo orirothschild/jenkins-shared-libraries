@@ -31,7 +31,8 @@ class DockerPush_VariableTests extends GroovyTestCase {
     @Before
     void setUp(){
         def variables = DockerPushTestData.commonVariablesWithoutDockerRegistry()
-        Helper.setEnvVariable(variables, dockerPush_)
+        Helper.setEnvVariables(variables, dockerPush_)
+        InjectVars.injectTo(dockerPush_, 'imageName')
     }
 
     @Test

@@ -24,7 +24,8 @@ class DockerPush_DefaultImageNameTests extends GroovyTestCase {
     @Before
     void setUp(){
         def variables = DockerPushTestData.commonVariables()
-        Helper.setEnvVariable(variables, dockerPush_)
+        Helper.setEnvVariables(variables, dockerPush_)
+        InjectVars.injectTo( dockerPush_, 'imageName', 'imageTag')
     }
 
     @Test

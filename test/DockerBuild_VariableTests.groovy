@@ -34,7 +34,8 @@ class DockerBuild_VariableTests extends GroovyTestCase {
     @Before
     void setUp(){
         def variables = DockerBuildTestData.commonVariablesWithoutDockerRegistry()
-        Helper.setEnvVariable(variables, dockerBuild_)
+        Helper.setEnvVariables(variables, dockerBuild_)
+        InjectVars.injectTo(dockerBuild_, 'imageName', 'imageTag')
     }
 
     @Test

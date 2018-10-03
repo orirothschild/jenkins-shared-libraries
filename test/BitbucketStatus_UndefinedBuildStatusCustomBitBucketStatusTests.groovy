@@ -1,4 +1,5 @@
 import TestData.BitbucketStatusTestData
+import TestData.CommitIdTestData
 import Utils.Helper
 import org.junit.Before
 import org.junit.Test
@@ -26,13 +27,9 @@ class BitbucketStatus_UndefinedBuildStatusCustomBitBucketStatusTests extends Gro
     @Before
     void setUp(){
         def variables = BitbucketStatusTestData.commonVariables()
-        Helper.setEnvVariable(variables, bitbucketStatus_)
-        bitbucketStatus_.sh = { Map map ->
-            if (map.returnStdout && map.script == "git log -n 1 --pretty=format:'%H'"){
-                return "1111"
-            }
-            throw new Exception("Undefined shell parameters for getting last commit id: ${map}")
-        }
+        Helper.setEnvVariables(variables, bitbucketStatus_)
+        InjectVars.injectTo(bitbucketStatus_, 'imageTag', 'commitId', 'imageName')
+        InjectVars.injectClosureTo(bitbucketStatus_, 'sh', CommitIdTestData.lastCommitIdClosure)
     }
 
     @Test

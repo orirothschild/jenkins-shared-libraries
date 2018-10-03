@@ -25,7 +25,8 @@ class DockerBuild_CustomDockerfileCustomImageNameTests extends GroovyTestCase {
     @Before
     void setUp(){
         def variables = DockerBuildTestData.commonVariables()
-        Helper.setEnvVariable(variables, dockerBuild_)
+        Helper.setEnvVariables(variables, dockerBuild_)
+        InjectVars.injectTo(dockerBuild_, 'imageTag', 'imageName')
     }
 
     @Test

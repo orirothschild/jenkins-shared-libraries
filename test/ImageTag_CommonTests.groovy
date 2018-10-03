@@ -1,23 +1,17 @@
 import Utils.Helper
 import org.junit.Test
 
-class ImageName_CommonTests extends GroovyTestCase {
+class ImageTag_CommonTests extends GroovyTestCase {
 
-    protected imageName_ = new imageName()
+    protected imageTag_ = new imageTag()
 
     @Test
-    void test_ImageName_SingleJobName_DefaultParameters(){
-        Helper.setEnvVariables([JOB_NAME: 'JobName'], imageName_)
+    void test_ImageTag_ImageTagIsReturned(){
 
-        assertEquals('JobName', imageName_())
+        Helper.setEnvVariables([BRANCH_NAME:'branch', BUILD_ID: '1234'], imageTag_)
+
+        assertEquals('branch-1234', imageTag_())
 
     }
 
-    @Test
-    void test_ImageName_CompositeJobName_DefaultParameters(){
-        Helper.setEnvVariables([JOB_NAME: 'JobName/master'], imageName_)
-
-        assertEquals('JobName', imageName_())
-
-    }
 }

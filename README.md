@@ -47,6 +47,9 @@ steps {
 }
 ```
 
+* `commitId()`
+    * Get last commit ID  
+
 * `dockerBuild(docker_file_path(String, optional), imageName(String, optional))`
 * `dockerBuild([dockerfile: docker_file_path, imageName: imagename])`
     * Required **Multibranch plugin**
@@ -143,3 +146,9 @@ post {
     }
 }
 ```
+
+* `imageName()`
+    * Replace "${JOB_NAME}".split('/')[0]  
+    
+* `imageTag()`
+    * Replace "${BRANCH_NAME}-${BUILD_ID}"  

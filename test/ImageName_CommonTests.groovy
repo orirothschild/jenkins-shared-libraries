@@ -1,53 +1,23 @@
-import TestData.Docker.DockerBuildTestData
 import Utils.Helper
-import org.junit.Before
 import org.junit.Test
 
-class DockerBuild_CommonTests extends GroovyTestCase {
+class ImageName_CommonTests extends GroovyTestCase {
 
-    protected dockerBuild_ = new dockerBuild()
-
-    @Before
-    void setUp(){
-        def variables = DockerBuildTestData.commonVariables()
-        Helper.setEnvVariable(variables, dockerBuild_)
-        InjectVars.injectTo(dockerBuild_, 'imageName', 'imageTag')
-    }
+    protected imageName_ = new imageName()
 
     @Test
-    void test_DockerBuild_NoParameters_DefaultParameters(){
-        def actualCommands = []
-        dockerBuild_.sh = { command -> actualCommands << command; return null}
-        def expectedCommands = ['docker build . -t registry.com/bilderlings/Job_Name:master-1 -f ./Dockerfile']
+    void test_ImageName_SingleJobName_SingleJobIsReturned(){
+        Helper.setEnvVariables([JOB_NAME: 'JobName'], imageName_)
 
-        dockerBuild_()
-
-        assertEquals(expectedCommands, actualCommands)
+        assertEquals('JobName', imageName_())
 
     }
 
     @Test
-    void test_DockerBuild_MapParameter_ParametersAreDispatched(){
-        def actualCommands = []
-        dockerBuild_.sh = { command -> actualCommands << command; return null}
-        def expectedCommands = ['docker build . -t registry.com/bilderlings/imagename:master-1 -f path']
+    void test_ImageName_CompositeJobName_SingleJobIsReturned(){
+        Helper.setEnvVariables([JOB_NAME: 'JobName/master'], imageName_)
 
-        dockerBuild_ dockerfile: 'path', imageName: 'imagename'
-
-        assertEquals(expectedCommands, actualCommands)
+        assertEquals('JobName', imageName_())
 
     }
-
-    @Test
-    void test_DockerBuild_NullParameter_DefaultParameters(){
-        def actualCommands = []
-        dockerBuild_.sh = { command -> actualCommands << command; return null}
-        def expectedCommands = ['docker build . -t registry.com/bilderlings/Job_Name:master-1 -f ./Dockerfile']
-
-        dockerBuild_ null
-
-        assertEquals(expectedCommands, actualCommands)
-
-    }
-
 }

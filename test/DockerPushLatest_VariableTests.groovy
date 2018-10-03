@@ -1,4 +1,3 @@
-import TestData.Docker.DockerBuildTestData
 import TestData.Docker.DockerPushLatestTestData
 import TestData.Docker.DockerTestData
 import Utils.Exceptions.DockerRegistryIsNotDefinedException
@@ -32,7 +31,8 @@ class DockerPushLatest_VariableTests extends GroovyTestCase {
     @Before
     void setUp(){
         def variables = DockerPushLatestTestData.commonVariablesWithoutDockerRegistry()
-        Helper.setEnvVariable(variables, dockerPushLatest_)
+        Helper.setEnvVariables(variables, dockerPushLatest_)
+        InjectVars.injectTo(dockerPushLatest_,'imageName', 'imageTag')
     }
 
     @Test

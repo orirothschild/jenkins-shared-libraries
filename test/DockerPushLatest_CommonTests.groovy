@@ -10,7 +10,8 @@ class DockerPushLatest_CommonTests extends GroovyTestCase {
     @Before
     void setUp(){
         def variables = DockerPushLatestTestData.commonVariables()
-        Helper.setEnvVariable(variables, dockerPushLatest_)
+        Helper.setEnvVariables(variables, dockerPushLatest_)
+        InjectVars.injectTo(dockerPushLatest_, 'imageTag', 'imageName')
     }
 
     @Test

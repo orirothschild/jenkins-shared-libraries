@@ -1,16 +1,16 @@
-import Utils.Helper
+import TestData.CommitIdTestData
 import org.junit.Test
 
-class ImageTag_CommonTests extends GroovyTestCase {
+class CommitId_CommonTests extends GroovyTestCase {
 
-    protected imageTag_ = new imageTag()
+    protected commitId_ = new commitId()
 
     @Test
-    void test_ImageTag_ImageTagIsReturned(){
+    void test_CommitId_CommitIdIsReturned(){
 
-        Helper.setEnvVariables([BRANCH_NAME:'branch', BUILD_ID: '1234'], imageTag_)
+        InjectVars.injectClosureTo(commitId_, 'sh', CommitIdTestData.lastCommitIdClosure)
 
-        assertEquals('branch-1234', imageTag_())
+        assertEquals('1111', commitId_())
 
     }
 

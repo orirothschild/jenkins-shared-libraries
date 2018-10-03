@@ -2,8 +2,6 @@ import TestData.SlackTestData
 import Utils.Helper
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
 
 class Slack_CommonTests extends GroovyTestCase {
 
@@ -12,7 +10,8 @@ class Slack_CommonTests extends GroovyTestCase {
     @Before
     void setUp(){
         def variables = SlackTestData.commonVariables()
-        Helper.setEnvVariable(variables, slack_)
+        Helper.setEnvVariables(variables, slack_)
+        InjectVars.injectTo(slack_, 'imageName')
     }
 
     @Test
