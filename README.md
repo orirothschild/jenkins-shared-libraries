@@ -121,6 +121,9 @@ steps {
     }
 }
 ```    
+* `kubernetesLabel()`
+    * Replace "${BUILD_TAG.take(53)}-x"
+
 * `slack(channel_name(String, optional), allure(Boolean, optional, default: false))`    
 * `slack([channel: channel_name, allure: boolean_value])`    
 	* Required **Multibranch plugin**
