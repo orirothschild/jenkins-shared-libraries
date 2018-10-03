@@ -121,6 +121,14 @@ steps {
     }
 }
 ```    
+* `helmUpgrade(namespace(String), helmArgs(Map))`
+    * **namespace** must be valid, not null, empty or only whitespaces
+    * **helmArgs** will be set via --set
+```groovy
+steps {
+    helmUpgrade('test', ['account.image.tag': imageTag()])
+}
+```   
 * `kubernetesLabel()`
     * Replace "${BUILD_TAG.take(53)}-x"
 
