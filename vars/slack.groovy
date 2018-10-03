@@ -30,11 +30,12 @@ def call(String channelParameter = null, allureParameter = null){
 
 }
 
-static resultMessageMap(){ ['SUCCESS': 'build passed', 'FAILURE': 'build failed', 'UNSTABLE': 'tests failed'] }
+@Field
+Map resultMessageMap = ['SUCCESS': 'build passed', 'FAILURE': 'build failed', 'UNSTABLE': 'tests failed']
 
 private generateSlackMessage(Boolean allureIsUsed){
     def result = currentBuild.currentResult
-    def resultMessage = resultMessageMap()."${result}"
+    def resultMessage = resultMessageMap.get(result)
     def message
     message = "${imageName()} branch ${BRANCH_NAME} ${resultMessage}!"
     if (allureIsUsed) {
