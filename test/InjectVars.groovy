@@ -18,6 +18,7 @@ private static getInstance(String propertyName){
         case 'imageName': return new imageName()
         case 'imageTag': return new imageTag()
         case 'commitId': return new commitId()
+        case 'bitbucketStatus': return new bitbucketStatus()
         default: throw new IllegalArgumentException("Undefined property nmae: ${propertyName}")
     }
 }
