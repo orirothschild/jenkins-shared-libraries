@@ -33,7 +33,7 @@ class DockerBuild_CustomDockerfileCustomImageNameTests extends GroovyTestCase {
     void test_DockerBuild_shellCommandDockerBuildIsExecuted(){
         def actualCommands = []
         dockerBuild_.sh = { command -> actualCommands << command; return null}
-        def expectedCommands = ["docker build . -t registry.com/bilderlings/${imagename}:master-1 -f ${path}".toString()]
+        def expectedCommands = ["docker build . -t \"registry.com/bilderlings/${imagename}:master-1\" -f \"${path}\"".toString()]
 
         dockerBuild_(path, imagename)
 

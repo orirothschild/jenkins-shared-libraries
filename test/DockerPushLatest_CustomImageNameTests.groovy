@@ -33,8 +33,8 @@ class DockerPushLatest_CustomImageNameTests extends GroovyTestCase {
         def actualShellCommands = []
         dockerPushLatest_.sh = { command -> actualShellCommands << command; return null}
         def expectedShellCommands = [
-                "docker tag registry.com/bilderlings/${imageName}:master-1 registry.com/bilderlings/${imageName}:latest".toString(),
-                "docker push registry.com/bilderlings/${imageName}:latest".toString(),
+                "docker tag \"registry.com/bilderlings/${imageName}:master-1\" \"registry.com/bilderlings/${imageName}:latest\"".toString(),
+                "docker push \"registry.com/bilderlings/${imageName}:latest\"".toString(),
         ]
 
         dockerPushLatest_(imageName)

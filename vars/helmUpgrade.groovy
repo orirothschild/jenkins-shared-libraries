@@ -9,12 +9,12 @@ def call(String namespace, Map args){
         exposedArgs = ''
         args.each { k, v ->
             exposedArgs += ' --set '
-            exposedArgs += "$k=$v"
+            exposedArgs += "\"$k=$v\""
         }
         exposedArgs += ' '
     }
 
 
-    sh "helm upgrade -f chart/values-${namespaceLocal}.yaml --install --force --wait --namespace ${namespaceLocal}${exposedArgs}${imageName()}-${namespaceLocal} chart/"
+    sh "helm upgrade -f \"chart/values-${namespaceLocal}.yaml\" --install --force --wait --namespace \"${namespaceLocal}\"${exposedArgs}\"${imageName()}-${namespaceLocal}\" chart/"
 
 }
