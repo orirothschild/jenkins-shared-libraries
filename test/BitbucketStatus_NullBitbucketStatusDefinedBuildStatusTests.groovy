@@ -7,23 +7,19 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class BitbucketStatus_DefinedBuildStatusCustomBitBucketStatusTests extends GroovyTestCase {
+class BitbucketStatus_NullBitbucketStatusDefinedBuildStatusTests extends GroovyTestCase {
 
     protected bitbucketStatus_ = new bitbucketStatus()
-
     @Parameterized.Parameters(name = "{0}")
-    static Collection<Object[]> data() {
-        BitbucketStatusTestData.suite_DefinedBuildStatus_CustomBitbucketStatuses()
+    static Collection<Object> data() {
+        BitbucketStatusTestData.definedBuildStatuses()
     }
 
     protected String buildStatus
-    protected String customBitbucketStatus
 
-    BitbucketStatus_DefinedBuildStatusCustomBitBucketStatusTests(List list){
-        this.buildStatus = list[0]
-        this.customBitbucketStatus = list[1]
+    BitbucketStatus_NullBitbucketStatusDefinedBuildStatusTests(String buildStatus){
+        this.buildStatus = buildStatus
     }
-
     @Before
     void setUp(){
         def variables = BitbucketStatusTestData.commonVariables()
@@ -33,42 +29,39 @@ class BitbucketStatus_DefinedBuildStatusCustomBitBucketStatusTests extends Groov
     }
 
     @Test
-    void test_BitbucketStatus_BuildSuccessStatus_BitbucketCustomStatus_buildStateIsCustom(){
+    void test_BitbucketStatus_BuildSuccessStatus_buildStateIsSuccessful(){
         Helper.setBuildStatus(buildStatus, bitbucketStatus_)
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
-        def expectedStatus = "${customBitbucketStatus}".toString()
 
-        bitbucketStatus_(customBitbucketStatus)
+        bitbucketStatus_(null)
 
-        assertEquals(expectedStatus, actualParameters['buildState'])
+        assertEquals(BitbucketStatusTestData.buildStateMap()[buildStatus], actualParameters['buildState'])
 
     }
 
     @Test
-    void test_BitbucketStatus_BuildSuccessStatus_BitbucketCustomStatus_commitIdIsCorrect(){
+    void test_BitbucketStatus_BuildSuccessStatus_commitIdIsCorrect(){
         Helper.setBuildStatus(buildStatus, bitbucketStatus_)
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_(customBitbucketStatus)
+        bitbucketStatus_(null)
 
         assertEquals('1111', actualParameters['commitId'])
 
     }
 
     @Test
-    void test_BitbucketStatus_BuildSuccessStatus_BitbucketCustomStatus_repoSlugIsCorrect(){
+    void test_BitbucketStatus_BuildSuccessStatus_repoSlugIsCorrect(){
         Helper.setBuildStatus(buildStatus, bitbucketStatus_)
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_(customBitbucketStatus)
+        bitbucketStatus_(null)
 
         assertEquals('Job_Name', actualParameters['repoSlug'])
 
     }
-
-
 
 }

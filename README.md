@@ -31,7 +31,8 @@ Here is:
 Variables for declarative pipeline:
     
 * `bitbucketStatus(status_name(optional))`
-    * Valid status_name: INPROGRESS, SUCCESSFUL, FAILED
+    * Valid status_name: INPROGRESS, SUCCESSFUL, FAILED. 
+    * Other statuses will raise **error**
     * If **status_name** is not specified, **status_name** will be related to build status in jenkins.  
 ```groovy
 post {
@@ -46,7 +47,9 @@ steps {
     bitbucketStatus("INPROGRESS")
 }
 ```
-
+* `bitbucketStatusSuccessful()`
+* `bitbucketStatusFailed()`
+* `bitbucketStatusInProgress()`
 * `commitId()`
     * Get last commit ID  
 

@@ -7,19 +7,19 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class BitbucketStatus_UndefinedBuildStatusCustomBitBucketStatusTests extends GroovyTestCase {
+class BitbucketStatus_UndefinedBuildStatusValidBitBucketStatusTests extends GroovyTestCase {
 
     protected bitbucketStatus_ = new bitbucketStatus()
 
     @Parameterized.Parameters(name = "{0}")
     static Collection<Object[]> data() {
-        BitbucketStatusTestData.suite_UndefinedBuildStatus_CustomBitbucketStatuses()
+        BitbucketStatusTestData.suite_UndefinedBuildStatus_ValidBitbucketStatuses()
     }
 
     protected String buildStatus
     protected String customBitbucketStatus
 
-    BitbucketStatus_UndefinedBuildStatusCustomBitBucketStatusTests(List list){
+    BitbucketStatus_UndefinedBuildStatusValidBitBucketStatusTests(List list){
         this.buildStatus = list[0]
         this.customBitbucketStatus = list[1]
     }

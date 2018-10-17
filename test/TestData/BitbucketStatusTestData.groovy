@@ -7,20 +7,20 @@ static Map commonVariables(){ [
 
 static buildStateMap(){ ['SUCCESS': 'SUCCESSFUL', 'FAILURE': 'FAILED', 'UNSTABLE': 'FAILED'] }
 
-static List<Object[]> suite_DefinedBuildStatus_CustomBitbucketStatuses(){
-    TestDataCombination.join(definedBuildStatuses(), customBitbucketStatuses())
+static List<Object[]> suite_DefinedBuildStatus_ValidBitbucketStatuses(){
+    TestDataCombination.join(definedBuildStatuses(), validBitbucketStatuses())
 }
 
-static List<Object[]> suite_UndefinedBuildStatus_CustomBitbucketStatuses(){
-    TestDataCombination.join(undefinedBuildStatuses(), customBitbucketStatuses())
+static List<Object[]> suite_UndefinedBuildStatus_ValidBitbucketStatuses(){
+    TestDataCombination.join(undefinedBuildStatuses(), validBitbucketStatuses())
 }
 
-static List<Object[]> suite_DefinedBuildStatus_DefaultBitbucketStatuses(){
-    TestDataCombination.join(definedBuildStatuses(), defaultBitbucketStatuses())
+static List<Object[]> suite_DefinedBuildStatus_InvalidBitbucketStatuses(){
+    TestDataCombination.join(definedBuildStatuses(), invalidBitbucketStatuses())
 }
 
-static List<Object[]> suite_UndefinedBuildStatus_DefaultBitbucketStatuses(){
-    TestDataCombination.join(undefinedBuildStatuses(), defaultBitbucketStatuses())
+static List<Object[]> suite_UndefinedBuildStatus_InvalidBitbucketStatuses(){
+    TestDataCombination.join(undefinedBuildStatuses(), invalidBitbucketStatuses())
 }
 
 static definedBuildStatuses(){
@@ -31,10 +31,10 @@ static undefinedBuildStatuses(){
     ['UNDEFINED', '', ' ', null, 'ABORTED']
 }
 
-static customBitbucketStatuses(){
-    ['custom', 'INPROGRESS']
+static validBitbucketStatuses(){
+    ['INPROGRESS', 'SUCCESSFUL', 'FAILED']
 }
 
-static defaultBitbucketStatuses(){
-    [null, '', ' ']
+static invalidBitbucketStatuses(){
+    ['', ' ', 'custom']
 }
