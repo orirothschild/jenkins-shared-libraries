@@ -7,7 +7,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class BitbucketStatus_NullBitbucketStatusDefinedBuildStatusTests extends GroovyTestCase {
+class BitbucketStatus_NullBitbucketStatus_DefinedBuildStatus_Tests extends GroovyTestCase {
 
     protected bitbucketStatus_ = new bitbucketStatus()
     @Parameterized.Parameters(name = "{0}")
@@ -17,7 +17,7 @@ class BitbucketStatus_NullBitbucketStatusDefinedBuildStatusTests extends GroovyT
 
     protected String buildStatus
 
-    BitbucketStatus_NullBitbucketStatusDefinedBuildStatusTests(String buildStatus){
+    BitbucketStatus_NullBitbucketStatus_DefinedBuildStatus_Tests(String buildStatus){
         this.buildStatus = buildStatus
     }
     @Before
@@ -29,7 +29,7 @@ class BitbucketStatus_NullBitbucketStatusDefinedBuildStatusTests extends GroovyT
     }
 
     @Test
-    void test_BitbucketStatus_BuildSuccessStatus_buildStateIsSuccessful(){
+    void test_BitbucketStatus_NullBitbucketStatus_DefinedBuildStatus_buildStateIsSuccessful(){
         Helper.setBuildStatus(buildStatus, bitbucketStatus_)
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
@@ -41,7 +41,7 @@ class BitbucketStatus_NullBitbucketStatusDefinedBuildStatusTests extends GroovyT
     }
 
     @Test
-    void test_BitbucketStatus_BuildSuccessStatus_commitIdIsCorrect(){
+    void test_BitbucketStatus_NullBitbucketStatus_DefinedBuildStatus_commitIdIsCorrect(){
         Helper.setBuildStatus(buildStatus, bitbucketStatus_)
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
@@ -53,7 +53,7 @@ class BitbucketStatus_NullBitbucketStatusDefinedBuildStatusTests extends GroovyT
     }
 
     @Test
-    void test_BitbucketStatus_BuildSuccessStatus_repoSlugIsCorrect(){
+    void test_BitbucketStatus_NullBitbucketStatus_DefinedBuildStatus_repoSlugIsCorrect(){
         Helper.setBuildStatus(buildStatus, bitbucketStatus_)
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}

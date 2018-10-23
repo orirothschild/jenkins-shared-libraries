@@ -7,7 +7,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class BitbucketStatus_DefaultParametersUndefinedBuildStatusTests extends GroovyTestCase {
+class BitbucketStatus_DefaultCallParameters_UndefinedBuildStatus_Tests extends GroovyTestCase {
 
     protected bitbucketStatus_ = new bitbucketStatus()
     @Parameterized.Parameters(name = "{0}")
@@ -17,7 +17,7 @@ class BitbucketStatus_DefaultParametersUndefinedBuildStatusTests extends GroovyT
 
     protected String buildStatus
 
-    BitbucketStatus_DefaultParametersUndefinedBuildStatusTests(String buildStatus){
+    BitbucketStatus_DefaultCallParameters_UndefinedBuildStatus_Tests(String buildStatus){
         this.buildStatus = buildStatus
     }
     @Before
@@ -29,7 +29,7 @@ class BitbucketStatus_DefaultParametersUndefinedBuildStatusTests extends GroovyT
     }
 
     @Test
-    void test_BitbucketStatus_BuildUndefinedStatus_bitbucketStatusNotifyIsNotExecuted(){
+    void test_BitbucketStatus_DefaultCallParameters_UndefinedBuildStatus_bitbucketStatusNotifyIsNotExecuted(){
         Helper.setBuildStatus(buildStatus, bitbucketStatus_)
         def bitbucketStatusNotifyWasExecuted = false
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> bitbucketStatusNotifyWasExecuted = true; return null}
@@ -42,7 +42,20 @@ class BitbucketStatus_DefaultParametersUndefinedBuildStatusTests extends GroovyT
     }
 
     @Test
-    void test_BitbucketStatus_BuildUndefinedStatus_echoSentMessage(){
+    void test_BitbucketStatus_DefaultCallParameters_UndefinedBuildStatus_httpRequestIsNotExecuted(){
+        Helper.setBuildStatus(buildStatus, bitbucketStatus_)
+        def httpRequestWasExecuted = false
+        bitbucketStatus_.httpRequest = { Map map -> httpRequestWasExecuted = true; return null}
+        bitbucketStatus_.echo = { str -> return null}
+
+        bitbucketStatus_()
+
+        assertFalse(httpRequestWasExecuted)
+
+    }
+
+    @Test
+    void test_BitbucketStatus_DefaultCallParameters_UndefinedBuildStatus_echoSentMessage(){
         Helper.setBuildStatus(buildStatus, bitbucketStatus_)
         def actualMessage = ""
         bitbucketStatus_.echo = { str -> actualMessage = str}

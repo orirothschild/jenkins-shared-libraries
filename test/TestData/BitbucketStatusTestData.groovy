@@ -1,7 +1,15 @@
 package TestData
 
-static Map commonVariables(){ [
-        JOB_NAME: "Job_Name"
+static Map commonVariables(){
+    [
+        JOB_NAME: "Job_Name",
+        BUILD_ID: 2
+    ]
+}
+static Map commonVariablesForFirstBuild(){
+    [
+        JOB_NAME: "Job_Name",
+        BUILD_ID: 1
     ]
 }
 
