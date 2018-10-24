@@ -34,8 +34,10 @@ def call(String status=null) {
 private send(Map params){
 
     if ("${BUILD_ID}" == '1'){
-        try{
+        try {
             sendViaAPI(params)
+        }catch(MissingMethodException e){
+            throw e
         }catch(Exception e){
             echo "${e}"
             bitbucketStatusNotify params
