@@ -64,6 +64,6 @@ private sendViaAPI(Map params){
                 httpMode: 'POST',
                 requestBody: body,
                 contentType: 'APPLICATION_JSON',
-                validResponseCodes: '200:201'
-            //, consoleLogResponseBody: true - for debug
+                validResponseCodes: '200:201',
+                consoleLogResponseBody: true
 }
