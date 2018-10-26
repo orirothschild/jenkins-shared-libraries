@@ -76,6 +76,7 @@ private String getAuthorizationHeader(){
                             authentication: 'bitbucket-oauth-credentials',
                             httpMode: 'POST',
                             requestBody: 'grant_type=client_credentials',
+                            contentType: 'APPLICATION_FORM',
                             validResponseCodes: '200:201',
                             consoleLogResponseBody: false
 
