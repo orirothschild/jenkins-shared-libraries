@@ -68,7 +68,7 @@ private sendViaAPI(Map params){
                 contentType: 'APPLICATION_JSON',
                 customHeaders: [getAuthorizationHeader()],
                 validResponseCodes: '200:201',
-                consoleLogResponseBody: true
+                consoleLogResponseBody: false
 }
 
 private String getAuthorizationHeader(){
