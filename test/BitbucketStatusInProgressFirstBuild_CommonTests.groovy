@@ -19,18 +19,22 @@ class BitbucketStatusInProgressFirstBuild_CommonTests extends GroovyTestCase {
 
     @Test
     void test_BitbucketStatusInProgressFirstBuild_StatusIsInProgress(){
-        def actualParameters = [:]
-        bitbucketStatusInProgress_.httpRequest = { Map map -> actualParameters = map; return null}
+        def actualHttpRequestParameters = []
+        bitbucketStatusInProgress_.httpRequest = { Map map ->
+            actualHttpRequestParameters << map
+            BitbucketStatusTestData.httpRequestMock(map)
+        }
         def data = [
                 state: 'INPROGRESS',
-                url: 'https://api.bitbucket.org/2.0/repositories/bilderlings/Job_Name/commit/1111/statuses/build',
+                url: 'http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/Job_Name/detail/master/1/pipeline/',
                 key: 'Job_Name'
         ]
         def expectedBody = JsonOutput.toJson(data)
 
         bitbucketStatusInProgress_()
 
-        assertEquals(expectedBody, actualParameters['requestBody'])
+        assertTrue('We should have 2 requests', actualHttpRequestParameters.size() == 2)
+        assertEquals(expectedBody, actualHttpRequestParameters[1]['requestBody'])
 
     }
 

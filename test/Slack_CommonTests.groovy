@@ -19,7 +19,7 @@ class Slack_CommonTests extends GroovyTestCase {
         Helper.setBuildStatus('SUCCESS', slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
-        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! (<FAKE_Build_Url|1234>)'
+        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
 
         slack_()
 
@@ -44,7 +44,7 @@ class Slack_CommonTests extends GroovyTestCase {
         Helper.setBuildStatus('SUCCESS', slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
-        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! <FAKE_Build_Urlallure/|Allure report> (<FAKE_Build_Url|1234>)'
+        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! <FAKE_Build_Urlallure/|Allure report> (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
 
         slack_ channel: "#channel", allure: true
 
@@ -57,7 +57,7 @@ class Slack_CommonTests extends GroovyTestCase {
         Helper.setBuildStatus('SUCCESS', slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
-        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! (<FAKE_Build_Url|1234>)'
+        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
 
         slack_ channel: "#channel", allure: false
 
@@ -95,7 +95,7 @@ class Slack_CommonTests extends GroovyTestCase {
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
 
-        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! (<FAKE_Build_Url|1234>)'
+        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
 
         slack_ null
 

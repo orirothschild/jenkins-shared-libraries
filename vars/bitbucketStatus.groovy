@@ -1,4 +1,5 @@
 import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
 import groovy.transform.Field
 
 @Field
@@ -53,9 +54,10 @@ private sendViaAPI(Map params){
         bitbucketApiUrl = "${env.BITBUCKET_API_URL}"
     }
     def url = "${bitbucketApiUrl}/${params.repoSlug}/commit/${params.commitId}/statuses/build"
+    def blueOceanPipelineUrl = "${JENKINS_URL}blue/organizations/jenkins/${params.repoSlug}/detail/${BRANCH_NAME}/${BUILD_ID}/pipeline/"
     def data = [
             state: params.buildState,
-            url: url,
+            url: blueOceanPipelineUrl,
             key: params.repoSlug
     ]
     def body = JsonOutput.toJson(data)
@@ -64,6 +66,20 @@ private sendViaAPI(Map params){
                 httpMode: 'POST',
                 requestBody: body,
                 contentType: 'APPLICATION_JSON',
+                customHeaders: [getAuthorizationHeader()],
                 validResponseCodes: '200:201',
                 consoleLogResponseBody: true
+}
+
+private String getAuthorizationHeader(){
+    def req = httpRequest   url: 'https://bitbucket.org/site/oauth2/access_token',
+                            authentication: 'bitbucket-oauth-credentials',
+                            httpMode: 'POST',
+                            requestBody: 'grant_type=client_credentials',
+                            validResponseCodes: '200:201',
+                            consoleLogResponseBody: false
+
+    def jsonSlurper = new JsonSlurper()
+    def body = jsonSlurper.parseText(req.content)
+    [ name: 'Authorization', value: "Bearer ${body['access_token']}".toString()]
 }

@@ -36,7 +36,7 @@ class BitbucketStatusFirstBuild_UndefinedBuildStatus_ValidBitBucketStatus_Tests 
     void test_BitbucketStatusFirstBuild_UndefinedBuildStatus_ValidBitBucketStatus_bitbucketStatusNotifyIsNotExecuted(){
         Helper.setBuildStatus(buildStatus, bitbucketStatus_)
         def bitbucketStatusNotifyWasExecuted = false
-        bitbucketStatus_.httpRequest = { Map map -> null}
+        bitbucketStatus_.httpRequest = { Map map -> BitbucketStatusTestData.httpRequestMock(map)}
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> bitbucketStatusNotifyWasExecuted = true; return null}
         bitbucketStatus_.echo = { str -> return null}
 
@@ -50,7 +50,7 @@ class BitbucketStatusFirstBuild_UndefinedBuildStatus_ValidBitBucketStatus_Tests 
     void test_BitbucketStatusFirstBuild_UndefinedBuildStatus_ValidBitBucketStatus_httpRequestIsExecuted(){
         Helper.setBuildStatus(buildStatus, bitbucketStatus_)
         def httpRequestWasExecuted = false
-        bitbucketStatus_.httpRequest = { Map map -> httpRequestWasExecuted = true; return null}
+        bitbucketStatus_.httpRequest = { Map map -> httpRequestWasExecuted = true; BitbucketStatusTestData.httpRequestMock(map)}
         bitbucketStatus_.echo = { str -> return null}
 
         bitbucketStatus_(customBitbucketStatus)
@@ -63,7 +63,7 @@ class BitbucketStatusFirstBuild_UndefinedBuildStatus_ValidBitBucketStatus_Tests 
     void test_BitbucketStatusFirstBuild_UndefinedBuildStatus_ValidBitBucketStatus_echoDoNotSentMessage(){
         Helper.setBuildStatus(buildStatus, bitbucketStatus_)
         def echoIsExecuted = false
-        bitbucketStatus_.httpRequest = { Map map -> null}
+        bitbucketStatus_.httpRequest = { Map map -> BitbucketStatusTestData.httpRequestMock(map)}
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> null}
         bitbucketStatus_.echo = { str -> echoIsExecuted = true; return null }
         bitbucketStatus_(customBitbucketStatus)

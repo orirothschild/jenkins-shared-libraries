@@ -21,7 +21,8 @@ repositories {
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.4.11'
     testCompile('org.codehaus.groovy:groovy-all:2.4.11',
-                'junit:junit:4.12')
+                'junit:junit:4.12',
+                'org.hamcrest:java-hamcrest:2.0.0.0')
 }
 
 

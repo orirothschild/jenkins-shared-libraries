@@ -36,80 +36,104 @@ class BitbucketStatusFirstBuild_DefinedBuildStatus_ValidBitBucketStatus_Tests ex
     @Test
     void test_BitbucketStatusFirstBuild_DefinedBuildStatus_ValidBitBucketStatus_requestUrlIsCorrect(){
         Helper.setBuildStatus(buildStatus, bitbucketStatus_)
-        def actualParameters = [:]
-        bitbucketStatus_.httpRequest = { Map map -> actualParameters = map; return null}
+        def actualHttpRequestParameters = []
+        bitbucketStatus_.httpRequest = { Map map ->
+            actualHttpRequestParameters << map
+            return BitbucketStatusTestData.httpRequestMock(map)
+        }
         def expectedUrl = 'https://api.bitbucket.org/2.0/repositories/bilderlings/Job_Name/commit/1111/statuses/build'
 
         bitbucketStatus_(validBitbucketStatus)
 
-        assertEquals(expectedUrl, actualParameters['url'])
+        assertTrue('We should have 2 requests', actualHttpRequestParameters.size() == 2)
+        assertEquals(expectedUrl, actualHttpRequestParameters[1]['url'])
 
     }
 
     @Test
     void test_BitbucketStatusFirstBuild_DefinedBuildStatus_ValidBitBucketStatus_authenticationIsCorrect(){
         Helper.setBuildStatus(buildStatus, bitbucketStatus_)
-        def actualParameters = [:]
-        bitbucketStatus_.httpRequest = { Map map -> actualParameters = map; return null}
+        def actualHttpRequestParameters = []
+        bitbucketStatus_.httpRequest = { Map map ->
+            actualHttpRequestParameters << map
+            return BitbucketStatusTestData.httpRequestMock(map)
+        }
 
         bitbucketStatus_(validBitbucketStatus)
 
-        assertEquals('bitbucket-oauth-credentials', actualParameters['authentication'])
+        assertTrue('We should have 2 requests', actualHttpRequestParameters.size() == 2)
+        assertEquals('bitbucket-oauth-credentials', actualHttpRequestParameters[1]['authentication'])
 
     }
 
     @Test
     void test_BitbucketStatusFirstBuild_DefinedBuildStatus_ValidBitBucketStatus_httpMethodIsCorrect(){
         Helper.setBuildStatus(buildStatus, bitbucketStatus_)
-        def actualParameters = [:]
-        bitbucketStatus_.httpRequest = { Map map -> actualParameters = map; return null}
+        def actualHttpRequestParameters = []
+        bitbucketStatus_.httpRequest = { Map map ->
+            actualHttpRequestParameters << map
+            return BitbucketStatusTestData.httpRequestMock(map)
+        }
 
         bitbucketStatus_(validBitbucketStatus)
 
-        assertEquals('POST', actualParameters['httpMode'])
+        assertTrue('We should have 2 requests', actualHttpRequestParameters.size() == 2)
+        assertEquals('POST', actualHttpRequestParameters[1]['httpMode'])
 
     }
 
     @Test
     void test_BitbucketStatusFirstBuild_DefinedBuildStatus_ValidBitBucketStatus_contentTypeIsCorrect(){
         Helper.setBuildStatus(buildStatus, bitbucketStatus_)
-        def actualParameters = [:]
-        bitbucketStatus_.httpRequest = { Map map -> actualParameters = map; return null}
+        def actualHttpRequestParameters = []
+        bitbucketStatus_.httpRequest = { Map map ->
+            actualHttpRequestParameters << map
+            return BitbucketStatusTestData.httpRequestMock(map)
+        }
 
         bitbucketStatus_(validBitbucketStatus)
 
-        assertEquals('APPLICATION_JSON', actualParameters['contentType'])
+        assertTrue('We should have 2 requests', actualHttpRequestParameters.size() == 2)
+        assertEquals('APPLICATION_JSON', actualHttpRequestParameters[1]['contentType'])
 
     }
 
     @Test
     void test_BitbucketStatusFirstBuild_DefinedBuildStatus_ValidBitBucketStatus_responseCodeIsCorrect(){
         Helper.setBuildStatus(buildStatus, bitbucketStatus_)
-        def actualParameters = [:]
-        bitbucketStatus_.httpRequest = { Map map -> actualParameters = map; return null}
+        def actualHttpRequestParameters = []
+        bitbucketStatus_.httpRequest = { Map map ->
+            actualHttpRequestParameters << map
+            return BitbucketStatusTestData.httpRequestMock(map)
+        }
 
         bitbucketStatus_(validBitbucketStatus)
 
-        assertEquals('200:201', actualParameters['validResponseCodes'])
+        assertTrue('We should have 2 requests', actualHttpRequestParameters.size() == 2)
+        assertEquals('200:201', actualHttpRequestParameters[1]['validResponseCodes'])
 
     }
 
     @Test
     void test_BitbucketStatusFirstBuild_DefinedBuildStatus_ValidBitBucketStatus_requestBodyIsCorrect(){
         Helper.setBuildStatus(buildStatus, bitbucketStatus_)
-        def actualParameters = [:]
-        bitbucketStatus_.httpRequest = { Map map -> actualParameters = map; return null}
+        def actualHttpRequestParameters = []
+        bitbucketStatus_.httpRequest = { Map map ->
+            actualHttpRequestParameters << map
+            return BitbucketStatusTestData.httpRequestMock(map)
+        }
 
         def data = [
                 state: "${validBitbucketStatus}".toString(),
-                url: 'https://api.bitbucket.org/2.0/repositories/bilderlings/Job_Name/commit/1111/statuses/build',
+                url: 'http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/Job_Name/detail/master/1/pipeline/',
                 key: 'Job_Name'
         ]
         def expectedBody = JsonOutput.toJson(data)
 
         bitbucketStatus_(validBitbucketStatus)
 
-        assertEquals(expectedBody, actualParameters['requestBody'])
+        assertTrue('We should have 2 requests', actualHttpRequestParameters.size() == 2)
+        assertEquals(expectedBody, actualHttpRequestParameters[1]['requestBody'])
 
     }
 

@@ -19,19 +19,23 @@ class BitbucketStatusFailedFirstBuild_CommonTests extends GroovyTestCase {
 
     @Test
     void test_BitbucketStatusFailedFirstBuild_StatusIsFailed(){
-        def actualParameters = [:]
-        bitbucketStatusFailed_.httpRequest = { Map map -> actualParameters = map; return null}
+        def actualHttpRequestParameters = []
+        bitbucketStatusFailed_.httpRequest = { Map map ->
+            actualHttpRequestParameters << map
+            return BitbucketStatusTestData.httpRequestMock(map)
+        }
 
         def data = [
                 state: 'FAILED',
-                url: 'https://api.bitbucket.org/2.0/repositories/bilderlings/Job_Name/commit/1111/statuses/build',
+                url: 'http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/Job_Name/detail/master/1/pipeline/',
                 key: 'Job_Name'
         ]
         def expectedBody = JsonOutput.toJson(data)
 
         bitbucketStatusFailed_()
 
-        assertEquals(expectedBody, actualParameters['requestBody'])
+        assertTrue('We should have 2 requests', actualHttpRequestParameters.size() == 2)
+        assertEquals(expectedBody, actualHttpRequestParameters[1]['requestBody'])
 
     }
 
