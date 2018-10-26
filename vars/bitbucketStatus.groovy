@@ -72,6 +72,9 @@ private sendViaAPI(Map params){
 }
 
 private String getAuthorizationHeader(){
+    if (env.PIPELINE_TESTS_MODE_ON?.toString() == 'YES'){
+        return [name: 'Authorization', value: "Bearer fake_access_token"]
+    }
     def req = httpRequest   url: 'https://bitbucket.org/site/oauth2/access_token',
                             authentication: 'bitbucket-oauth-credentials',
                             httpMode: 'POST',
