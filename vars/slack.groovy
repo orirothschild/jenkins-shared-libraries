@@ -36,12 +36,12 @@ Map resultMessageMap = ['SUCCESS': 'build passed', 'FAILURE': 'build failed', 'U
 private generateSlackMessage(Boolean allureIsUsed){
     def result = currentBuild.currentResult
     def resultMessage = resultMessageMap.get(result)
-    def message
-    message = "${imageName()} branch ${BRANCH_NAME} ${resultMessage}!"
+    def imageNameLocal = imageName()
+    def message = "${imageNameLocal} branch ${BRANCH_NAME} ${resultMessage}!"
     if (allureIsUsed) {
         message += " <${BUILD_URL}allure/|Allure report>"
     }
-    def blueOceanPipelineUrl = "${JENKINS_URL}blue/organizations/jenkins/${imageName()}/detail/${BRANCH_NAME}/${BUILD_ID}/pipeline/"
+    def blueOceanPipelineUrl = "${JENKINS_URL}blue/organizations/jenkins/${imageNameLocal}/detail/${BRANCH_NAME}/${BUILD_ID}/pipeline/"
     message += " (<${blueOceanPipelineUrl}|${BUILD_ID}>)"
     message
 }

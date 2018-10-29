@@ -61,10 +61,6 @@ private Map getAuthorizationHeader(){
                             validResponseCodes: '200:201',
                             consoleLogResponseBody: false
 
-    if (env.PIPELINE_TESTS_MODE_ON?.toString() == 'YES'){
-        return [name: 'Authorization', value: "Bearer fake_access_token"]
-    }
-
     def jsonSlurper = new JsonSlurper()
     def body = jsonSlurper.parseText(req.content)
     [ name: 'Authorization', value: "Bearer ${body['access_token']}".toString()]
