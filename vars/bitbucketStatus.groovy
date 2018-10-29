@@ -73,7 +73,8 @@ private sendStatus(Map params, Map authorization){
     def data = [
             state: params.buildState,
             url: blueOceanPipelineUrl,
-            key: params.repoSlug
+            key: params.repoSlug,
+            name: "${JOB_NAME} #${BUILD_ID}"
     ]
     def body = JsonOutput.toJson(data)
     httpRequest url: url,

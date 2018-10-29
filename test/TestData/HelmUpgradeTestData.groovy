@@ -1,7 +1,7 @@
 package TestData
 
 static Map commonVariables(){ [
-        JOB_NAME: "FAKE_Job_Name"
+        JOB_NAME: "FAKE_Job_Name/master"
     ]
 }
 

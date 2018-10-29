@@ -28,7 +28,8 @@ class BitbucketStatusFailedFirstBuild_CommonTests extends GroovyTestCase {
         def data = [
                 state: 'FAILED',
                 url: 'http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/Job_Name/detail/master/1/pipeline/',
-                key: 'Job_Name'
+                key: 'Job_Name',
+                name: 'Job_Name/master #1'
         ]
         def expectedBody = JsonOutput.toJson(data)
 

@@ -126,7 +126,8 @@ class BitbucketStatusFirstBuild_DefinedBuildStatus_ValidBitBucketStatus_Tests ex
         def data = [
                 state: "${validBitbucketStatus}".toString(),
                 url: 'http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/Job_Name/detail/master/1/pipeline/',
-                key: 'Job_Name'
+                key: 'Job_Name',
+                name: 'Job_Name/master #1'
         ]
         def expectedBody = JsonOutput.toJson(data)
 

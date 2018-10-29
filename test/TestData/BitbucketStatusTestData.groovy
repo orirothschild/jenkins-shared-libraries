@@ -2,7 +2,7 @@ package TestData
 
 static Map commonVariables(){
     [
-        JOB_NAME: "Job_Name",
+        JOB_NAME: "Job_Name/master",
         BUILD_ID: 2,
         JENKINS_URL: 'http://jenkins.k8s.iamoffice.lv/',
         BRANCH_NAME: 'master'
@@ -10,7 +10,7 @@ static Map commonVariables(){
 }
 static Map commonVariablesForFirstBuild(){
     [
-        JOB_NAME: "Job_Name",
+        JOB_NAME: "Job_Name/master",
         BUILD_ID: 1,
         JENKINS_URL: 'http://jenkins.k8s.iamoffice.lv/',
         BRANCH_NAME: 'master'
