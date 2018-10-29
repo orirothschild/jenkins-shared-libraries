@@ -143,7 +143,7 @@ class BitbucketStatusFirstBuild_NullBitbucketStatus_DefinedBuildStatus_Tests ext
             return BitbucketStatusTestData.httpRequestMock(map)
         }
 
-        def expectedHeader = '{name=Authorization, value=Bearer fake_access_token=}'
+        def expectedHeader = [name: 'Authorization', value: 'Bearer fake_access_token=']
 
         bitbucketStatus_(null)
 

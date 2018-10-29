@@ -141,7 +141,7 @@ class BitbucketStatusFirstBuild_DefaultCallParameters_DefinedBuildStatus_Tests e
             actualHttpRequestParameters << map
             return BitbucketStatusTestData.httpRequestMock(map)
         }
-        def expectedHeader = '{name=Authorization, value=Bearer fake_access_token=}'
+        def expectedHeader = [name: 'Authorization', value: 'Bearer fake_access_token=']
 
         bitbucketStatus_()
 

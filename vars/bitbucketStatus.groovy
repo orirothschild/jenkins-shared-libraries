@@ -33,7 +33,6 @@ def call(String status=null) {
 
 
 private send(Map params){
-
     if ("${BUILD_ID}" == '1'){
         try {
             sendViaAPI(params)
@@ -49,10 +48,30 @@ private send(Map params){
 }
 
 private sendViaAPI(Map params){
-    def bitbucketApiUrl = 'https://api.bitbucket.org/2.0/repositories/bilderlings'
-    if (env.BITBUCKET_API_URL){
-        bitbucketApiUrl = "${env.BITBUCKET_API_URL}"
+    def accessToken = getAuthorizationHeader()
+    sendStatus(params, accessToken)
+}
+
+private Map getAuthorizationHeader(){
+    def req = httpRequest   url: 'https://bitbucket.org/site/oauth2/access_token',
+                            authentication: 'bitbucket-oauth-credentials',
+                            httpMode: 'POST',
+                            requestBody: 'grant_type=client_credentials',
+                            contentType: 'APPLICATION_FORM',
+                            validResponseCodes: '200:201',
+                            consoleLogResponseBody: false
+
+    if (env.PIPELINE_TESTS_MODE_ON?.toString() == 'YES'){
+        return [name: 'Authorization', value: "Bearer fake_access_token"]
     }
+
+    def jsonSlurper = new JsonSlurper()
+    def body = jsonSlurper.parseText(req.content)
+    [ name: 'Authorization', value: "Bearer ${body['access_token']}".toString()]
+}
+
+private sendStatus(Map params, Map authorization){
+    def bitbucketApiUrl = 'https://api.bitbucket.org/2.0/repositories/bilderlings'
     def url = "${bitbucketApiUrl}/${params.repoSlug}/commit/${params.commitId}/statuses/build"
     def blueOceanPipelineUrl = "${JENKINS_URL}blue/organizations/jenkins/${params.repoSlug}/detail/${BRANCH_NAME}/${BUILD_ID}/pipeline/"
     def data = [
@@ -62,28 +81,11 @@ private sendViaAPI(Map params){
     ]
     def body = JsonOutput.toJson(data)
     httpRequest url: url,
-                authentication: 'bitbucket-oauth-credentials',
-                httpMode: 'POST',
-                requestBody: body,
-                contentType: 'APPLICATION_JSON',
-                customHeaders: [getAuthorizationHeader()],
-                validResponseCodes: '200:201',
-                consoleLogResponseBody: false
-}
-
-private String getAuthorizationHeader(){
-    if (env.PIPELINE_TESTS_MODE_ON?.toString() == 'YES'){
-        return [name: 'Authorization', value: "Bearer fake_access_token"]
-    }
-    def req = httpRequest   url: 'https://bitbucket.org/site/oauth2/access_token',
-                            authentication: 'bitbucket-oauth-credentials',
-                            httpMode: 'POST',
-                            requestBody: 'grant_type=client_credentials',
-                            contentType: 'APPLICATION_FORM',
-                            validResponseCodes: '200:201',
-                            consoleLogResponseBody: false
-
-    def jsonSlurper = new JsonSlurper()
-    def body = jsonSlurper.parseText(req.content)
-    [ name: 'Authorization', value: "Bearer ${body['access_token']}".toString()]
+            authentication: 'bitbucket-oauth-credentials',
+            httpMode: 'POST',
+            requestBody: body,
+            contentType: 'APPLICATION_JSON',
+            customHeaders: [authorization],
+            validResponseCodes: '200:201',
+            consoleLogResponseBody: false
 }
