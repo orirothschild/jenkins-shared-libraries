@@ -20,7 +20,7 @@ class Slack_CustomAllureReports extends GroovyTestCase {
     @Test
     void test_SlackOneCustomAllureReportDefaultAllureFalse_MessageContatinsOneAllureReport(){
         Helper.setBuildStatus('SUCCESS', slack_)
-        Helper.setEnvVariables(['account-tests-api_TESTS_URL': 'http://jenkins_build/job/job_name/1/allure'], slack_)
+        Helper.addEnvVariables(['account-tests-api_TESTS_URL': 'http://jenkins_build/job/job_name/1/allure'], slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
 
@@ -35,7 +35,7 @@ class Slack_CustomAllureReports extends GroovyTestCase {
     @Test
     void test_SlackOneCustomAllureReportDefaultAllureTrue_MessageContatinsOneAllureReport(){
         Helper.setBuildStatus('SUCCESS', slack_)
-        Helper.setEnvVariables(['account-tests-api_TESTS_URL': 'http://jenkins_build/job/job_name/1/allure'], slack_)
+        Helper.addEnvVariables(['account-tests-api_TESTS_URL': 'http://jenkins_build/job/job_name/1/allure'], slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
 
@@ -50,7 +50,7 @@ class Slack_CustomAllureReports extends GroovyTestCase {
     @Test
     void test_SlackTwoCustomAllureReportDefaultAllureFalse_MessageContatinsTwoAllureReport(){
         Helper.setBuildStatus('SUCCESS', slack_)
-        Helper.setEnvVariables(['account-tests-api_TESTS_URL': 'http://jenkins_build/job/job_name/1/allure',
+        Helper.addEnvVariables(['account-tests-api_TESTS_URL': 'http://jenkins_build/job/job_name/1/allure',
                                 'account-tests-web_TESTS_URL': 'http://jenkins_build/job/job_name/1/allure'],
                                 slack_)
         Map actualParameters = [:]
@@ -67,7 +67,7 @@ class Slack_CustomAllureReports extends GroovyTestCase {
     @Test
     void test_SlackTwoCustomAllureReportDefaultAllureTrue_MessageContatinsTwoAllureReport(){
         Helper.setBuildStatus('SUCCESS', slack_)
-        Helper.setEnvVariables(['account-tests-api_TESTS_URL': 'http://jenkins_build/job/job_name/1/allure',
+        Helper.addEnvVariables(['account-tests-api_TESTS_URL': 'http://jenkins_build/job/job_name/1/allure',
                                 'account-tests-web_TESTS_URL': 'http://jenkins_build/job/job_name/1/allure'],
                                 slack_)
         Map actualParameters = [:]

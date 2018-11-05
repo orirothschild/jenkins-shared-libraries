@@ -1,12 +1,17 @@
 package TestData
 
-static Map commonVariables(){ [
+static Map commonVariables(){
+    def variables =
+    [
         JOB_NAME: "FAKE_Job_Name/FAKE_Branch_Name",
         BRANCH_NAME: "FAKE_Branch_Name",
         BUILD_URL: "FAKE_Build_Url",
         BUILD_ID: "1234",
         JENKINS_URL: 'http://jenkins.k8s.iamoffice.lv/'
     ]
+    variables.getEnvironment = { variables }
+    variables
+
 }
 //channel null with combination of allure
 static List<Object[]> suite_ChannelIsNull_AllureIsAny(){

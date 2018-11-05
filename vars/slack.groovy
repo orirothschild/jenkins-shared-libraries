@@ -49,7 +49,7 @@ private generateSlackMessage(Boolean allureIsUsed){
 
 private getAllureReportsMessage(){
     def message = ''
-    env.each { k, v ->
+    env.getEnvironment().each { k, v ->
         def key = k.toString()
         def index = key.indexOf('_TESTS_URL')
         if (index != -1){
@@ -59,4 +59,3 @@ private getAllureReportsMessage(){
     }
     message
 }
-
