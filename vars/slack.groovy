@@ -41,8 +41,22 @@ private generateSlackMessage(Boolean allureIsUsed){
     if (allureIsUsed) {
         message += " <${BUILD_URL}allure/|Allure report>"
     }
+    message += getAllureReportsMessage()
     def blueOceanPipelineUrl = "${JENKINS_URL}blue/organizations/jenkins/${imageNameLocal}/detail/${BRANCH_NAME}/${BUILD_ID}/pipeline/"
     message += " (<${blueOceanPipelineUrl}|${BUILD_ID}>)"
+    message
+}
+
+private getAllureReportsMessage(){
+    def message = ''
+    env.each { k, v ->
+        def key = k.toString()
+        def index = key.indexOf('_TESTS_URL')
+        if (index != -1){
+            def allureJobName = key.substring(0, index)
+            message += " <$v|${allureJobName}>"
+        }
+    }
     message
 }
 
