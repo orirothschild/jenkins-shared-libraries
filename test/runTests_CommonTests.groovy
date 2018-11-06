@@ -209,7 +209,7 @@ class runTests_CommonTests extends GroovyTestCase {
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
 
-        assertEquals('UNSTABLE', runTests_.currentBuild.result)
+        assertEquals('FAILURE', runTests_.currentBuild.result)
 
     }
 
@@ -228,7 +228,7 @@ class runTests_CommonTests extends GroovyTestCase {
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
 
-        assertEquals('UNSTABLE', runTests_.currentBuild.result)
+        assertEquals('FAILURE', runTests_.currentBuild.result)
 
     }
 
@@ -247,7 +247,7 @@ class runTests_CommonTests extends GroovyTestCase {
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
 
-        assertEquals('UNSTABLE', runTests_.currentBuild.result)
+        assertEquals('FAILURE', runTests_.currentBuild.result)
 
     }
 
