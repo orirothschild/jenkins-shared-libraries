@@ -8,7 +8,7 @@ def call(Map params){
 
     def normalizedJobName = job?.toString()?.split('/')[0]
 
-    env["${normalizedJobName}_TESTS_URL"] = "${buildResult.buildVariables.BUILD_URL}allure/"
+    env["${normalizedJobName}_TESTS_URL"] = "${buildResult.absoluteUrl}allure/"
 
     currentBuild.result = buildResult.result
 

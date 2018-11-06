@@ -23,7 +23,7 @@ class runTests_CommonTests extends GroovyTestCase {
             stringProp
         }
         runTests_.build = {Map params ->
-            [buildVariables: [BUILD_URL: "http://localhost:8080/job/child/1234/"]]
+            [absoluteUrl: "http://localhost:8080/job/child/1234/"]
         }
         runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
@@ -42,7 +42,7 @@ class runTests_CommonTests extends GroovyTestCase {
             stringProp
         }
         runTests_.build = {Map params ->
-            [buildVariables: [BUILD_URL: "http://localhost:8080/job/child/1234/"]]
+            [absoluteUrl: "http://localhost:8080/job/child/1234/"]
         }
         runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
@@ -61,7 +61,7 @@ class runTests_CommonTests extends GroovyTestCase {
             stringProp
         }
         runTests_.build = {Map params ->
-            [buildVariables: [BUILD_URL: "http://localhost:8080/job/child/1234/"]]
+            [absoluteUrl: "http://localhost:8080/job/child/1234/"]
         }
         runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
@@ -82,7 +82,7 @@ class runTests_CommonTests extends GroovyTestCase {
         def buildParams = [:]
         runTests_.build = {Map params ->
             buildParams = params
-            [buildVariables: [BUILD_URL: "http://localhost:8080/job/child/1234/"]]
+            [absoluteUrl: "http://localhost:8080/job/child/1234/"]
         }
         runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
@@ -103,7 +103,7 @@ class runTests_CommonTests extends GroovyTestCase {
         def buildParams = [:]
         runTests_.build = {Map params ->
             buildParams = params
-            [buildVariables: [BUILD_URL: "http://localhost:8080/job/child/1234/"]]
+            [absoluteUrl: "http://localhost:8080/job/child/1234/"]
         }
         runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
@@ -124,7 +124,7 @@ class runTests_CommonTests extends GroovyTestCase {
         def buildParams = [:]
         runTests_.build = {Map params ->
             buildParams = params
-            [buildVariables: [BUILD_URL: "http://localhost:8080/job/child/1234/"]]
+            [absoluteUrl: "http://localhost:8080/job/child/1234/"]
         }
         runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
@@ -144,7 +144,7 @@ class runTests_CommonTests extends GroovyTestCase {
         def buildParams = [:]
         runTests_.build = {Map params ->
             buildParams = params
-            [buildVariables: [BUILD_URL: "http://localhost:8080/job/child/1234/"]]
+            [absoluteUrl: "http://localhost:8080/job/child/1234/"]
         }
         runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
@@ -165,7 +165,7 @@ class runTests_CommonTests extends GroovyTestCase {
         def buildIsExecuted = 0
         runTests_.build = {Map params ->
             buildIsExecuted++
-            [buildVariables: [BUILD_URL: "http://localhost:8080/job/child/1234/"]]
+            [absoluteUrl: "http://localhost:8080/job/child/1234/"]
         }
         runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
@@ -186,7 +186,7 @@ class runTests_CommonTests extends GroovyTestCase {
         def buildIsExecuted = 0
         runTests_.build = {Map params ->
             buildIsExecuted++
-            [buildVariables: [BUILD_URL: "http://localhost:8080/job/child/1234/"], result: 'SUCCESS']
+            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'SUCCESS']
         }
         runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
