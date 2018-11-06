@@ -176,23 +176,78 @@ class runTests_CommonTests extends GroovyTestCase {
     }
 
     @Test
-    void test_RunTests_childBuildResultWillBeSet(){
+    void test_RunTests_SuccessResult_childBuildResultWillNotBeSet(){
         def jobName = 'account-tests-api/master'
         def stringProps = []
         runTests_.string = { Map stringProp ->
             stringProps <<  stringProp
             stringProp
         }
-        def buildIsExecuted = 0
         runTests_.build = {Map params ->
-            buildIsExecuted++
             [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'SUCCESS']
         }
         runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
 
-        assertEquals('SUCCESS', runTests_.currentBuild.result)
+        assertEquals('', runTests_.currentBuild.result)
+
+    }
+
+    @Test
+    void test_RunTests_FailureResult_childBuildResultWillBeSetToUnstable(){
+        def jobName = 'account-tests-api/master'
+        def stringProps = []
+        runTests_.string = { Map stringProp ->
+            stringProps <<  stringProp
+            stringProp
+        }
+        runTests_.build = {Map params ->
+            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'FAILURE']
+        }
+        runTests_.currentBuild = new Expando(result: '', currentResult: '')
+
+        runTests_(job: jobName, parameters: ['TAGS': 'tag'])
+
+        assertEquals('UNSTABLE', runTests_.currentBuild.result)
+
+    }
+
+    @Test
+    void test_RunTests_AbortedResult_childBuildResultWillBeSetToUnstable(){
+        def jobName = 'account-tests-api/master'
+        def stringProps = []
+        runTests_.string = { Map stringProp ->
+            stringProps <<  stringProp
+            stringProp
+        }
+        runTests_.build = {Map params ->
+            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'ABORTED']
+        }
+        runTests_.currentBuild = new Expando(result: '', currentResult: '')
+
+        runTests_(job: jobName, parameters: ['TAGS': 'tag'])
+
+        assertEquals('UNSTABLE', runTests_.currentBuild.result)
+
+    }
+
+    @Test
+    void test_RunTests_UnstableResult_childBuildResultWillBeSetToUnstable(){
+        def jobName = 'account-tests-api/master'
+        def stringProps = []
+        runTests_.string = { Map stringProp ->
+            stringProps <<  stringProp
+            stringProp
+        }
+        runTests_.build = {Map params ->
+            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'UNSTABLE']
+        }
+        runTests_.currentBuild = new Expando(result: '', currentResult: '')
+
+        runTests_(job: jobName, parameters: ['TAGS': 'tag'])
+
+        assertEquals('UNSTABLE', runTests_.currentBuild.result)
 
     }
 
