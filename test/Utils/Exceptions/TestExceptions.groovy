@@ -9,3 +9,6 @@ class InvalidBitbucketStatusException extends Exception{}
 
 @InheritConstructors
 class HelmUpgradeException extends Exception {}
+
+@InheritConstructors
+class StageResultException extends Exception {}

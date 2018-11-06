@@ -56,7 +56,7 @@ class BitbucketStatusFirstBuild_DefinedBuildStatus_InvalidBitbucketStatus_Tests 
         bitbucketStatus_.error = { msg -> throw new InvalidBitbucketStatusException(msg.toString()) }
         try {
             bitbucketStatus_(invalidBitbucketStatus)
-            fail(fail("Expected an InvalidBitbucketStatusException to be thrown"))
+            fail("Expected an InvalidBitbucketStatusException to be thrown")
         }catch(InvalidBitbucketStatusException e){
             assertFalse(bitbucketStatusNotifyWasExecuted)
         }
@@ -71,7 +71,7 @@ class BitbucketStatusFirstBuild_DefinedBuildStatus_InvalidBitbucketStatus_Tests 
 
         try {
             bitbucketStatus_(invalidBitbucketStatus)
-            fail(fail("Expected an InvalidBitbucketStatusException to be thrown"))
+            fail("Expected an InvalidBitbucketStatusException to be thrown")
         }catch(InvalidBitbucketStatusException e){
             assertFalse(httpRequestWasExecuted)
         }

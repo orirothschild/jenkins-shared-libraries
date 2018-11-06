@@ -1,7 +1,10 @@
 import TestData.RunTestsData
+import Utils.Exceptions.StageResultException
 import Utils.Helper
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.ExpectedException
 
 class runTests_CommonTests extends GroovyTestCase {
 
@@ -23,9 +26,8 @@ class runTests_CommonTests extends GroovyTestCase {
             stringProp
         }
         runTests_.build = {Map params ->
-            [absoluteUrl: "http://localhost:8080/job/child/1234/"]
+            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'SUCCESS', currrentResult: 'SUCCESS']
         }
-        runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
         runTests_(job: jobName, parameters: ['TAG1': 'tag1'])
 
@@ -42,9 +44,8 @@ class runTests_CommonTests extends GroovyTestCase {
             stringProp
         }
         runTests_.build = {Map params ->
-            [absoluteUrl: "http://localhost:8080/job/child/1234/"]
+            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'SUCCESS', currrentResult: 'SUCCESS']
         }
-        runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
         runTests_(job: jobName, parameters: ['TAG1': 'tag1', 'TAG2': 'tag2'])
 
@@ -61,9 +62,8 @@ class runTests_CommonTests extends GroovyTestCase {
             stringProp
         }
         runTests_.build = {Map params ->
-            [absoluteUrl: "http://localhost:8080/job/child/1234/"]
+            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'SUCCESS', currrentResult: 'SUCCESS']
         }
-        runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
 
@@ -82,9 +82,8 @@ class runTests_CommonTests extends GroovyTestCase {
         def buildParams = [:]
         runTests_.build = {Map params ->
             buildParams = params
-            [absoluteUrl: "http://localhost:8080/job/child/1234/"]
+            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'SUCCESS', currrentResult: 'SUCCESS']
         }
-        runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
 
@@ -103,9 +102,8 @@ class runTests_CommonTests extends GroovyTestCase {
         def buildParams = [:]
         runTests_.build = {Map params ->
             buildParams = params
-            [absoluteUrl: "http://localhost:8080/job/child/1234/"]
+            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'SUCCESS', currrentResult: 'SUCCESS']
         }
-        runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
 
@@ -124,9 +122,8 @@ class runTests_CommonTests extends GroovyTestCase {
         def buildParams = [:]
         runTests_.build = {Map params ->
             buildParams = params
-            [absoluteUrl: "http://localhost:8080/job/child/1234/"]
+            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'SUCCESS', currrentResult: 'SUCCESS']
         }
-        runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
 
@@ -146,11 +143,13 @@ class runTests_CommonTests extends GroovyTestCase {
             buildParams = params
             [absoluteUrl: "http://localhost:8080/job/child/1234/"]
         }
-        runTests_.currentBuild = new Expando(result: '', currentResult: '')
-
-        runTests_(job: jobName, parameters: ['TAG1': 'tag1'])
-
-        assertEquals(expectedStringObjs, buildParams['parameters'])
+        runTests_.error = { msg -> throw new StageResultException(msg.toString()) }
+        try{
+            runTests_(job: jobName, parameters: ['TAG1': 'tag1'])
+            fail("Expected an StageResultException to be thrown")
+        }catch(StageResultException ex){
+            assertEquals(expectedStringObjs, buildParams['parameters'])
+        }
 
     }
 
@@ -165,89 +164,12 @@ class runTests_CommonTests extends GroovyTestCase {
         def buildIsExecuted = 0
         runTests_.build = {Map params ->
             buildIsExecuted++
-            [absoluteUrl: "http://localhost:8080/job/child/1234/"]
+            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'SUCCESS', currrentResult: 'SUCCESS']
         }
-        runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
 
         assertEquals(1, buildIsExecuted)
-
-    }
-
-    @Test
-    void test_RunTests_SuccessResult_childBuildResultWillNotBeSet(){
-        def jobName = 'account-tests-api/master'
-        def stringProps = []
-        runTests_.string = { Map stringProp ->
-            stringProps <<  stringProp
-            stringProp
-        }
-        runTests_.build = {Map params ->
-            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'SUCCESS']
-        }
-        runTests_.currentBuild = new Expando(result: '', currentResult: '')
-
-        runTests_(job: jobName, parameters: ['TAGS': 'tag'])
-
-        assertEquals('', runTests_.currentBuild.result)
-
-    }
-
-    @Test
-    void test_RunTests_FailureResult_childBuildResultWillBeSetToUnstable(){
-        def jobName = 'account-tests-api/master'
-        def stringProps = []
-        runTests_.string = { Map stringProp ->
-            stringProps <<  stringProp
-            stringProp
-        }
-        runTests_.build = {Map params ->
-            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'FAILURE']
-        }
-        runTests_.currentBuild = new Expando(result: '', currentResult: '')
-
-        runTests_(job: jobName, parameters: ['TAGS': 'tag'])
-
-        assertEquals('FAILURE', runTests_.currentBuild.result)
-
-    }
-
-    @Test
-    void test_RunTests_AbortedResult_childBuildResultWillBeSetToUnstable(){
-        def jobName = 'account-tests-api/master'
-        def stringProps = []
-        runTests_.string = { Map stringProp ->
-            stringProps <<  stringProp
-            stringProp
-        }
-        runTests_.build = {Map params ->
-            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'ABORTED']
-        }
-        runTests_.currentBuild = new Expando(result: '', currentResult: '')
-
-        runTests_(job: jobName, parameters: ['TAGS': 'tag'])
-
-        assertEquals('FAILURE', runTests_.currentBuild.result)
-
-    }
-
-    @Test
-    void test_RunTests_UnstableResult_childBuildResultWillBeSetToUnstable(){
-        def jobName = 'account-tests-api/master'
-        def stringProps = []
-        runTests_.string = { Map stringProp ->
-            stringProps <<  stringProp
-            stringProp
-        }
-        runTests_.build = {Map params ->
-            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'UNSTABLE']
-        }
-        runTests_.currentBuild = new Expando(result: '', currentResult: '')
-
-        runTests_(job: jobName, parameters: ['TAGS': 'tag'])
-
-        assertEquals('FAILURE', runTests_.currentBuild.result)
 
     }
 

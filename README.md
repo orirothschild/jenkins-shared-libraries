@@ -135,6 +135,15 @@ steps {
 * `kubernetesLabel()`
     * Replace "${BUILD_TAG.take(53)}-x"
 
+* `runTests([job: jobName, parameters: map of parameters])`
+    * Started **job** step with parameters: [job: jobName, wait=true, propagate=false, parameters: string(stringParameters)]
+    * If child build will return FAILURE, ABORTED, UNSTABLE - parent build executed error step with message
+```groovy
+steps {    
+    runTests job: 'JOB_NAME/master', parameters: [TAGS: 'TEST_CATEGORY']    
+}
+```
+
 * `slack(channel_name(String, optional), allure(Boolean, optional, default: false))`    
 * `slack([channel: channel_name, allure: boolean_value])`    
 	* Required **Multibranch plugin**
