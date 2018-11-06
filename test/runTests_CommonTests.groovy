@@ -25,6 +25,7 @@ class runTests_CommonTests extends GroovyTestCase {
         runTests_.build = {Map params ->
             [buildVariables: [BUILD_URL: "http://localhost:8080/job/child/1234/"]]
         }
+        runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
         runTests_(job: jobName, parameters: ['TAG1': 'tag1'])
 
@@ -43,6 +44,7 @@ class runTests_CommonTests extends GroovyTestCase {
         runTests_.build = {Map params ->
             [buildVariables: [BUILD_URL: "http://localhost:8080/job/child/1234/"]]
         }
+        runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
         runTests_(job: jobName, parameters: ['TAG1': 'tag1', 'TAG2': 'tag2'])
 
@@ -61,6 +63,7 @@ class runTests_CommonTests extends GroovyTestCase {
         runTests_.build = {Map params ->
             [buildVariables: [BUILD_URL: "http://localhost:8080/job/child/1234/"]]
         }
+        runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
 
@@ -81,6 +84,7 @@ class runTests_CommonTests extends GroovyTestCase {
             buildParams = params
             [buildVariables: [BUILD_URL: "http://localhost:8080/job/child/1234/"]]
         }
+        runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
 
@@ -89,7 +93,7 @@ class runTests_CommonTests extends GroovyTestCase {
     }
 
     @Test
-    void test_RunTests_propagateIsTrue(){
+    void test_RunTests_propagateIsFalse(){
         def jobName = 'account-tests-api/master'
         def stringProps = []
         runTests_.string = { Map stringProp ->
@@ -101,10 +105,11 @@ class runTests_CommonTests extends GroovyTestCase {
             buildParams = params
             [buildVariables: [BUILD_URL: "http://localhost:8080/job/child/1234/"]]
         }
+        runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
 
-        assertEquals(true, buildParams['propagate'])
+        assertEquals(false, buildParams['propagate'])
 
     }
 
@@ -121,6 +126,7 @@ class runTests_CommonTests extends GroovyTestCase {
             buildParams = params
             [buildVariables: [BUILD_URL: "http://localhost:8080/job/child/1234/"]]
         }
+        runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
 
@@ -140,6 +146,7 @@ class runTests_CommonTests extends GroovyTestCase {
             buildParams = params
             [buildVariables: [BUILD_URL: "http://localhost:8080/job/child/1234/"]]
         }
+        runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
         runTests_(job: jobName, parameters: ['TAG1': 'tag1'])
 
@@ -160,10 +167,32 @@ class runTests_CommonTests extends GroovyTestCase {
             buildIsExecuted++
             [buildVariables: [BUILD_URL: "http://localhost:8080/job/child/1234/"]]
         }
+        runTests_.currentBuild = new Expando(result: '', currentResult: '')
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
 
         assertEquals(1, buildIsExecuted)
+
+    }
+
+    @Test
+    void test_RunTests_childBuildResultWillBeSet(){
+        def jobName = 'account-tests-api/master'
+        def stringProps = []
+        runTests_.string = { Map stringProp ->
+            stringProps <<  stringProp
+            stringProp
+        }
+        def buildIsExecuted = 0
+        runTests_.build = {Map params ->
+            buildIsExecuted++
+            [buildVariables: [BUILD_URL: "http://localhost:8080/job/child/1234/"], result: 'SUCCESS']
+        }
+        runTests_.currentBuild = new Expando(result: '', currentResult: '')
+
+        runTests_(job: jobName, parameters: ['TAGS': 'tag'])
+
+        assertEquals('SUCCESS', runTests_.currentBuild.result)
 
     }
 
