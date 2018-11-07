@@ -5,9 +5,7 @@ static Map commonVariables(){
 }
 
 static defaultSuccessBuildResult(){
-    def buildResult = defaultBuildResult('SUCCESS')
-
-    buildResult
+    defaultBuildResult('SUCCESS')
 }
 
 static defaultBuildResult(String result = null){
