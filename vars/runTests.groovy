@@ -10,6 +10,7 @@ def call(Map params){
 
     env["${normalizedJobName}_TESTS_URL"] = "${buildResult.absoluteUrl}allure/"
     if (buildResult.result != 'SUCCESS'){
+        echo "${buildResult.fullDisplayName} completed with status ${buildResult.result}"
         currentBuild.result = 'UNSTABLE'
     }
 
