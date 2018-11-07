@@ -39,7 +39,7 @@ class Slack_CustomAllureReports extends GroovyTestCase {
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
 
-        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! <FAKE_Build_Urlallure/|build_tests> <http://jenkins_build/job/job_name/1/allure|account-tests-api> (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
+        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! <FAKE_Build_Urlallure/|build-tests> <http://jenkins_build/job/job_name/1/allure|account-tests-api> (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
 
         slack_(allure: true)
 
@@ -73,7 +73,7 @@ class Slack_CustomAllureReports extends GroovyTestCase {
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
 
-        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! <FAKE_Build_Urlallure/|build_tests> <http://jenkins_build/job/job_name/1/allure|account-tests-api> <http://jenkins_build/job/job_name/1/allure|account-tests-web> (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
+        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! <FAKE_Build_Urlallure/|build-tests> <http://jenkins_build/job/job_name/1/allure|account-tests-api> <http://jenkins_build/job/job_name/1/allure|account-tests-web> (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
 
         slack_(allure: true)
 

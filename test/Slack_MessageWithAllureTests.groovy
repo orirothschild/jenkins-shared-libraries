@@ -38,7 +38,7 @@ class Slack_MessageWithAllureTests extends GroovyTestCase {
         Helper.setBuildStatus('SUCCESS', slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
-        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! <FAKE_Build_Urlallure/|build_tests> (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
+        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! <FAKE_Build_Urlallure/|build-tests> (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
 
         slack_(channel, allure)
 
@@ -51,7 +51,7 @@ class Slack_MessageWithAllureTests extends GroovyTestCase {
         Helper.setBuildStatus('FAILURE', slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
-        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build failed! <FAKE_Build_Urlallure/|build_tests> (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
+        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build failed! <FAKE_Build_Urlallure/|build-tests> (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
 
         slack_(channel, allure)
 
@@ -64,7 +64,7 @@ class Slack_MessageWithAllureTests extends GroovyTestCase {
         Helper.setBuildStatus('UNSTABLE', slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
-        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name tests failed! <FAKE_Build_Urlallure/|build_tests> (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
+        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name tests failed! <FAKE_Build_Urlallure/|build-tests> (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
 
         slack_(channel, allure)
 
