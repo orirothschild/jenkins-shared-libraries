@@ -42,4 +42,16 @@ class HelmUpgrade_ArgsTests extends GroovyTestCase {
         assertEquals(expectedCommands, actualCommands)
     }
 
+    @Test
+    void test_HelmUpgradeMap_Args_shellIsExecuted(){
+
+        def actualCommands = []
+        helmUpgrade_.sh = {command -> actualCommands << command}
+        def expectedCommands = [resultCommand]
+
+        helmUpgrade_ namespace: namespace, set: args
+
+        assertEquals(expectedCommands, actualCommands)
+    }
+
 }

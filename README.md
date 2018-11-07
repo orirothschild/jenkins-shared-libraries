@@ -125,6 +125,7 @@ steps {
 }
 ```    
 * `helmUpgrade(namespace(String), helmArgs(Map))`
+* `helmUpgrade([namespace: 'namespace', set: Map)`
     * **namespace** must be valid, not null, empty or only whitespaces
     * **helmArgs** will be set via --set
 ```groovy

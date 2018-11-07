@@ -58,4 +58,30 @@ class HelmUpgrade_NamespaceTests extends GroovyTestCase {
 
         helmUpgrade_(namespace, args)
     }
+
+    @Test
+    void test_HelmUpgradeMap_IncorrectNamespace_shellIsNotExecuted(){
+
+        def actualCommands = []
+        helmUpgrade_.sh = {command -> actualCommands << command}
+        helmUpgrade_.error = { String msg -> throw new HelmUpgradeException(msg) }
+        try{
+            helmUpgrade_ namespace: namespace, set: args
+            fail('Expected an HelmUpgradeException to be thrown')
+        }catch(HelmUpgradeException e){
+            assertEquals([], actualCommands)
+        }
+    }
+
+    @Test
+    void test_HelmUpgradeMap_IncorrectNamespace_exceptionWillThrownWithMessage(){
+
+        def actualCommands = []
+        helmUpgrade_.sh = {command -> actualCommands << command}
+        helmUpgrade_.error = { String msg -> throw new HelmUpgradeException(msg) }
+        thrown.expect(HelmUpgradeException.class)
+        thrown.expectMessage("Undefined namespace: ${namespace}".toString())
+
+        helmUpgrade_ namespace: namespace, set: args
+    }
 }

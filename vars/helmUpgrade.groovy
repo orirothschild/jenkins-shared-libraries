@@ -1,5 +1,9 @@
 
-def call(String namespace, Map args){
+def call(Map params){
+    call(params.namespace as String, params.set as Map)
+}
+
+def call(String namespace, Map args=null){
     def namespaceLocal = namespace?.trim()
     if (!namespaceLocal){
         error "Undefined namespace: ${namespace}"
