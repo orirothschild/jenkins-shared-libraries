@@ -39,7 +39,7 @@ private generateSlackMessage(Boolean allureIsUsed){
     def imageNameLocal = imageName()
     def message = "${imageNameLocal} branch ${BRANCH_NAME} ${resultMessage}!"
     if (allureIsUsed) {
-        message += " <${BUILD_URL}allure/|Allure report>"
+        message += " <${BUILD_URL}allure/|build_tests>"
     }
     message += getAllureReportsMessage()
     def blueOceanPipelineUrl = "${JENKINS_URL}blue/organizations/jenkins/${imageNameLocal}/detail/${BRANCH_NAME}/${BUILD_ID}/pipeline/"
