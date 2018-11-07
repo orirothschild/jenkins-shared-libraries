@@ -25,9 +25,7 @@ class runTests_CommonTests extends GroovyTestCase {
             stringProps <<  stringProp
             stringProp
         }
-        runTests_.build = {Map params ->
-            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'SUCCESS', currrentResult: 'SUCCESS']
-        }
+        runTests_.build = { Map args -> RunTestsData.defaultSuccessBuildResult() }
 
         runTests_(job: jobName, parameters: ['TAG1': 'tag1'])
 
@@ -43,9 +41,7 @@ class runTests_CommonTests extends GroovyTestCase {
             stringProps <<  stringProp
             stringProp
         }
-        runTests_.build = {Map params ->
-            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'SUCCESS', currrentResult: 'SUCCESS']
-        }
+        runTests_.build = { Map args -> RunTestsData.defaultSuccessBuildResult() }
 
         runTests_(job: jobName, parameters: ['TAG1': 'tag1', 'TAG2': 'tag2'])
 
@@ -61,13 +57,11 @@ class runTests_CommonTests extends GroovyTestCase {
             stringProps <<  stringProp
             stringProp
         }
-        runTests_.build = {Map params ->
-            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'SUCCESS', currrentResult: 'SUCCESS']
-        }
+        runTests_.build = { Map args -> RunTestsData.defaultSuccessBuildResult() }
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
 
-        assertEquals('http://localhost:8080/job/child/1234/allure/', runTests_.env['account-tests-api_TESTS_URL'])
+        assertEquals('http://localhost:8080/job/child/1/allure/', runTests_.env['account-tests-api_TESTS_URL'])
 
     }
 
@@ -82,7 +76,7 @@ class runTests_CommonTests extends GroovyTestCase {
         def buildParams = [:]
         runTests_.build = {Map params ->
             buildParams = params
-            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'SUCCESS', currrentResult: 'SUCCESS']
+            RunTestsData.defaultSuccessBuildResult()
         }
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
@@ -102,7 +96,7 @@ class runTests_CommonTests extends GroovyTestCase {
         def buildParams = [:]
         runTests_.build = {Map params ->
             buildParams = params
-            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'SUCCESS', currrentResult: 'SUCCESS']
+            RunTestsData.defaultSuccessBuildResult()
         }
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
@@ -122,7 +116,7 @@ class runTests_CommonTests extends GroovyTestCase {
         def buildParams = [:]
         runTests_.build = {Map params ->
             buildParams = params
-            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'SUCCESS', currrentResult: 'SUCCESS']
+            RunTestsData.defaultSuccessBuildResult()
         }
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
@@ -141,15 +135,12 @@ class runTests_CommonTests extends GroovyTestCase {
         def buildParams = [:]
         runTests_.build = {Map params ->
             buildParams = params
-            [absoluteUrl: "http://localhost:8080/job/child/1234/"]
+            RunTestsData.defaultSuccessBuildResult()
         }
-        runTests_.error = { msg -> throw new StageResultException(msg.toString()) }
-        try{
-            runTests_(job: jobName, parameters: ['TAG1': 'tag1'])
-            fail("Expected an StageResultException to be thrown")
-        }catch(StageResultException ex){
-            assertEquals(expectedStringObjs, buildParams['parameters'])
-        }
+
+        runTests_(job: jobName, parameters: ['TAG1': 'tag1'])
+
+        assertEquals(expectedStringObjs, buildParams['parameters'])
 
     }
 
@@ -164,7 +155,7 @@ class runTests_CommonTests extends GroovyTestCase {
         def buildIsExecuted = 0
         runTests_.build = {Map params ->
             buildIsExecuted++
-            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'SUCCESS', currrentResult: 'SUCCESS']
+            RunTestsData.defaultSuccessBuildResult()
         }
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])

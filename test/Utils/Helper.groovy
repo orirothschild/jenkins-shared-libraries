@@ -1,5 +1,7 @@
 package Utils
 
+import TestData.BuildResult
+
 class Helper {
 
     static setEnvVariables(Map variables, Object... objs){
@@ -21,7 +23,9 @@ class Helper {
     }
 
     static setBuildStatus(String result, Object obj){
-        obj['currentBuild'] = new Expando(currentResult: result)
+        def buildResult = new BuildResult()
+        buildResult['result'] = result
+        obj['currentBuild'] = buildResult
     }
 
 }

@@ -1,15 +1,23 @@
+import TestData.BuildResult
 import TestData.RunTestsData
-import Utils.Exceptions.StageResultException
 import Utils.Helper
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.ExpectedException
 import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
+import org.junit.runners.Parameterized
 
-@RunWith(JUnit4.class)
+@RunWith(Parameterized.class)
 class runTests_NotSuccessResult extends GroovyTestCase {
+
+    protected String testBuildStatus
+    @Parameterized.Parameters(name = "{0}")
+    static Collection data() {
+        ['UNSTABLE', 'ABORTED', 'FAILURE']
+    }
+
+    runTests_NotSuccessResult(String status){
+        testBuildStatus = status
+    }
 
     protected runTests_ = new runTests()
 
@@ -19,63 +27,41 @@ class runTests_NotSuccessResult extends GroovyTestCase {
         Helper.setEnvVariables(variables, runTests_)
     }
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none()
-
     @Test
-    void test_RunTests_AbortedResult_errorWillBeRaised(){
+    void test_RunTests_echoWillBeSend(){
         def jobName = 'account-tests-api/master'
         def stringProps = []
         runTests_.string = { Map stringProp ->
             stringProps <<  stringProp
             stringProp
         }
-        runTests_.build = {Map params ->
-            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'ABORTED', fullDisplayName:'build #1']
-        }
-        runTests_.error = { msg -> throw new StageResultException(msg.toString()) }
-        thrown.expect(StageResultException.class)
-        thrown.expectMessage('build #1 completed with status ABORTED')
+        runTests_.build = {Map params -> RunTestsData.defaultBuildResult(testBuildStatus) }
+        runTests_.currentBuild = new BuildResult()
+        def actualMessage = ''
+        runTests_.echo = { msg -> actualMessage = msg }
+        def expectedMessage = "ERROR: build #1 completed with status ${testBuildStatus}".toString()
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
+
+        assertEquals(expectedMessage, actualMessage)
 
     }
 
     @Test
-    void test_RunTests_UnstableResult_errorWillBeRaised(){
+    void test_RunTests_AbortedResult_setBuildStatusToUnstable(){
         def jobName = 'account-tests-api/master'
         def stringProps = []
         runTests_.string = { Map stringProp ->
             stringProps <<  stringProp
             stringProp
         }
-        runTests_.build = {Map params ->
-            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'UNSTABLE', fullDisplayName:'build #1']
-        }
-        runTests_.error = { msg -> throw new StageResultException(msg.toString()) }
-        thrown.expect(StageResultException.class)
-        thrown.expectMessage('build #1 completed with status UNSTABLE')
+        runTests_.build = {Map params -> RunTestsData.defaultBuildResult(testBuildStatus) }
+        runTests_.currentBuild = new BuildResult()
+        runTests_.echo = { }
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
 
-    }
-
-    @Test
-    void test_RunTests_FailureResult_errorWillBeRaised(){
-        def jobName = 'account-tests-api/master'
-        def stringProps = []
-        runTests_.string = { Map stringProp ->
-            stringProps <<  stringProp
-            stringProp
-        }
-        runTests_.build = {Map params ->
-            [absoluteUrl: "http://localhost:8080/job/child/1234/", result: 'FAILURE', fullDisplayName:'build #1']
-        }
-        runTests_.error = { msg -> throw new StageResultException(msg.toString()) }
-        thrown.expect(StageResultException.class)
-        thrown.expectMessage('build #1 completed with status FAILURE')
-
-        runTests_(job: jobName, parameters: ['TAGS': 'tag'])
+        assertEquals('UNSTABLE', runTests_.currentBuild.currentResult)
 
     }
 

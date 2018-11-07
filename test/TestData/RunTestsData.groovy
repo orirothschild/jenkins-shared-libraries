@@ -4,7 +4,17 @@ static Map commonVariables(){
     [:]
 }
 
-static mockJobBuild(Map params, String jobName, List parameters, Map envObj){
+static defaultSuccessBuildResult(){
+    def buildResult = defaultBuildResult('SUCCESS')
 
-    return null
+    buildResult
+}
+
+static defaultBuildResult(String result = null){
+    def buildResult = new BuildResult()
+    buildResult['absoluteUrl'] = 'http://localhost:8080/job/child/1/'
+    buildResult['fullDisplayName'] ='build #1'
+    if (result != null) buildResult['result'] = result
+
+    buildResult
 }
