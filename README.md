@@ -137,7 +137,8 @@ steps {
 
 * `runTests([job: jobName, parameters: map of parameters])`
     * Started **job** step with parameters: [job: jobName, wait=true, propagate=false, parameters: string(stringParameters)]
-    * If child build will return FAILURE, ABORTED, UNSTABLE - parent build executed error step with message
+    * If child build will return FAILURE, ABORTED, UNSTABLE - build will be set to UNSTABLE
+    * You should check build status in next stages to avoid execution. UNSTABLE status will not stop next stages
 ```groovy
 steps {    
     runTests job: 'JOB_NAME/master', parameters: [TAGS: 'TEST_CATEGORY']    
