@@ -9,7 +9,7 @@ def call(Map params){
     def normalizedJobName = job?.toString()?.split('/')[0]
 
     env["${normalizedJobName}_TESTS_URL"] = "${buildResult.absoluteUrl}allure/"
-    if (buildResult.currentResult != 'SUCCESS'){
+    if (!successBuild(buildResult)){
         echo "ERROR: ${buildResult.fullDisplayName} completed with status ${buildResult.currentResult}"
         currentBuild.result = 'UNSTABLE'
     }

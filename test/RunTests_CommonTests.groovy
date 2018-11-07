@@ -6,7 +6,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
 
-class runTests_CommonTests extends GroovyTestCase {
+class RunTests_CommonTests extends GroovyTestCase {
 
     protected runTests_ = new runTests()
 
@@ -14,6 +14,7 @@ class runTests_CommonTests extends GroovyTestCase {
     void setUp(){
         def variables = RunTestsData.commonVariables()
         Helper.setEnvVariables(variables, runTests_)
+        InjectVars.injectTo(runTests_, 'successBuild')
     }
 
     @Test

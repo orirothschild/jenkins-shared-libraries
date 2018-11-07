@@ -7,7 +7,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class runTests_NotSuccessResult extends GroovyTestCase {
+class RunTests_NotSuccessResult extends GroovyTestCase {
 
     protected String testBuildStatus
     @Parameterized.Parameters(name = "{0}")
@@ -15,7 +15,7 @@ class runTests_NotSuccessResult extends GroovyTestCase {
         ['UNSTABLE', 'ABORTED', 'FAILURE']
     }
 
-    runTests_NotSuccessResult(String status){
+    RunTests_NotSuccessResult(String status){
         testBuildStatus = status
     }
 
@@ -25,6 +25,7 @@ class runTests_NotSuccessResult extends GroovyTestCase {
     void setUp(){
         def variables = RunTestsData.commonVariables()
         Helper.setEnvVariables(variables, runTests_)
+        InjectVars.injectTo(runTests_, 'successBuild')
     }
 
     @Test
