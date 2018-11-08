@@ -177,3 +177,6 @@ post {
     
 * `imageTag()`
     * Replace "${BRANCH_NAME}-${BUILD_ID}"  
+    
+* `successBuild()`
+    * Expression: currentBuild.currentResult == 'SUCCESS'
