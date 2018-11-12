@@ -17,8 +17,12 @@ def call(String namespace, Map args=null){
         }
         exposedArgs += ' '
     }
-
-
-    sh "helm upgrade -f \"chart/values-${namespaceLocal}.yaml\" --install --force --wait --namespace \"${namespaceLocal}\"${exposedArgs}\"${imageName()}-${namespaceLocal}\" chart/"
-
+    def releaseName = "${imageName()}-${namespaceLocal}"
+    try{
+        sh "helm upgrade -f \"chart/values-${namespaceLocal}.yaml\" --install --force --wait --namespace \"${namespaceLocal}\"${exposedArgs}\"${releaseName}\" chart/"
+    }catch(Exception ex){
+        // 0 - is previous revision; https://github.com/helm/helm/issues/1796#issuecomment-311385728
+        sh "helm rollback \"${releaseName}\" 0"
+        error "${ex}"
+    }
 }
