@@ -47,7 +47,7 @@ class HelmUpgrade_ErrorAndRollbackTests extends GroovyTestCase {
             }
         }
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
-        def expectedCommand = 'helm rollback "FAKE_Job_Name-test" 0'
+        def expectedCommand = 'helm rollback --wait "FAKE_Job_Name-test" 0'
         try {
             helmUpgrade_(namespace, args)
             fail('No HelmUpgradeException was thrown')
