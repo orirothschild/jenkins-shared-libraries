@@ -136,8 +136,8 @@ steps {
 * `kubernetesLabel()`
     * Replace "${BUILD_TAG.take(53)}-x"
 
-* `runTests([job: jobName, parameters: map of parameters])`
-    * Started **job** step with parameters: [job: jobName, wait=true, propagate=false, parameters: string(stringParameters)]
+* `runTests([job: jobName, parameters: Jenkins parameters])`
+    * Started **job** step with parameters: [job: jobName, wait=true, propagate=false, parameters: Jenkins parameters]
     * If child build will return FAILURE, ABORTED, UNSTABLE - build will be set to UNSTABLE
     * You should check build status in next stages to avoid execution. UNSTABLE status will not stop next stages
 ```groovy

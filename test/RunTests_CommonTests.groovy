@@ -22,13 +22,9 @@ class RunTests_CommonTests extends GroovyTestCase {
         def jobName = 'account-tests-api/master'
         def expectedStringObjs = [[name: 'TAG1', value: 'tag1']]
         def stringProps = []
-        runTests_.string = { Map stringProp ->
-            stringProps <<  stringProp
-            stringProp
-        }
-        runTests_.build = { Map args -> RunTestsData.defaultSuccessBuildResult() }
+        runTests_.build = { Map args -> stringProps = args.parameters; RunTestsData.defaultSuccessBuildResult() }
 
-        runTests_(job: jobName, parameters: ['TAG1': 'tag1'])
+        runTests_(job: jobName, parameters: [[name: 'TAG1', value: 'tag1']])
 
         assertEquals(expectedStringObjs, stringProps)
 
@@ -38,13 +34,9 @@ class RunTests_CommonTests extends GroovyTestCase {
         def jobName = 'account-tests-api/master'
         def expectedStringObjs = [[name: 'TAG1', value: 'tag1'], [name: 'TAG2', value: 'tag2']]
         def stringProps = []
-        runTests_.string = { Map stringProp ->
-            stringProps <<  stringProp
-            stringProp
-        }
-        runTests_.build = { Map args -> RunTestsData.defaultSuccessBuildResult() }
+        runTests_.build = { Map args -> stringProps = args.parameters; RunTestsData.defaultSuccessBuildResult() }
 
-        runTests_(job: jobName, parameters: ['TAG1': 'tag1', 'TAG2': 'tag2'])
+        runTests_(job: jobName, parameters: [[name: 'TAG1', value: 'tag1'], [name: 'TAG2', value: 'tag2']])
 
         assertEquals(expectedStringObjs, stringProps)
 
@@ -54,11 +46,7 @@ class RunTests_CommonTests extends GroovyTestCase {
     void test_RunTests_EnvironmentVariableWithUrlExist(){
         def jobName = 'account-tests-api/master'
         def stringProps = []
-        runTests_.string = { Map stringProp ->
-            stringProps <<  stringProp
-            stringProp
-        }
-        runTests_.build = { Map args -> RunTestsData.defaultSuccessBuildResult() }
+        runTests_.build = { Map args ->  stringProps = args.parameters; RunTestsData.defaultSuccessBuildResult() }
 
         runTests_(job: jobName, parameters: ['TAGS': 'tag'])
 
@@ -69,11 +57,6 @@ class RunTests_CommonTests extends GroovyTestCase {
     @Test
     void test_RunTests_jobNameIsCorrect(){
         def jobName = 'account-tests-api/master'
-        def stringProps = []
-        runTests_.string = { Map stringProp ->
-            stringProps <<  stringProp
-            stringProp
-        }
         def buildParams = [:]
         runTests_.build = {Map params ->
             buildParams = params
@@ -89,11 +72,6 @@ class RunTests_CommonTests extends GroovyTestCase {
     @Test
     void test_RunTests_propagateIsFalse(){
         def jobName = 'account-tests-api/master'
-        def stringProps = []
-        runTests_.string = { Map stringProp ->
-            stringProps <<  stringProp
-            stringProp
-        }
         def buildParams = [:]
         runTests_.build = {Map params ->
             buildParams = params
@@ -109,11 +87,6 @@ class RunTests_CommonTests extends GroovyTestCase {
     @Test
     void test_RunTests_waitIsTrue(){
         def jobName = 'account-tests-api/master'
-        def stringProps = []
-        runTests_.string = { Map stringProp ->
-            stringProps <<  stringProp
-            stringProp
-        }
         def buildParams = [:]
         runTests_.build = {Map params ->
             buildParams = params
@@ -130,16 +103,13 @@ class RunTests_CommonTests extends GroovyTestCase {
     void test_RunTests_parametersIsCorrect(){
         def jobName = 'account-tests-api/master'
         def expectedStringObjs = [[name: 'TAG1', value: 'tag1']]
-        runTests_.string = { Map stringProp ->
-            stringProp
-        }
         def buildParams = [:]
         runTests_.build = {Map params ->
             buildParams = params
             RunTestsData.defaultSuccessBuildResult()
         }
 
-        runTests_(job: jobName, parameters: ['TAG1': 'tag1'])
+        runTests_(job: jobName, parameters: [[name:'TAG1', value: 'tag1']])
 
         assertEquals(expectedStringObjs, buildParams['parameters'])
 
@@ -148,11 +118,6 @@ class RunTests_CommonTests extends GroovyTestCase {
     @Test
     void test_RunTests_buildExecutedOneTime(){
         def jobName = 'account-tests-api/master'
-        def stringProps = []
-        runTests_.string = { Map stringProp ->
-            stringProps <<  stringProp
-            stringProp
-        }
         def buildIsExecuted = 0
         runTests_.build = {Map params ->
             buildIsExecuted++

@@ -4,7 +4,7 @@ def call(Map params){
     def buildResult = build job: job,
                             propagate: false,
                             wait: true,
-                            parameters: createStringParameters(params.parameters as Map)
+                            parameters: params.parameters
 
     def normalizedJobName = job?.toString()?.split('/')[0]
 
@@ -14,12 +14,4 @@ def call(Map params){
         currentBuild.result = 'UNSTABLE'
     }
 
-}
-
-private createStringParameters(Map parameters){
-    def stringParams = []
-    parameters.each { k, v ->
-        stringParams << string(name: k, value: v)
-    }
-    stringParams
 }
