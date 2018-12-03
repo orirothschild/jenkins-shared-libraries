@@ -11,20 +11,28 @@ class DockerPush_CommonTests extends GroovyTestCase {
     void setUp(){
         def variables = DockerPushTestData.commonVariables()
         Helper.setEnvVariables(variables, dockerPush_)
-        InjectVars.injectTo(dockerPush_, 'imageTag', 'imageName')
+        InjectVars.injectTo(dockerPush_, 'imageTag', 'imageName', 'commitId')
     }
 
     @Test
     void test_DockerPushLatest_NoParameters_checkOrderOfCommands(){
-        def actualShellCommands = []
-        dockerPush_.sh = { command -> actualShellCommands << command; return null}
+        def actualCommands = []
+        dockerPush_.sh = { command ->
+            if (command instanceof Map){
+                if (command.returnStdout && command.script == "git log -n 1 --pretty=format:'%H'"){
+                    return "1111"
+                }
+            }
+            actualCommands << command; return null
+        }
         def expectedShellCommands = [
-                'docker push \"registry.com/bilderlings/Job_Name:master-1\"'
+                'docker push \"registry.com/bilderlings/Job_Name:master-1\"',
+                'docker push \"registry.com/bilderlings/Job_Name:1111\"',
         ]
 
         dockerPush_()
 
-        assertEquals(expectedShellCommands, actualShellCommands)
+        assertEquals(expectedShellCommands, actualCommands)
 
     }
 

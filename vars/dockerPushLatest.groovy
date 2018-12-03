@@ -12,7 +12,9 @@ def call(String imageNameParam=null){
         error 'Variable DOCKER_REGISTRY is not defined'
     }
 
-    sh "docker tag \"${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}:${imageTag()}\" \"${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}:latest\""
-    sh "docker push \"${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}:latest\""
+    def dockerImageName = "${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}"
+
+    sh "docker tag \"${dockerImageName}:${imageTag()}\" \"${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}:latest\""
+    sh "docker push \"${dockerImageName}:latest\""
 
 }

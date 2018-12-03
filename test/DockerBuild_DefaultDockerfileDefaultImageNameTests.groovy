@@ -26,14 +26,23 @@ class DockerBuild_DefaultDockerfileDefaultImageNameTests extends GroovyTestCase 
     void setUp(){
         def variables = DockerBuildTestData.commonVariables()
         Helper.setEnvVariables(variables, dockerBuild_)
-        InjectVars.injectTo(dockerBuild_, 'imageName', 'imageTag')
+        InjectVars.injectTo(dockerBuild_, 'imageName', 'imageTag', 'commitId')
     }
 
     @Test
     void test_DockerBuild_shellCommandDockerBuildIsExecutedWithDefaultPath(){
         def actualCommands = []
-        dockerBuild_.sh = { command -> actualCommands << command; return null}
-        def expectedCommands = ['docker build . -t \"registry.com/bilderlings/Job_Name:master-1\" -f \"./Dockerfile\"']
+        dockerBuild_.sh = { command ->
+            if (command instanceof Map){
+                if (command.returnStdout && command.script == "git log -n 1 --pretty=format:'%H'"){
+                    return "1111"
+                }
+            }
+            actualCommands << command; return null
+        }
+        def expectedCommands = [
+                'docker build . -f \"./Dockerfile\" -t \"registry.com/bilderlings/Job_Name:master-1\" -t \"registry.com/bilderlings/Job_Name:1111\"'
+        ]
 
         dockerBuild_(path, imageName)
 

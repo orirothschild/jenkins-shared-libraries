@@ -32,7 +32,7 @@ class DockerPush_VariableTests extends GroovyTestCase {
     void setUp(){
         def variables = DockerPushTestData.commonVariablesWithoutDockerRegistry()
         Helper.setEnvVariables(variables, dockerPush_)
-        InjectVars.injectTo(dockerPush_, 'imageName')
+        InjectVars.injectTo(dockerPush_, 'imageName', 'commitId')
     }
 
     @Test

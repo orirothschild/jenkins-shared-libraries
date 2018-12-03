@@ -25,20 +25,28 @@ class DockerPush_CustomImageNameTests extends GroovyTestCase {
     void setUp(){
         def variables = DockerPushTestData.commonVariables()
         Helper.setEnvVariables(variables, dockerPush_)
-        InjectVars.injectTo(dockerPush_, 'imageName', 'imageTag')
+        InjectVars.injectTo(dockerPush_, 'imageName', 'imageTag', 'commitId')
     }
 
     @Test
     void test_DockerPushLatest_checkOrderOfCommands(){
-        def actualShellCommands = []
-        dockerPush_.sh = { command -> actualShellCommands << command; return null}
+        def actualCommands = []
+        dockerPush_.sh = { command ->
+            if (command instanceof Map){
+                if (command.returnStdout && command.script == "git log -n 1 --pretty=format:'%H'"){
+                    return "1111"
+                }
+            }
+            actualCommands << command; return null
+        }
         def expectedShellCommands = [
-                "docker push \"registry.com/bilderlings/${imageName}:master-1\"".toString()
+                "docker push \"registry.com/bilderlings/${imageName}:master-1\"".toString(),
+                "docker push \"registry.com/bilderlings/${imageName}:1111\"".toString()
         ]
 
         dockerPush_(imageName)
 
-        assertEquals(expectedShellCommands, actualShellCommands)
+        assertEquals(expectedShellCommands, actualCommands)
 
     }
 

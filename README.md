@@ -54,13 +54,15 @@ steps {
     * Get last commit ID  
 
 * `dockerBuild(docker_file_path(String, optional), imageName(String, optional))`
-* `dockerBuild([dockerfile: docker_file_path, imageName: imagename])`
+* `dockerBuild([dockerfile: docker_file_path, imageName: "imagename"])`
     * Required **Multibranch plugin**
     * Required variable **env.DOCKER_REGISTRY**
+    * Default **imageName**: global var imageName()
+    * **imageName**: null, '', ' ' will be set default
+    * Will be built with 2 tags: parameter(imageName):imageTag() and parameter(imageName):commitId()
     * Default **docker_file_path**: './Dockerfile'
     * **docker_file_path**: null, '', ' ' will be set to default
     * Default **imageName**: first part of JOB_NAME
-    * **imageName**: null, '', ' ' will be set to default
 ```groovy
 steps {
     container('docker') {
@@ -88,8 +90,9 @@ steps {
 * `dockerPush(imageName(String, optional))`
     * Required **Multibranch plugin**
     * Required variable **env.DOCKER_REGISTRY**
-    * Default **imageName**: first part of JOB_NAME
+    * Default **imageName**: global var imageName()
     * **imageName**: null, '', ' ' will be set to default
+    * Will be pushed with 2 tags: parameter(imageName):imageTag() and parameter(imageName):commitId()
 ```groovy
 steps {
     container('docker') {

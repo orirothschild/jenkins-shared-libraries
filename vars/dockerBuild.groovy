@@ -22,5 +22,8 @@ def call(String dockerFilePath=null, String imageNameParam=null){
         error 'Variable DOCKER_REGISTRY is not defined'
     }
 
-    sh "docker build . -t \"${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}:${imageTag()}\" -f \"${dockerFilePathLocal}\""
+    def dockerImageName = "${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}"
+
+    sh "docker build . -f \"${dockerFilePathLocal}\" -t \"${dockerImageName}:${imageTag()}\" -t \"${dockerImageName}:${commitId()}\""
+
 }
