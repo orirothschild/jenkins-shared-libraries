@@ -8,7 +8,16 @@ Map buildStateMap = ['SUCCESS': 'SUCCESSFUL', 'FAILURE': 'FAILED', 'UNSTABLE': '
 @Field
 List bitbucketStatuses = ['INPROGRESS', 'SUCCESSFUL', 'FAILED']
 
-def call(String status=null) {
+def call(Map params){
+    if (params == null){
+        call()
+    } else {
+        call(params.status, params.repoSlug)
+    }
+
+}
+
+def call(String status=null, String repoSlug=null) {
     def bitbucketStatusNotifyParams = [:]
     if (status == null) {
         def result = currentBuild.currentResult
@@ -26,7 +35,12 @@ def call(String status=null) {
         }
     }
     bitbucketStatusNotifyParams.commitId = "${commitId()}"
-    bitbucketStatusNotifyParams.repoSlug = "${imageName()}"
+    def repoSlugLocal = repoSlug?.trim()
+    if (repoSlugLocal == null || repoSlugLocal == ''){
+        repoSlugLocal = "${imageName()}"
+    }
+
+    bitbucketStatusNotifyParams.repoSlug = repoSlugLocal
 
     send(bitbucketStatusNotifyParams)
 }
