@@ -1,6 +1,6 @@
 
 def call(){
-    def gitCommit = env.GIT_COMMIT?.ToString()?.trim()
+    def gitCommit = env.GIT_COMMIT?.toString()?.trim()
     if (gitCommit != null && gitCommit != ''){
         return gitCommit
     }
