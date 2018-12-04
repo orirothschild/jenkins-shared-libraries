@@ -26,19 +26,7 @@ class CommitId_CommonTests extends GroovyTestCase {
     void test_CommitIdWithGIT_COMMITOK_CommitIdIsReturnedFromENV(){
         Helper.setEnvVariables([GIT_COMMIT:"2222"], commitId_)
         InjectVars.injectClosureTo(commitId_, 'sh', CommitIdTestData.lastCommitIdClosure)
-        commitId_.echo = { }
         assertEquals('2222', commitId_())
-
-    }
-
-    @Test
-    void test_CommitIdWithGIT_COMMITOK_CheckEchoMessage(){
-        Helper.setEnvVariables([GIT_COMMIT:"2222"], commitId_)
-        InjectVars.injectClosureTo(commitId_, 'sh', CommitIdTestData.lastCommitIdClosure)
-        def actualMessage = ''
-        commitId_.echo = { String msg -> actualMessage = msg }
-        commitId_()
-        assertEquals('Get git commit id from environment variable GIT_COMMIT', actualMessage)
 
     }
 
