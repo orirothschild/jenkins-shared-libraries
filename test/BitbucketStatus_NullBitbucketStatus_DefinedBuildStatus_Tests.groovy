@@ -64,4 +64,52 @@ class BitbucketStatus_NullBitbucketStatus_DefinedBuildStatus_Tests extends Groov
 
     }
 
+
+    @Test
+    void test_BitbucketStatus_NullBitbucketStatus_EmptyRepoSlug_DefinedBuildStatus_repoSlugIsCorrect(){
+        Helper.setBuildStatus(buildStatus, bitbucketStatus_)
+        def actualParameters = [:]
+        bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
+
+        bitbucketStatus_(null, '')
+
+        assertEquals('Job_Name', actualParameters['repoSlug'])
+
+    }
+
+    @Test
+    void test_BitbucketStatus_NullBitbucketStatus_NullRepoSlug_DefinedBuildStatus_repoSlugIsCorrect(){
+        Helper.setBuildStatus(buildStatus, bitbucketStatus_)
+        def actualParameters = [:]
+        bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
+
+        bitbucketStatus_(null, null)
+
+        assertEquals('Job_Name', actualParameters['repoSlug'])
+
+    }
+
+    @Test
+    void test_BitbucketStatus_NullBitbucketStatus_WhitespaceRepoSlug_DefinedBuildStatus_repoSlugIsCorrect(){
+        Helper.setBuildStatus(buildStatus, bitbucketStatus_)
+        def actualParameters = [:]
+        bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
+
+        bitbucketStatus_(null, ' ')
+
+        assertEquals('Job_Name', actualParameters['repoSlug'])
+
+    }
+
+    @Test
+    void test_BitbucketStatus_NullBitbucketStatus_CustomRepoSlug_DefinedBuildStatus_repoSlugIsCorrect(){
+        Helper.setBuildStatus(buildStatus, bitbucketStatus_)
+        def actualParameters = [:]
+        bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
+
+        bitbucketStatus_(null, 'another_repoSlug')
+
+        assertEquals('another_repoSlug', actualParameters['repoSlug'])
+
+    }
 }
