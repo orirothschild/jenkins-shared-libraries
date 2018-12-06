@@ -21,8 +21,12 @@ def call(String namespace, Map args=null){
     try{
         sh "helm upgrade -f \"chart/values-${namespaceLocal}.yaml\" --install --force --wait --namespace \"${namespaceLocal}\"${exposedArgs}\"${releaseName}\" chart/"
     }catch(Exception ex){
-        // 0 - is previous revision; https://github.com/helm/helm/issues/1796#issuecomment-311385728
-        sh "helm rollback --wait \"${releaseName}\" 0"
+        if (ex.message.contains('UPGRADE FAILED')){
+            // 0 - is previous revision; https://github.com/helm/helm/issues/1796#issuecomment-311385728
+            sh "helm rollback --wait \"${releaseName}\" 0"
+        } else {
+            echo "It seems not a upgrading failure. If it's the failure, you can do 'helm rollback --wait \"${releaseName}\" 0'"
+        }
         error "${ex}"
     }
 }
