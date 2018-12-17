@@ -30,12 +30,12 @@ Here is:
 
 Variables for declarative pipeline:
     
-* `bitbucketStatus(status_name(optional), repoSlug(optional))`
+* `bitbucketStatus(status_name(optional), repoSlug(optional)) - deprecated`
 * `bitbucketStatus([status: status_name, reposlug: repo_name])`
     * Valid status_name: INPROGRESS, SUCCESSFUL, FAILED. 
     * Other statuses will raise **error**
     * If **status_name** is not specified, **status_name** will be related to build status in jenkins.  
-    * repo_name: override repository name. Default - imageName()
+    * reposlug: override repository name. Default - imageName()
 ```groovy
 post {
     always {
@@ -44,16 +44,8 @@ post {
 }
 ```
 ```groovy
-post {
-    always {
-        bitbucketStatus repoSlug: 'repoName'
-    }
-}
-```
-or
-```groovy
 steps {
-    bitbucketStatus("INPROGRESS", 'repoName')
+    bitbucketStatus status: 'INPROGRESS', repoSlug: 'repoName'
 }
 ```
 * `bitbucketStatusSuccessful()`
@@ -65,7 +57,7 @@ steps {
 * `commitId()`
     * Get last commit ID  
 
-* `dockerBuild(docker_file_path(String, optional), imageName(String, optional))`
+* `dockerBuild(docker_file_path(String, optional), imageName(String, optional)) -deprecated`
 * `dockerBuild([dockerfile: docker_file_path, imageName: "imagename"])`
     * Required **Multibranch plugin**
     * Required variable **env.DOCKER_REGISTRY**
@@ -86,20 +78,13 @@ or
 ```groovy
 steps {
     container('docker') {
-        dockerBuild('./files/DockerFile', 'any_name')
-    }
-}
-```
-or
-```groovy
-steps {
-    container('docker') {
         dockerBuild dockerfile:'./files/DockerFile'
         dockerbuild imageName: 'any_name'
     }
 }
 ```
-* `dockerPush(imageName(String, optional))`
+* `dockerPush(imageName(String, optional)) - deprecated`
+* `dockerPush([imageName: 'imagename')`
     * Required **Multibranch plugin**
     * Required variable **env.DOCKER_REGISTRY**
     * Default **imageName**: global var imageName()
@@ -115,11 +100,12 @@ steps {
 ```groovy
 steps {
     container('docker') {
-        dockerPush('any_name')
+        dockerPush imegName: 'any_name'
     }
 }
 ```   
-* `dockerPushLatest(imageName(String, optional))`
+* `dockerPushLatest(imageName(String, optional)) - deprecated`
+* `dockerPushLatest([imageName: 'imagename'])`
     * *Tag and push* image on latest
     * Required **Multibranch plugin**
     * Required variable **env.DOCKER_REGISTRY**
@@ -135,17 +121,17 @@ steps {
 ```groovy
 steps {
     container('docker') {
-        dockerPushLatest('any_name')
+        dockerPushLatest imagename: 'any_name'
     }
 }
 ```    
-* `helmUpgrade(namespace(String), helmArgs(Map))`
+* `helmUpgrade(namespace(String), helmArgs(Map)) - deprecated`
 * `helmUpgrade([namespace: 'namespace', set: Map)`
     * **namespace** must be valid, not null, empty or only whitespaces
     * **helmArgs** will be set via --set
 ```groovy
 steps {
-    helmUpgrade('test', ['account.image.tag': imageTag()])
+    helmUpgrade namespace: 'test', set: ['account.image.tag': imageTag()]
 }
 ```   
 * `kubernetesLabel()`
@@ -161,8 +147,8 @@ steps {
 }
 ```
 
-* `slack(channel_name(String, optional), allure(Boolean, optional, default: false))`    
-* `slack([channel: channel_name, allure: boolean_value])`    
+* `slack(channel_name(String, optional), allure(Boolean, optional, default: false)) - deprecated`    
+* `slack([channel: channel_name, allure: boolean_value])`
 	* Required **Multibranch plugin**
 	* **Default channel** will be taken from Slack configuration in Jenkins
 	* Build status will be taken from jenkins variable **currentBuild.currentResult**
@@ -179,7 +165,7 @@ or
 ```groovy
 post {
     unstable {
-        slack('#channel1', 'y')
+        slack channel: '#channel1', allure: 'y'
     }
     failure {
         slack channel:'#channel2', allure: false
