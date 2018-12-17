@@ -1,6 +1,18 @@
 
 def call(String imageNameParam=null){
 
+    call imageName: imageNameParam
+
+}
+
+def call(Map params){
+
+    def imageNameParam = null
+
+    if (params != null){
+        imageNameParam = params.imageName
+    }
+
     String imageNameLocal
     if (!imageNameParam?.trim()){
         imageNameLocal = "${imageName()}"
@@ -15,5 +27,4 @@ def call(String imageNameParam=null){
 
     sh "docker push \"${dockerImageName}:${imageTag()}\""
     sh "docker push \"${dockerImageName}:${commitId()}\""
-
 }

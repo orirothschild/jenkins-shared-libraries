@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class Slack_MessageWithoutAllureTests extends GroovyTestCase {
+class Slack_MessageWithoutAllure_Tests extends GroovyTestCase {
 
     @Parameterized.Parameters(name = "{0}")
     static Collection<Object> data(){
@@ -21,7 +21,7 @@ class Slack_MessageWithoutAllureTests extends GroovyTestCase {
     private channel
     private allure
 
-    Slack_MessageWithoutAllureTests(List list){
+	Slack_MessageWithoutAllure_Tests(List list){
         this.channel = list[0]
         this.allure = list[1]
     }

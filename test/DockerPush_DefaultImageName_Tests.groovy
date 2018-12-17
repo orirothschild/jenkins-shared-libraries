@@ -7,17 +7,17 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class DockerPush_CustomImageNameTests extends GroovyTestCase {
+class DockerPush_DefaultImageName_Tests extends GroovyTestCase {
 
     @Parameterized.Parameters(name = "{0}")
     static Collection<Object> data() {
-        DockerTestData.customImageNames()
+        DockerTestData.defaultImageNames()
     }
 
     protected String imageName
     protected dockerPush_ = new dockerPush()
 
-    DockerPush_CustomImageNameTests(String imageName){
+	DockerPush_DefaultImageName_Tests(String imageName){
         this.imageName = imageName
     }
 
@@ -25,7 +25,7 @@ class DockerPush_CustomImageNameTests extends GroovyTestCase {
     void setUp(){
         def variables = DockerPushTestData.commonVariables()
         Helper.setEnvVariables(variables, dockerPush_)
-        InjectVars.injectTo(dockerPush_, 'imageName', 'imageTag', 'commitId')
+        InjectVars.injectTo( dockerPush_, 'imageName', 'imageTag', 'commitId')
     }
 
     @Test
@@ -40,8 +40,8 @@ class DockerPush_CustomImageNameTests extends GroovyTestCase {
             actualCommands << command; return null
         }
         def expectedShellCommands = [
-                "docker push \"registry.com/bilderlings/${imageName}:master-1\"".toString(),
-                "docker push \"registry.com/bilderlings/${imageName}:1111\"".toString()
+                'docker push \"registry.com/bilderlings/Job_Name:master-1\"',
+                'docker push \"registry.com/bilderlings/Job_Name:1111\"'
         ]
 
         dockerPush_(imageName)

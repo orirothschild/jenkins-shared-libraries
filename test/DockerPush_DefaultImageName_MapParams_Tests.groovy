@@ -7,7 +7,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class DockerPush_DefaultImageNameTests extends GroovyTestCase {
+class DockerPush_DefaultImageName_MapParams_Tests extends GroovyTestCase {
 
     @Parameterized.Parameters(name = "{0}")
     static Collection<Object> data() {
@@ -17,7 +17,7 @@ class DockerPush_DefaultImageNameTests extends GroovyTestCase {
     protected String imageName
     protected dockerPush_ = new dockerPush()
 
-    DockerPush_DefaultImageNameTests(String imageName){
+	DockerPush_DefaultImageName_MapParams_Tests(String imageName){
         this.imageName = imageName
     }
 
@@ -44,7 +44,7 @@ class DockerPush_DefaultImageNameTests extends GroovyTestCase {
                 'docker push \"registry.com/bilderlings/Job_Name:1111\"'
         ]
 
-        dockerPush_(imageName)
+        dockerPush_ imageName: imageName
 
         assertEquals(expectedShellCommands, actualCommands)
 

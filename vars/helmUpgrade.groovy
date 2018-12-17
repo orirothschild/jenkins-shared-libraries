@@ -1,12 +1,21 @@
 
-def call(Map params){
-    call(params.namespace as String, params.set as Map)
+
+def call(String namespaceParameter, Map args=[:]){
+    call namespace: namespaceParameter, set: args
 }
 
-def call(String namespace, Map args=null){
-    def namespaceLocal = namespace?.trim()
-    if (!namespaceLocal){
-        error "Undefined namespace: ${namespace}"
+def call(Map params){
+
+    def namespace = null
+    def args = [:]
+
+    if (params != null){
+        namespace = params.namespace?.trim()
+        args = params.set
+    }
+
+    if (!namespace){
+        error "Undefined namespace: ${params.namespace}"
     }
     def exposedArgs = ' '
     if (args && args.size() > 0){
@@ -17,9 +26,9 @@ def call(String namespace, Map args=null){
         }
         exposedArgs += ' '
     }
-    def releaseName = "${imageName()}-${namespaceLocal}"
+    def releaseName = "${imageName()}-${namespace}"
     try{
-        sh "helm upgrade -f \"chart/values-${namespaceLocal}.yaml\" --install --force --wait --namespace \"${namespaceLocal}\"${exposedArgs}\"${releaseName}\" chart/"
+        sh "helm upgrade -f \"chart/values-${namespace}.yaml\" --install --force --wait --namespace \"${namespace}\"${exposedArgs}\"${releaseName}\" chart/"
     }catch(Exception ex){
         if (ex.message.contains('UPGRADE FAILED')){
             // 0 - is previous revision; https://github.com/helm/helm/issues/1796#issuecomment-311385728

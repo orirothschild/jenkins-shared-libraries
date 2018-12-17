@@ -9,7 +9,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class DockerBuild_VariableTests extends GroovyTestCase {
+class DockerBuild_Variable_Tests extends GroovyTestCase {
 
     @Parameterized.Parameters(name = "{0}")
     static Collection<Object[]> data() {
@@ -20,12 +20,12 @@ class DockerBuild_VariableTests extends GroovyTestCase {
     }
 
     protected String path
-    protected String imagename
+    protected String imageName
     protected dockerBuild_ = new dockerBuild()
 
-    DockerBuild_VariableTests(List list){
+    DockerBuild_Variable_Tests(List list){
         this.path = list[0]
-        this.imagename = list[1]
+        this.imageName = list[1]
     }
 
     @Rule
@@ -45,7 +45,7 @@ class DockerBuild_VariableTests extends GroovyTestCase {
         dockerBuild_.error = {String msg -> throw new DockerRegistryIsNotDefinedException(msg) }
         thrown.expect(DockerRegistryIsNotDefinedException.class)
         thrown.expectMessage('Variable DOCKER_REGISTRY is not defined')
-        dockerBuild_(path, imagename)
+        dockerBuild_(path, imageName)
     }
 
     @Test
@@ -56,7 +56,7 @@ class DockerBuild_VariableTests extends GroovyTestCase {
         def expectedCommands = []
 
         try {
-            dockerBuild_(path, imagename)
+            dockerBuild_(path, imageName)
             fail("Expected an DockerRegistryIsNotDefined to be thrown")
         }catch(DockerRegistryIsNotDefinedException e){
             assertEquals(expectedCommands, actualCommands)

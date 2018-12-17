@@ -10,7 +10,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class DockerPush_VariableTests extends GroovyTestCase {
+class DockerPush_Variable_MapParams_Tests extends GroovyTestCase {
 
     @Parameterized.Parameters(name = "{0}")
     static Collection<Object> data() {
@@ -21,7 +21,7 @@ class DockerPush_VariableTests extends GroovyTestCase {
     protected String imageName
     protected dockerPush_ = new dockerPush()
 
-    DockerPush_VariableTests(String imageName){
+	DockerPush_Variable_MapParams_Tests(String imageName){
         this.imageName = imageName
     }
 
@@ -42,7 +42,7 @@ class DockerPush_VariableTests extends GroovyTestCase {
         dockerPush_.error = { String msg -> throw new DockerRegistryIsNotDefinedException(msg) }
         thrown.expect(DockerRegistryIsNotDefinedException.class)
         thrown.expectMessage('Variable DOCKER_REGISTRY is not defined')
-        dockerPush_(imageName)
+        dockerPush_ imageName: imageName
     }
 
     @Test
@@ -53,7 +53,7 @@ class DockerPush_VariableTests extends GroovyTestCase {
         def expectedCommands = []
 
         try {
-            dockerPush_(imageName)
+            dockerPush_ imageName: imageName
             fail("Expected an DockerRegistryIsNotDefined to be thrown")
         }catch(DockerRegistryIsNotDefinedException e){
             assertEquals(expectedCommands, actualCommands)

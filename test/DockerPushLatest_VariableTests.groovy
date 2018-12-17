@@ -18,11 +18,11 @@ class DockerPushLatest_VariableTests extends GroovyTestCase {
         DockerTestData.defaultImageNames()
     }
 
-    protected String imagename
+    protected String imageName
     protected dockerPushLatest_ = new dockerPushLatest()
 
     DockerPushLatest_VariableTests(String imageName){
-        this.imagename = imageName
+        this.imageName = imageName
     }
 
     @Rule
@@ -42,7 +42,7 @@ class DockerPushLatest_VariableTests extends GroovyTestCase {
         dockerPushLatest_.error = { String msg -> throw new DockerRegistryIsNotDefinedException(msg) }
         thrown.expect(DockerRegistryIsNotDefinedException.class)
         thrown.expectMessage('Variable DOCKER_REGISTRY is not defined')
-        dockerPushLatest_(imagename)
+        dockerPushLatest_(imageName)
     }
 
     @Test
@@ -53,7 +53,7 @@ class DockerPushLatest_VariableTests extends GroovyTestCase {
         def expectedCommands = []
 
         try {
-            dockerPushLatest_(imagename)
+            dockerPushLatest_(imageName)
             fail("Expected an DockerRegistryIsNotDefined to be thrown")
         }catch(DockerRegistryIsNotDefinedException e){
             assertEquals(expectedCommands, actualCommands)

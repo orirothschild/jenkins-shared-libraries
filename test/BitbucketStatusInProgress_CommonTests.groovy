@@ -29,4 +29,26 @@ class BitbucketStatusInProgress_CommonTests extends GroovyTestCase {
 
     }
 
+    @Test
+    void test_BitbucketStatusInProgress_NoInProgressStatus_StatusIsInProgress(){
+        def actualParameters = [:]
+        bitbucketStatusInProgress_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
+
+        bitbucketStatusInProgress_ status: 'NotInProgress'
+
+        assertEquals('INPROGRESS', actualParameters['buildState'])
+
+    }
+
+    @Test
+    void test_BitbucketStatusInProgress_SetRepoSlug_RepoSlugIsChanged(){
+        def actualParameters = [:]
+        bitbucketStatusInProgress_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
+
+        bitbucketStatusInProgress_ repoSlug: 'custom_repo'
+
+        assertEquals('custom_repo', actualParameters['repoSlug'])
+
+    }
+
 }

@@ -8,16 +8,20 @@ Map buildStateMap = ['SUCCESS': 'SUCCESSFUL', 'FAILURE': 'FAILED', 'UNSTABLE': '
 @Field
 List bitbucketStatuses = ['INPROGRESS', 'SUCCESSFUL', 'FAILED']
 
-def call(Map params){
-    if (params == null){
-        call()
-    } else {
-        call(params.status, params.repoSlug)
-    }
-
+def call(String statusParam=null, String repoSlugParam=null) {
+    call status: statusParam, repoSlug: repoSlugParam
 }
 
-def call(String status=null, String repoSlug=null) {
+def call(Map params){
+
+    def status=null
+    def repoSlug=null
+
+    if (params != null){
+        status = params.status
+        repoSlug = params.repoSlug
+    }
+
     def bitbucketStatusNotifyParams = [:]
     if (status == null) {
         def result = currentBuild.currentResult
@@ -43,6 +47,7 @@ def call(String status=null, String repoSlug=null) {
     bitbucketStatusNotifyParams.repoSlug = repoSlugLocal
 
     send(bitbucketStatusNotifyParams)
+
 }
 
 

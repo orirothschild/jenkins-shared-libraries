@@ -1,4 +1,4 @@
-import TestData.Docker.DockerPushTestData
+import TestData.Docker.DockerPushLatestTestData
 import TestData.Docker.DockerTestData
 import Utils.Exceptions.DockerRegistryIsNotDefinedException
 import Utils.Helper
@@ -10,7 +10,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class DockerPush_VariableTests extends GroovyTestCase {
+class DockerPushLatest_Variable_MapParams_Tests extends GroovyTestCase {
 
     @Parameterized.Parameters(name = "{0}")
     static Collection<Object> data() {
@@ -19,9 +19,9 @@ class DockerPush_VariableTests extends GroovyTestCase {
     }
 
     protected String imageName
-    protected dockerPush_ = new dockerPush()
+    protected dockerPushLatest_ = new dockerPushLatest()
 
-    DockerPush_VariableTests(String imageName){
+	DockerPushLatest_Variable_MapParams_Tests(String imageName){
         this.imageName = imageName
     }
 
@@ -30,34 +30,33 @@ class DockerPush_VariableTests extends GroovyTestCase {
 
     @Before
     void setUp(){
-        def variables = DockerPushTestData.commonVariablesWithoutDockerRegistry()
-        Helper.setEnvVariables(variables, dockerPush_)
-        InjectVars.injectTo(dockerPush_, 'imageName', 'commitId')
+        def variables = DockerPushLatestTestData.commonVariablesWithoutDockerRegistry()
+        Helper.setEnvVariables(variables, dockerPushLatest_)
+        InjectVars.injectTo(dockerPushLatest_,'imageName', 'imageTag')
     }
 
     @Test
-    void test_DockerPush_DockerRegistryIsNotDefined_ErrorIsThrown(){
+    void test_DockerPushLatest_DockerRegistryIsNotDefined_ErrorIsThrown(){
         def actualCommands = []
-        dockerPush_.sh = { command -> actualCommands << command; return null}
-        dockerPush_.error = { String msg -> throw new DockerRegistryIsNotDefinedException(msg) }
+        dockerPushLatest_.sh = { command -> actualCommands << command; return null}
+        dockerPushLatest_.error = { String msg -> throw new DockerRegistryIsNotDefinedException(msg) }
         thrown.expect(DockerRegistryIsNotDefinedException.class)
         thrown.expectMessage('Variable DOCKER_REGISTRY is not defined')
-        dockerPush_(imageName)
+        dockerPushLatest_ imageName: imageName
     }
 
     @Test
-    void test_DockerPush_DockerRegistryIsNotDefined_shellCommandDockerBuildIsNotExecuted(){
+    void test_DockerPushLatest_DockerRegistryIsNotDefined_shellCommandDockerBuildIsNotExecuted(){
         def actualCommands = []
-        dockerPush_.sh = { command -> actualCommands << command; return null}
-        dockerPush_.error = { String msg -> throw new DockerRegistryIsNotDefinedException(msg) }
+        dockerPushLatest_.sh = { command -> actualCommands << command; return null}
+        dockerPushLatest_.error = { String msg -> throw new DockerRegistryIsNotDefinedException(msg) }
         def expectedCommands = []
 
         try {
-            dockerPush_(imageName)
+            dockerPushLatest_ imageName: imageName
             fail("Expected an DockerRegistryIsNotDefined to be thrown")
         }catch(DockerRegistryIsNotDefinedException e){
             assertEquals(expectedCommands, actualCommands)
         }
     }
-
 }

@@ -1,12 +1,12 @@
 
 def call(){
-    bitbucketStatus('SUCCESSFUL')
+    call(null)
 }
 
 def call(Map params){
     if (params == null){
-        call()
-    } else {
-        bitbucketStatus('SUCCESSFUL', params.repoSlug)
+        params = [:]
     }
+    params.status = 'SUCCESSFUL'
+    bitbucketStatus(params)
 }

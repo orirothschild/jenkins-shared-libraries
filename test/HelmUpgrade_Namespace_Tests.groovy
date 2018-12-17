@@ -9,7 +9,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class HelmUpgrade_NamespaceTests extends GroovyTestCase {
+class HelmUpgrade_Namespace_Tests extends GroovyTestCase {
 
     def helmUpgrade_ = new helmUpgrade()
     String namespace
@@ -20,7 +20,7 @@ class HelmUpgrade_NamespaceTests extends GroovyTestCase {
         HelmUpgradeTestData.suite_incorrectNamespaceCorrectArgsCases()
     }
 
-    HelmUpgrade_NamespaceTests(Map map){
+    HelmUpgrade_Namespace_Tests(Map map){
         namespace = map.namespace
         args = map.args
     }

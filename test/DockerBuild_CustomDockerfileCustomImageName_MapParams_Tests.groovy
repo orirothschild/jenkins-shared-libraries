@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class DockerBuild_CustomDockerfileCustomImageNameTests extends GroovyTestCase {
+class DockerBuild_CustomDockerfileCustomImageName_MapParams_Tests extends GroovyTestCase {
 
     @Parameterized.Parameters(name = "{0}")
     static Collection<Object[]> data() {
@@ -17,7 +17,7 @@ class DockerBuild_CustomDockerfileCustomImageNameTests extends GroovyTestCase {
     protected String imagename
     protected dockerBuild_ = new dockerBuild()
 
-    DockerBuild_CustomDockerfileCustomImageNameTests(List list){
+	DockerBuild_CustomDockerfileCustomImageName_MapParams_Tests(List list){
         this.path = list[0]
         this.imagename = list[1]
     }
@@ -44,7 +44,7 @@ class DockerBuild_CustomDockerfileCustomImageNameTests extends GroovyTestCase {
                 "docker build . -f \"${path}\" -t \"registry.com/bilderlings/${imagename}:master-1\" -t \"registry.com/bilderlings/${imagename}:1111\"".toString()
         ]
 
-        dockerBuild_(path, imagename)
+        dockerBuild_ dockerfile: path, imageName: imagename
 
         assertEquals(expectedCommands, actualCommands)
 

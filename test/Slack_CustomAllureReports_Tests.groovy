@@ -5,7 +5,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
-class Slack_CustomAllureReports extends GroovyTestCase {
+class Slack_CustomAllureReports_Tests extends GroovyTestCase {
 
     protected slack_ = new slack()
 

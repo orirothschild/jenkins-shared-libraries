@@ -9,7 +9,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class HelmUpgrade_ErrorAndRollbackTests extends GroovyTestCase {
+class HelmUpgrade_ErrorAndRollback_MapParams_Tests extends GroovyTestCase {
 
     def helmUpgrade_ = new helmUpgrade()
     String namespace
@@ -21,7 +21,7 @@ class HelmUpgrade_ErrorAndRollbackTests extends GroovyTestCase {
         HelmUpgradeTestData.suite_correctNamespaceCorrectArgsCases()
     }
 
-    HelmUpgrade_ErrorAndRollbackTests(Map map){
+	HelmUpgrade_ErrorAndRollback_MapParams_Tests(Map map){
         namespace = map.namespace
         args = map.args
         resultCommand = map.result
@@ -49,7 +49,7 @@ class HelmUpgrade_ErrorAndRollbackTests extends GroovyTestCase {
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
         def expectedCommand = 'helm rollback --wait "FAKE_Job_Name-test" 0'
         try {
-            helmUpgrade_(namespace, args)
+            helmUpgrade_ namespace: namespace, set: args
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
             assertEquals(2, actualCommands.size())
@@ -71,7 +71,7 @@ class HelmUpgrade_ErrorAndRollbackTests extends GroovyTestCase {
         helmUpgrade_.echo = {}
         def expectedCommand = 'helm rollback --wait "FAKE_Job_Name-test" 0'
         try {
-            helmUpgrade_(namespace, args)
+            helmUpgrade_ namespace: namespace, set: args
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
             assertEquals(1, actualCommands.size())
@@ -93,7 +93,7 @@ class HelmUpgrade_ErrorAndRollbackTests extends GroovyTestCase {
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
         helmUpgrade_.echo = {msg -> actualMessage = msg.toString(); return null}
         try {
-            helmUpgrade_(namespace, args)
+            helmUpgrade_ namespace: namespace, set: args
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
             assertNotSame('', actualMessage)
@@ -114,7 +114,7 @@ class HelmUpgrade_ErrorAndRollbackTests extends GroovyTestCase {
 
         thrown.expect(HelmUpgradeException.class)
         thrown.expectMessage('UPGRADE FAILED: error')
-        helmUpgrade_(namespace, args)
+        helmUpgrade_ namespace: namespace, set: args
     }
 
 }

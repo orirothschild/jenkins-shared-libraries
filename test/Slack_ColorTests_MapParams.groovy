@@ -6,19 +6,21 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class Slack_CorrectChannelTests extends GroovyTestCase {
-
+class Slack_ColorTests_MapParams extends GroovyTestCase {
 
     @Parameterized.Parameters(name = "{0}")
-    static Collection<Object> data(){
-        SlackTestData.suite_ChannelIsDefined_AllureIsAny()
+    static Collection<Object[]> data() {
+        SlackTestData.suite_ChannelIsDefined_AllureIsAny() +
+        SlackTestData.suite_ChannelIsEmpty_AllureIsCorrect() +
+        SlackTestData.suite_ChannelIsWhitespace_AllureIsAny() +
+        SlackTestData.suite_ChannelIsNull_AllureIsAny()
     }
 
-    private slack_ = new slack()
-    private channel
-    private allure
+    protected channel
+    protected allure
+    protected slack_ = new slack()
 
-    Slack_CorrectChannelTests(List list){
+	Slack_ColorTests_MapParams(List list){
         this.channel = list[0]
         this.allure = list[1]
     }
@@ -31,44 +33,38 @@ class Slack_CorrectChannelTests extends GroovyTestCase {
     }
 
     @Test
-    void test_SlackSuccessCorrectChannelTest_ChannelIsCorrect(){
-
+    void test_SlackSuccessColorTest_ColorIsGood(){
         Helper.setBuildStatus('SUCCESS', slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
-        def expectedChannel = channel?.toString()
 
-        slack_(channel, allure)
+        slack_ channel: channel, allure: allure
 
-        assertEquals(expectedChannel, actualParameters['channel'])
+        assertEquals('good', actualParameters['color'])
 
     }
 
     @Test
-    void test_SlackFailedCorrectChannelTest_ChannelIsCorrect(){
-
+    void test_SlackFailedColorTest_ColorIsDanger(){
         Helper.setBuildStatus('FAILURE', slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
-        def expectedChannel = channel?.toString()
 
-        slack_(channel, allure)
+        slack_ channel: channel, allure: allure
 
-        assertEquals(expectedChannel, actualParameters['channel'])
+        assertEquals('danger', actualParameters['color'])
 
     }
 
     @Test
-    void test_SlackUnstableCorrectChannelTest_ChannelIsCorrect(){
-
+    void test_SlackUnstableColorTest_ColorIsWarning(){
         Helper.setBuildStatus('UNSTABLE', slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
-        def expectedChannel = channel?.toString()
 
-        slack_(channel, allure)
+        slack_ channel: channel, allure: allure
 
-        assertEquals(expectedChannel, actualParameters['channel'])
+        assertEquals('warning', actualParameters['color'])
 
     }
 

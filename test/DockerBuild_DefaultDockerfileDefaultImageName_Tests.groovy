@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class DockerBuild_DefaultDockerfileDefaultImageNameTests extends GroovyTestCase {
+class DockerBuild_DefaultDockerfileDefaultImageName_Tests extends GroovyTestCase {
 
     @Parameterized.Parameters(name = "{0}")
     static Collection<Object[]> data() {
@@ -17,7 +17,7 @@ class DockerBuild_DefaultDockerfileDefaultImageNameTests extends GroovyTestCase 
     protected String imageName
     protected dockerBuild_ = new dockerBuild()
 
-    DockerBuild_DefaultDockerfileDefaultImageNameTests(List list){
+	DockerBuild_DefaultDockerfileDefaultImageName_Tests(List list){
         this.path = list[0]
         this.imageName = list[1]
     }

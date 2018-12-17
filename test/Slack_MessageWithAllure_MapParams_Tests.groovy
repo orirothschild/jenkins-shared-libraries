@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class Slack_MessageWithAllureTests extends GroovyTestCase {
+class Slack_MessageWithAllure_MapParams_Tests extends GroovyTestCase {
 
     @Parameterized.Parameters(name = "{0}")
     static Collection<Object> data(){
@@ -21,7 +21,7 @@ class Slack_MessageWithAllureTests extends GroovyTestCase {
     private channel
     private allure
 
-    Slack_MessageWithAllureTests(List list){
+	Slack_MessageWithAllure_MapParams_Tests(List list){
         this.channel = list[0]
         this.allure = list[1]
     }
@@ -40,7 +40,7 @@ class Slack_MessageWithAllureTests extends GroovyTestCase {
         slack_.slackSend = { Map map -> actualParameters = map; return null}
         def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! <FAKE_Build_Urlallure/|build-tests> (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
 
-        slack_(channel, allure)
+        slack_ channel: channel, allure: allure
 
         assertEquals(expectedMessage, actualParameters['message'])
 
@@ -53,7 +53,7 @@ class Slack_MessageWithAllureTests extends GroovyTestCase {
         slack_.slackSend = { Map map -> actualParameters = map; return null}
         def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build failed! <FAKE_Build_Urlallure/|build-tests> (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
 
-        slack_(channel, allure)
+        slack_ channel: channel, allure: allure
 
         assertEquals(expectedMessage, actualParameters['message'])
 
@@ -66,7 +66,7 @@ class Slack_MessageWithAllureTests extends GroovyTestCase {
         slack_.slackSend = { Map map -> actualParameters = map; return null}
         def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name tests failed! <FAKE_Build_Urlallure/|build-tests> (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
 
-        slack_(channel, allure)
+        slack_ channel: channel, allure: allure
 
         assertEquals(expectedMessage, actualParameters['message'])
 

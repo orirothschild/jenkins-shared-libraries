@@ -1,12 +1,14 @@
 
 def call(Map params){
-    if (!params){
-        return call()
-    }
-    return call(params.dockerfile as String, params.imageName as String)
-}
 
-def call(String dockerFilePath=null, String imageNameParam=null){
+    def dockerFilePath=null
+    def imageNameParam=null
+
+    if (params != null){
+        dockerFilePath = params.dockerfile
+        imageNameParam = params.imageName
+    }
+
     def dockerFilePathLocal = './Dockerfile'
     if (dockerFilePath?.trim()){
         dockerFilePathLocal = dockerFilePath
@@ -25,5 +27,10 @@ def call(String dockerFilePath=null, String imageNameParam=null){
     def dockerImageName = "${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}"
 
     sh "docker build . -f \"${dockerFilePathLocal}\" -t \"${dockerImageName}:${imageTag()}\" -t \"${dockerImageName}:${commitId()}\""
+}
+
+def call(String dockerFilePath=null, String imageNameParam=null){
+
+    call dockerfile: dockerFilePath, imageName: imageNameParam
 
 }

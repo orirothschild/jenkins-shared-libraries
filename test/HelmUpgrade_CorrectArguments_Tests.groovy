@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class HelmUpgrade_CorrectArgumentsTests extends GroovyTestCase {
+class HelmUpgrade_CorrectArguments_Tests extends GroovyTestCase {
 
     def helmUpgrade_ = new helmUpgrade()
     String namespace
@@ -18,7 +18,7 @@ class HelmUpgrade_CorrectArgumentsTests extends GroovyTestCase {
         HelmUpgradeTestData.suite_correctNamespaceCorrectArgsCases()
     }
 
-    HelmUpgrade_CorrectArgumentsTests(Map map){
+    HelmUpgrade_CorrectArguments_Tests(Map map){
         namespace = map.namespace
         args = map.args
         resultCommand = map.result

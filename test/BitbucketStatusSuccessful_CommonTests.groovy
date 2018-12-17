@@ -17,13 +17,35 @@ class BitbucketStatusSuccessful_CommonTests extends GroovyTestCase {
     }
 
     @Test
-    void test_BitbucketStatusFailed_StatusIsFailed(){
+    void test_BitbucketStatusFailed_StatusIsSuccessful(){
         def actualParameters = [:]
         bitbucketStatusSuccessful_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
         bitbucketStatusSuccessful_()
 
         assertEquals('SUCCESSFUL', actualParameters['buildState'])
+
+    }
+
+    @Test
+    void test_BitbucketStatusFailed_StatusNotSuccessful_StatusIsSuccessful(){
+        def actualParameters = [:]
+        bitbucketStatusSuccessful_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
+
+        bitbucketStatusSuccessful_ status: 'NotSuccessful'
+
+        assertEquals('SUCCESSFUL', actualParameters['buildState'])
+
+    }
+
+    @Test
+    void test_BitbucketStatusFailed_SetRepoSlug_RepoSlugIsChanged(){
+        def actualParameters = [:]
+        bitbucketStatusSuccessful_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
+
+        bitbucketStatusSuccessful_ repoSlug: 'custom_repo'
+
+        assertEquals('custom_repo', actualParameters['repoSlug'])
 
     }
 
