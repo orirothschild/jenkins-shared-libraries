@@ -35,13 +35,13 @@ class DockerBuild_CustomDockerfileDefaultImageName_Tests extends GroovyTestCase 
         dockerBuild_.sh = { command ->
             if (command instanceof Map){
                 if (command.returnStdout && command.script == "git log -n 1 --pretty=format:'%H'"){
-                    return "1111"
+                    return "111111122222222222222222"
                 }
             }
             actualCommands << command; return null
         }
         def expectedCommands = [
-                "docker build . -f \"${path}\" -t \"registry.com/bilderlings/Job_Name:master-1\" -t \"registry.com/bilderlings/Job_Name:1111\"".toString()
+                "docker build . -f \"${path}\" -t \"registry.com/bilderlings/Job_Name:master-1\" -t \"registry.com/bilderlings/Job_Name:111111122222222222222222\" -t \"registry.com/bilderlings/Job_Name:1111111\"".toString()
         ]
 
         dockerBuild_(path, imagename)

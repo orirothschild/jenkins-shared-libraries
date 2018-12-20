@@ -34,14 +34,15 @@ class DockerPush_DefaultImageName_MapParams_Tests extends GroovyTestCase {
         dockerPush_.sh = { command ->
             if (command instanceof Map){
                 if (command.returnStdout && command.script == "git log -n 1 --pretty=format:'%H'"){
-                    return "1111"
+                    return "111111122222222222222222"
                 }
             }
             actualCommands << command; return null
         }
         def expectedShellCommands = [
                 'docker push \"registry.com/bilderlings/Job_Name:master-1\"',
-                'docker push \"registry.com/bilderlings/Job_Name:1111\"'
+                'docker push \"registry.com/bilderlings/Job_Name:111111122222222222222222\"',
+                'docker push \"registry.com/bilderlings/Job_Name:1111111\"'
         ]
 
         dockerPush_ imageName: imageName

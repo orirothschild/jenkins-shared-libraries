@@ -35,13 +35,13 @@ class DockerBuild_DefaultDockerfileCustomImageName_MapParams_Tests extends Groov
         dockerBuild_.sh = { command ->
             if (command instanceof Map){
                 if (command.returnStdout && command.script == "git log -n 1 --pretty=format:'%H'"){
-                    return "1111"
+                    return "111111122222222222222222"
                 }
             }
             actualCommands << command; return null
         }
         def expectedCommands = [
-                "docker build . -f \"./Dockerfile\" -t \"registry.com/bilderlings/${imageName}:master-1\" -t \"registry.com/bilderlings/${imageName}:1111\"".toString()
+                "docker build . -f \"./Dockerfile\" -t \"registry.com/bilderlings/${imageName}:master-1\" -t \"registry.com/bilderlings/${imageName}:111111122222222222222222\" -t \"registry.com/bilderlings/${imageName}:1111111\"".toString()
         ]
 
         dockerBuild_ dockerfile: path, imageName: imageName

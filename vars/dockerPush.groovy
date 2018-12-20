@@ -25,6 +25,9 @@ def call(Map params){
 
     def dockerImageName = "${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}"
 
+    def fullCommitId = commitId()
+    def shortCommitId = fullCommitId?.toString()?.take(7)
     sh "docker push \"${dockerImageName}:${imageTag()}\""
-    sh "docker push \"${dockerImageName}:${commitId()}\""
+    sh "docker push \"${dockerImageName}:${fullCommitId}\""
+    sh "docker push \"${dockerImageName}:${shortCommitId}\""
 }
