@@ -1,3 +1,4 @@
+import TestData.CommitIdTestData
 import TestData.Docker.DockerBuildTestData
 import Utils.Helper
 import org.junit.Before
@@ -34,14 +35,12 @@ class DockerBuild_DefaultDockerfileCustomImageName_Tests extends GroovyTestCase 
         def actualCommands = []
         dockerBuild_.sh = { command ->
             if (command instanceof Map){
-                if (command.returnStdout && command.script == "git log -n 1 --pretty=format:'%H'"){
-                    return "111111122222222222222222"
-                }
+                return CommitIdTestData.lastCommitIdClosure(command)
             }
             actualCommands << command; return null
         }
         def expectedCommands = [
-                "docker build . -f \"./Dockerfile\" -t \"registry.com/bilderlings/${imageName}:master-1\" -t \"registry.com/bilderlings/${imageName}:111111122222222222222222\" -t \"registry.com/bilderlings/${imageName}:1111111\"".toString()
+                "docker build . -f \"./Dockerfile\" -t \"registry.com/bilderlings/${imageName}:master-1\" -t \"registry.com/bilderlings/${imageName}:1111111\"".toString()
         ]
 
         dockerBuild_(path, imageName)

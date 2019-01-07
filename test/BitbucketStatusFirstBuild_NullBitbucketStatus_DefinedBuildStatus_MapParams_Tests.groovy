@@ -38,7 +38,7 @@ class BitbucketStatusFirstBuild_NullBitbucketStatus_DefinedBuildStatus_MapParams
             actualHttpRequestParameters << map
             return BitbucketStatusTestData.httpRequestMock(map)
         }
-        def expectedUrl = 'https://api.bitbucket.org/2.0/repositories/bilderlings/Job_Name/commit/1111/statuses/build'
+        def expectedUrl = 'https://api.bitbucket.org/2.0/repositories/bilderlings/Job_Name/commit/1111111222222222222222222222222222222222/statuses/build'
 
         bitbucketStatus_ status: null
 

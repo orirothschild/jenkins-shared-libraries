@@ -1,4 +1,4 @@
 
 def call(){
-    "${BRANCH_NAME}-${BUILD_ID}"
+    commitId()?.toString()?.take(7)
 }

@@ -8,7 +8,7 @@ static Closure getLastCommitIdClosure(){
 
 static getLastCommitId(Map map){
     if (map.returnStdout && map.script == "git log -n 1 --pretty=format:'%H'"){
-        return "1111"
+        return "1111111222222222222222222222222222222222"
     }
     throw new Exception("Undefined shell parameters for getting last commit id: ${map}")
 }

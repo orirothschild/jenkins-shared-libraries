@@ -1,3 +1,4 @@
+import TestData.CommitIdTestData
 import TestData.Docker.DockerBuildTestData
 import Utils.Helper
 import org.junit.Before
@@ -19,14 +20,12 @@ class DockerBuild_CommonTests extends GroovyTestCase {
         def actualCommands = []
         dockerBuild_.sh = { command ->
             if (command instanceof Map){
-                if (command.returnStdout && command.script == "git log -n 1 --pretty=format:'%H'"){
-                    return "111111122222222222222222"
-                }
+                return CommitIdTestData.lastCommitIdClosure(command)
             }
             actualCommands << command; return null
         }
         def expectedCommands = [
-                'docker build . -f "./Dockerfile" -t "registry.com/bilderlings/Job_Name:master-1" -t "registry.com/bilderlings/Job_Name:111111122222222222222222" -t "registry.com/bilderlings/Job_Name:1111111"'
+                'docker build . -f "./Dockerfile" -t "registry.com/bilderlings/Job_Name:master-1" -t "registry.com/bilderlings/Job_Name:1111111"'
         ]
 
         dockerBuild_()
@@ -40,14 +39,12 @@ class DockerBuild_CommonTests extends GroovyTestCase {
         def actualCommands = []
         dockerBuild_.sh = { command ->
             if (command instanceof Map){
-                if (command.returnStdout && command.script == "git log -n 1 --pretty=format:'%H'"){
-                    return "111111122222222222222222"
-                }
+                return CommitIdTestData.lastCommitIdClosure(command)
             }
             actualCommands << command; return null
         }
         def expectedCommands = [
-                'docker build . -f "path" -t "registry.com/bilderlings/imagename:master-1" -t "registry.com/bilderlings/imagename:111111122222222222222222" -t "registry.com/bilderlings/imagename:1111111"'
+                'docker build . -f "path" -t "registry.com/bilderlings/imagename:master-1" -t "registry.com/bilderlings/imagename:1111111"'
         ]
 
         dockerBuild_ dockerfile: 'path', imageName: 'imagename'
@@ -61,14 +58,12 @@ class DockerBuild_CommonTests extends GroovyTestCase {
         def actualCommands = []
         dockerBuild_.sh = { command ->
             if (command instanceof Map){
-                if (command.returnStdout && command.script == "git log -n 1 --pretty=format:'%H'"){
-                    return "111111122222222222222222"
-                }
+                return CommitIdTestData.lastCommitIdClosure(command)
             }
             actualCommands << command; return null
         }
         def expectedCommands = [
-                'docker build . -f "./Dockerfile" -t "registry.com/bilderlings/Job_Name:master-1" -t "registry.com/bilderlings/Job_Name:111111122222222222222222" -t "registry.com/bilderlings/Job_Name:1111111"'
+                'docker build . -f "./Dockerfile" -t "registry.com/bilderlings/Job_Name:master-1" -t "registry.com/bilderlings/Job_Name:1111111"'
         ]
 
         dockerBuild_ null

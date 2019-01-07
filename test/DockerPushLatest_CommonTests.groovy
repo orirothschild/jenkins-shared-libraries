@@ -1,3 +1,4 @@
+import TestData.CommitIdTestData
 import TestData.Docker.DockerPushLatestTestData
 import Utils.Helper
 import org.junit.Before
@@ -11,15 +12,20 @@ class DockerPushLatest_CommonTests extends GroovyTestCase {
     void setUp(){
         def variables = DockerPushLatestTestData.commonVariables()
         Helper.setEnvVariables(variables, dockerPushLatest_)
-        InjectVars.injectTo(dockerPushLatest_, 'imageTag', 'imageName')
+        InjectVars.injectTo(dockerPushLatest_, 'imageTag', 'imageName', 'commitId')
     }
 
     @Test
     void test_DockerPushLatest_NoParameters_checkOrderOfCommands(){
         def actualShellCommands = []
-        dockerPushLatest_.sh = { command -> actualShellCommands << command; return null}
+        dockerPushLatest_.sh = { command ->
+            if (command instanceof Map) {
+                return CommitIdTestData.lastCommitIdClosure(command)
+            }
+            actualShellCommands << command
+        }
         def expectedShellCommands = [
-                'docker tag \"registry.com/bilderlings/Job_Name:master-1\" \"registry.com/bilderlings/Job_Name:latest\"',
+                'docker tag \"registry.com/bilderlings/Job_Name:1111111\" \"registry.com/bilderlings/Job_Name:latest\"',
                 'docker push \"registry.com/bilderlings/Job_Name:latest\"',
         ]
 

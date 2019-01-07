@@ -8,17 +8,12 @@ class CommitId_CommonTests extends GroovyTestCase {
 
     protected commitId_ = new commitId()
 
-    @Before
-    void setUp(){
-
-    }
-
     @Test
     void test_CommitIdWithoutGIT_COMMIT_CommitIdIsReturnedFromShell(){
         Helper.setEnvVariables([:], commitId_)
         InjectVars.injectClosureTo(commitId_, 'sh', CommitIdTestData.lastCommitIdClosure)
 
-        assertEquals('1111', commitId_())
+        assertEquals('1111111222222222222222222222222222222222', commitId_())
 
     }
 
@@ -35,7 +30,7 @@ class CommitId_CommonTests extends GroovyTestCase {
         Helper.setEnvVariables([GIT_COMMIT:null], commitId_)
         InjectVars.injectClosureTo(commitId_, 'sh', CommitIdTestData.lastCommitIdClosure)
 
-        assertEquals('1111', commitId_())
+        assertEquals('1111111222222222222222222222222222222222', commitId_())
 
     }
 
@@ -44,7 +39,7 @@ class CommitId_CommonTests extends GroovyTestCase {
         Helper.setEnvVariables([GIT_COMMIT:''], commitId_)
         InjectVars.injectClosureTo(commitId_, 'sh', CommitIdTestData.lastCommitIdClosure)
 
-        assertEquals('1111', commitId_())
+        assertEquals('1111111222222222222222222222222222222222', commitId_())
 
     }
 
@@ -53,7 +48,7 @@ class CommitId_CommonTests extends GroovyTestCase {
         Helper.setEnvVariables([GIT_COMMIT:' '], commitId_)
         InjectVars.injectClosureTo(commitId_, 'sh', CommitIdTestData.lastCommitIdClosure)
 
-        assertEquals('1111', commitId_())
+        assertEquals('1111111222222222222222222222222222222222', commitId_())
 
     }
 
@@ -62,7 +57,7 @@ class CommitId_CommonTests extends GroovyTestCase {
         Helper.setEnvVariables([GIT_COMMIT:'   '], commitId_)
         InjectVars.injectClosureTo(commitId_, 'sh', CommitIdTestData.lastCommitIdClosure)
 
-        assertEquals('1111', commitId_())
+        assertEquals('1111111222222222222222222222222222222222', commitId_())
 
     }
 

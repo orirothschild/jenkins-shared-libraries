@@ -25,9 +25,8 @@ def call(Map params){
     }
 
     def dockerImageName = "${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}"
-    def fullCommitId = commitId()
-    def shortCommitId = fullCommitId?.toString()?.take(7)
-    sh "docker build . -f \"${dockerFilePathLocal}\" -t \"${dockerImageName}:${imageTag()}\" -t \"${dockerImageName}:${fullCommitId}\" -t \"${dockerImageName}:${shortCommitId}\""
+
+    sh "docker build . -f \"${dockerFilePathLocal}\" -t \"${dockerImageName}:${BRANCH_NAME}-${BUILD_ID}\" -t \"${dockerImageName}:${imageTag()}\""
 }
 
 def call(String dockerFilePath=null, String imageNameParam=null){

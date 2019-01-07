@@ -63,7 +63,7 @@ steps {
     * Required variable **env.DOCKER_REGISTRY**
     * Default **imageName**: global var imageName()
     * **imageName**: null, '', ' ' will be set default
-    * Will be built with 2 tags: parameter(imageName):imageTag() and parameter(imageName):commitId()
+    * Will be built with 2 tags: imageName:imageTag(), imageName:${BRANCH_NAME}-${BUILD_ID}
     * Default **docker_file_path**: './Dockerfile'
     * **docker_file_path**: null, '', ' ' will be set to default
     * Default **imageName**: first part of JOB_NAME
@@ -89,7 +89,7 @@ steps {
     * Required variable **env.DOCKER_REGISTRY**
     * Default **imageName**: global var imageName()
     * **imageName**: null, '', ' ' will be set to default
-    * Will be pushed with 2 tags: parameter(imageName):imageTag() and parameter(imageName):commitId()
+    * Will be pushed with with 2 tags: imageName:imageTag(), imageName:${BRANCH_NAME}-${BUILD_ID}
 ```groovy
 steps {
     container('docker') {
@@ -177,7 +177,7 @@ post {
     * Replace "${JOB_NAME}".split('/')[0]  
     
 * `imageTag()`
-    * Replace "${BRANCH_NAME}-${BUILD_ID}"  
+    * Replace commitId().take(7)  
     
 * `successBuild()`
     * Expression: currentBuild.currentResult == 'SUCCESS'

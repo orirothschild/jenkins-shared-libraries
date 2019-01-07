@@ -53,7 +53,7 @@ class BitbucketStatus_DefinedBuildStatus_ValidBitBucketStatus_MapParams_Tests ex
 
         bitbucketStatus_ status: validBitbucketStatus
 
-        assertEquals('1111', actualParameters['commitId'])
+        assertEquals('1111111222222222222222222222222222222222', actualParameters['commitId'])
 
     }
 

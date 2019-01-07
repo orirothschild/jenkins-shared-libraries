@@ -48,7 +48,7 @@ class BitbucketStatus_NullBitbucketStatus_DefinedBuildStatus_MapParams_Tests ext
 
         bitbucketStatus_ status: null
 
-        assertEquals('1111', actualParameters['commitId'])
+        assertEquals('1111111222222222222222222222222222222222', actualParameters['commitId'])
 
     }
 

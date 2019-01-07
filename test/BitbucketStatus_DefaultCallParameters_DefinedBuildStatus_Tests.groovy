@@ -48,7 +48,7 @@ class BitbucketStatus_DefaultCallParameters_DefinedBuildStatus_Tests extends Gro
 
         bitbucketStatus_()
 
-        assertEquals('1111', actualParameters['commitId'])
+        assertEquals('1111111222222222222222222222222222222222', actualParameters['commitId'])
 
     }
 
