@@ -33,60 +33,201 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
         InjectVars.injectTo(helmUpgrade_, 'imageName')
     }
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none()
-
     @Test
-    void test_HelmUpgrade_ExceptionWithHelmUpgradeMessage_rollbackIsExecuted(){
-
+    void test_HelmUpgrade_ErrorWithHelmUpgradeMessage_rollbackIsExecuted(){
         def actualCommands = []
         helmUpgrade_.sh = { command ->
-            actualCommands << command
-            if (((String)command).startsWith('helm upgrade')){
-                throw new Exception('UPGRADE FAILED: error')
+            if (command instanceof Map) {
+                actualCommands << command.script
+                if (command.returnStdout) {
+                    if (command.script == 'mktemp /tmp/helm_upgrade_stderr.XXXXXX') {
+                        return "/tmp/helm_upgrade_stderr.1111111"
+                    } else if (command.script == 'cat /tmp/helm_upgrade_stderr.1111111'){
+                        return 'UPGRADE FAILED: error'
+                    }
+                } else if (command.returnStatus) {
+                    if (command.script.startsWith('helm upgrade')){
+                        return 1
+                    }
+                }
+            } else{
+                actualCommands << command
             }
         }
+
+        helmUpgrade_.echo = {String msg -> }
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
-        def expectedCommand = 'helm rollback --wait "FAKE_Job_Name-test" 0'
         try {
             helmUpgrade_(namespace, args)
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
-            assertEquals(2, actualCommands.size())
-            assertEquals(expectedCommand, actualCommands[1])
+            assertEquals(5, actualCommands.size())
+            assertEquals('mktemp /tmp/helm_upgrade_stderr.XXXXXX', actualCommands[0])
+            assertEquals(resultCommand + ' 2>/tmp/helm_upgrade_stderr.1111111', actualCommands[1])
+            assertEquals('cat /tmp/helm_upgrade_stderr.1111111', actualCommands[2])
+            assertEquals('helm rollback --wait "FAKE_Job_Name-test" 0', actualCommands[3])
+            assertEquals('rm /tmp/helm_upgrade_stderr.1111111', actualCommands[4])
         }
     }
 
     @Test
-    void test_HelmUpgrade_ExceptionWithNoHelmUpgradeMessage_rollbackIsNotExecuted(){
+    void test_HelmUpgrade_ErrorWithHelmUpgradeMessage_errorIsThrown(){
+        def actualCommands = []
+        helmUpgrade_.sh = { command ->
+            if (command instanceof Map) {
+                actualCommands << command.script
+                if (command.returnStdout) {
+                    if (command.script == 'mktemp /tmp/helm_upgrade_stderr.XXXXXX') {
+                        return "/tmp/helm_upgrade_stderr.1111111"
+                    } else if (command.script == 'cat /tmp/helm_upgrade_stderr.1111111'){
+                        return 'UPGRADE FAILED: error'
+                    }
+                } else if (command.returnStatus) {
+                    if (command.script.startsWith('helm upgrade')){
+                        return 157
+                    }else if (command.script.startsWith('helm rollback')){
+                        return 0
+                    }
+                }
+            } else{
+                actualCommands << command
+            }
+        }
+
+        helmUpgrade_.echo = {String msg -> }
+        helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
+        try {
+            helmUpgrade_(namespace, args)
+            fail('No HelmUpgradeException was thrown')
+        }catch(HelmUpgradeException ex){
+            assertEquals('Exit code 157\nUPGRADE FAILED: error', ex.message)
+        }
+    }
+
+    @Test
+    void test_HelmUpgrade_ErrorWithHelmUpgradeMessageAndRollbackError_errorIsThrown(){
+        def actualCommands = []
+        helmUpgrade_.sh = { command ->
+            if (command instanceof Map) {
+                actualCommands << command.script
+                if (command.returnStdout) {
+                    if (command.script == 'mktemp /tmp/helm_upgrade_stderr.XXXXXX') {
+                        return "/tmp/helm_upgrade_stderr.1111111"
+                    } else if (command.script == 'cat /tmp/helm_upgrade_stderr.1111111'){
+                        return 'UPGRADE FAILED: error'
+                    }
+                } else if (command.returnStatus) {
+                    if (command.script.startsWith('helm upgrade')){
+                        return 157
+                    }else if (command.script.startsWith('helm rollback')){
+                        return 111
+                    }
+                }
+            } else{
+                actualCommands << command
+            }
+        }
+
+        helmUpgrade_.echo = {String msg -> }
+        helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
+        try {
+            helmUpgrade_(namespace, args)
+            fail('No HelmUpgradeException was thrown')
+        }catch(HelmUpgradeException ex){
+            assertEquals('Exit code 157\nUPGRADE FAILED: error\nRollback failed. Exit code 111', ex.message)
+        }
+    }
+
+    @Test
+    void test_HelmUpgrade_ErrorWithNoHelmUpgradeMessage_rollbackIsNotExecuted(){
 
         def actualCommands = []
         helmUpgrade_.sh = { command ->
-            actualCommands << command
-            if (((String)command).startsWith('helm upgrade')){
-                throw new Exception('error')
+            if (command instanceof Map) {
+                actualCommands << command.script
+                if (command.returnStdout) {
+                    if (command.script == 'mktemp /tmp/helm_upgrade_stderr.XXXXXX') {
+                        return "/tmp/helm_upgrade_stderr.1111111"
+                    } else if (command.script == 'cat /tmp/helm_upgrade_stderr.1111111'){
+                        return 'error'
+                    }
+                } else if (command.returnStatus) {
+                    if (command.script.startsWith('helm upgrade')){
+                        return 1
+                    } else if (command.script.startsWith('helm rollback')){
+                        return 0
+                    }
+                }
+            } else{
+                actualCommands << command
             }
         }
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
         helmUpgrade_.echo = {}
-        def expectedCommand = 'helm rollback --wait "FAKE_Job_Name-test" 0'
         try {
             helmUpgrade_(namespace, args)
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
-            assertEquals(1, actualCommands.size())
-            assertNotSame(expectedCommand, actualCommands[0])
+            assertEquals(4, actualCommands.size())
+            assertEquals('mktemp /tmp/helm_upgrade_stderr.XXXXXX', actualCommands[0])
+            assertEquals(resultCommand + ' 2>/tmp/helm_upgrade_stderr.1111111', actualCommands[1])
+            assertEquals('cat /tmp/helm_upgrade_stderr.1111111', actualCommands[2])
+            assertEquals('rm /tmp/helm_upgrade_stderr.1111111', actualCommands[3])
         }
     }
 
     @Test
-    void test_HelmUpgrade_ExceptionWithNoHelmUpgradeMessage_messageIsSent(){
+    void test_HelmUpgrade_ErrorWithNoHelmUpgradeMessage_errorIsThrown(){
 
         def actualCommands = []
         helmUpgrade_.sh = { command ->
-            actualCommands << command
-            if (((String)command).startsWith('helm upgrade')){
-                throw new Exception('error')
+            if (command instanceof Map) {
+                actualCommands << command.script
+                if (command.returnStdout) {
+                    if (command.script == 'mktemp /tmp/helm_upgrade_stderr.XXXXXX') {
+                        return "/tmp/helm_upgrade_stderr.1111111"
+                    } else if (command.script == 'cat /tmp/helm_upgrade_stderr.1111111'){
+                        return 'error'
+                    }
+                } else if (command.returnStatus) {
+                    if (command.script.startsWith('helm upgrade')){
+                        return 157
+                    }
+                }
+            } else{
+                actualCommands << command
+            }
+        }
+        helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
+        helmUpgrade_.echo = {}
+        try {
+            helmUpgrade_(namespace, args)
+            fail('No HelmUpgradeException was thrown')
+        }catch(HelmUpgradeException ex){
+            assertEquals('Exit code 157\nerror', ex.message)
+        }
+    }
+
+    @Test
+    void test_HelmUpgrade_ErrorWithNoHelmUpgradeMessage_messageIsSent(){
+
+        def actualCommands = []
+        helmUpgrade_.sh = { command ->
+            if (command instanceof Map) {
+                actualCommands << command.script
+                if (command.returnStdout) {
+                    if (command.script == 'mktemp /tmp/helm_upgrade_stderr.XXXXXX') {
+                        return "/tmp/helm_upgrade_stderr.1111111"
+                    } else if (command.script == 'cat /tmp/helm_upgrade_stderr.1111111'){
+                        return 'error'
+                    }
+                } else if (command.returnStatus) {
+                    if (command.script.startsWith('helm upgrade')){
+                        return 1
+                    }
+                }
+            } else{
+                actualCommands << command
             }
         }
         def actualMessage = ''
@@ -96,25 +237,79 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
             helmUpgrade_(namespace, args)
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
-            assertNotSame('', actualMessage)
+            assertEquals("It seems not a upgrading failure. If it's the failure, you can do 'helm rollback --wait \"FAKE_Job_Name-test\" 0'", actualMessage)
         }
     }
 
+
     @Test
-    void test_HelmUpgrade_ExceptionWithHelmUpgradeMessage_errorWithMessageIsThrown(){
+    void test_HelmUpgrade_ErrorWithoutMessage_rollbackIsNotExecuted(){
 
         def actualCommands = []
         helmUpgrade_.sh = { command ->
-            actualCommands << command
-            if (((String)command).startsWith('helm upgrade')){
-                throw new Exception('UPGRADE FAILED: error')
+            if (command instanceof Map) {
+                actualCommands << command.script
+                if (command.returnStdout) {
+                    if (command.script == 'mktemp /tmp/helm_upgrade_stderr.XXXXXX') {
+                        return "/tmp/helm_upgrade_stderr.1111111"
+                    } else if (command.script == 'cat /tmp/helm_upgrade_stderr.1111111'){
+                        return ''
+                    }
+                } else if (command.returnStatus) {
+                    if (command.script.startsWith('helm upgrade')){
+                        return 1
+                    }
+                }
+            } else{
+                actualCommands << command
             }
         }
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
-
-        thrown.expect(HelmUpgradeException.class)
-        thrown.expectMessage('UPGRADE FAILED: error')
-        helmUpgrade_(namespace, args)
+        helmUpgrade_.echo = {}
+        try {
+            helmUpgrade_(namespace, args)
+            fail('No HelmUpgradeException was thrown')
+        }catch(HelmUpgradeException ex){
+            assertEquals(4, actualCommands.size())
+            assertEquals('mktemp /tmp/helm_upgrade_stderr.XXXXXX', actualCommands[0])
+            assertEquals(resultCommand + ' 2>/tmp/helm_upgrade_stderr.1111111', actualCommands[1])
+            assertEquals('cat /tmp/helm_upgrade_stderr.1111111', actualCommands[2])
+            assertEquals('rm /tmp/helm_upgrade_stderr.1111111', actualCommands[3])
+        }
     }
+
+
+    @Test
+    void test_HelmUpgrade_ErrorWithoutMessage_errorIsThrownOnlyWithExitCode(){
+
+        def actualCommands = []
+        helmUpgrade_.sh = { command ->
+            if (command instanceof Map) {
+                actualCommands << command.script
+                if (command.returnStdout) {
+                    if (command.script == 'mktemp /tmp/helm_upgrade_stderr.XXXXXX') {
+                        return "/tmp/helm_upgrade_stderr.1111111"
+                    } else if (command.script == 'cat /tmp/helm_upgrade_stderr.1111111'){
+                        return ''
+                    }
+                } else if (command.returnStatus) {
+                    if (command.script.startsWith('helm upgrade')){
+                        return 157
+                    }
+                }
+            } else{
+                actualCommands << command
+            }
+        }
+        helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
+        helmUpgrade_.echo = {}
+        try {
+            helmUpgrade_(namespace, args)
+            fail('No HelmUpgradeException was thrown')
+        }catch(HelmUpgradeException ex){
+            assertEquals('Exit code 157', ex.message)
+        }
+    }
+
 
 }

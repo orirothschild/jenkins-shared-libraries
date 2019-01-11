@@ -34,24 +34,87 @@ class HelmUpgrade_CorrectArguments_Tests extends GroovyTestCase {
     void test_HelmUpgrade_CorrectArguments_shellIsExecuted(){
 
         def actualCommands = []
-        helmUpgrade_.sh = {command -> actualCommands << command}
-        def expectedCommands = [resultCommand]
+        helmUpgrade_.sh = {command ->
+            if (command instanceof Map) {
+                actualCommands << command.script
+                if (command.returnStdout) {
+                    if (command.script.contains('mktemp /tmp/helm_upgrade_stderr.XXXXXX')) {
+                        return "/tmp/helm_upgrade_stderr.1111111"
+                    }
+                } else if (command.returnStatus) {
+                    if (command.script.startsWith('helm upgrade')){
+                        return 0
+                    }
+                }
+            } else{
+                actualCommands << command
+            }
+        }
+        helmUpgrade_.echo = {String msg -> }
 
         helmUpgrade_(namespace, args)
 
-        assertEquals(expectedCommands, actualCommands)
+        assertEquals(3, actualCommands.size())
+        assertEquals('mktemp /tmp/helm_upgrade_stderr.XXXXXX', actualCommands[0])
+        assertEquals(resultCommand + ' 2>/tmp/helm_upgrade_stderr.1111111', actualCommands[1])
+        assertEquals('rm /tmp/helm_upgrade_stderr.1111111', actualCommands[2])
+    }
+
+    @Test
+    void test_HelmUpgrade_CorrectArguments_NoEchoMessages(){
+
+        helmUpgrade_.sh = {command ->
+            if (command instanceof Map) {
+                if (command.returnStdout) {
+                    if (command.script.contains('mktemp /tmp/helm_upgrade_stderr.XXXXXX')) {
+                        return "/tmp/helm_upgrade_stderr.1111111"
+                    }
+                } else if (command.returnStatus) {
+                    if (command.script.startsWith('helm upgrade')){
+                        return 0
+                    }
+                }
+            } else{
+            }
+        }
+        def messages = []
+        helmUpgrade_.echo = {String msg -> messages << msg}
+
+        helmUpgrade_(namespace, args)
+
+        assertEquals(0, messages.size())
     }
 
     @Test
     void test_HelmUpgradeMap_CorrectArguments_shellIsExecuted(){
 
         def actualCommands = []
-        helmUpgrade_.sh = {command -> actualCommands << command}
-        def expectedCommands = [resultCommand]
+        helmUpgrade_.sh = {command ->
+            if (command instanceof Map) {
+                actualCommands << command.script
+                if (command.returnStdout) {
+                    if (command.script.contains('mktemp /tmp/helm_upgrade_stderr.XXXXXX')) {
+                        return "/tmp/helm_upgrade_stderr.1111111"
+                    }
+                } else if (command.returnStatus) {
+                    if (command.script.startsWith('helm upgrade')){
+                        return 0
+                    }
+                }
+            } else{
+                actualCommands << command
+            }
+        }
+        helmUpgrade_.echo = {String msg -> }
 
         helmUpgrade_ namespace: namespace, set: args
 
-        assertEquals(expectedCommands, actualCommands)
+        assertEquals(3, actualCommands.size())
+        assertEquals('mktemp /tmp/helm_upgrade_stderr.XXXXXX', actualCommands[0])
+        assertEquals(resultCommand + ' 2>/tmp/helm_upgrade_stderr.1111111', actualCommands[1])
+        assertEquals('rm /tmp/helm_upgrade_stderr.1111111', actualCommands[2])
+
+
     }
 
 }

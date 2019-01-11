@@ -34,24 +34,55 @@ class HelmUpgrade_ArgsTests extends GroovyTestCase {
     void test_HelmUpgrade_Args_shellIsExecuted(){
 
         def actualCommands = []
-        helmUpgrade_.sh = {command -> actualCommands << command}
-        def expectedCommands = [resultCommand]
-
+        helmUpgrade_.sh = {command ->
+            if (command instanceof Map) {
+                actualCommands << command.script
+                if (command.returnStdout) {
+                    if (command.script.contains('mktemp /tmp/helm_upgrade_stderr.XXXXXX')) {
+                        return "/tmp/helm_upgrade_stderr.1111111"
+                    }
+                } else if (command.returnStatus) {
+                    if (command.script.startsWith('helm upgrade')){
+                        return 0
+                    }
+                }
+            } else{
+                actualCommands << command
+            }
+        }
+        helmUpgrade_.echo = {String msg -> }
         helmUpgrade_(namespace, args)
 
-        assertEquals(expectedCommands, actualCommands)
+        assertEquals(3, actualCommands.size())
+        assertEquals(resultCommand + ' 2>/tmp/helm_upgrade_stderr.1111111', actualCommands[1])
     }
 
     @Test
     void test_HelmUpgradeMap_Args_shellIsExecuted(){
 
         def actualCommands = []
-        helmUpgrade_.sh = {command -> actualCommands << command}
-        def expectedCommands = [resultCommand]
-
+        helmUpgrade_.sh = {command ->
+            if (command instanceof Map) {
+                actualCommands << command.script
+                if (command.returnStdout) {
+                    if (command.script.contains('mktemp /tmp/helm_upgrade_stderr.XXXXXX')) {
+                        return "/tmp/helm_upgrade_stderr.1111111"
+                    }
+                } else if (command.returnStatus) {
+                    if (command.script.startsWith('helm upgrade')){
+                        return 0
+                    }
+                }
+            } else{
+                actualCommands << command
+            }
+        }
+        helmUpgrade_.echo = {String msg -> }
         helmUpgrade_ namespace: namespace, set: args
 
-        assertEquals(expectedCommands, actualCommands)
+        assertEquals(3, actualCommands.size())
+        assertEquals(actualCommands[1], resultCommand + ' 2>/tmp/helm_upgrade_stderr.1111111')
     }
+
 
 }
