@@ -34,10 +34,11 @@ static List<Map> suite_incorrectNamespaceCorrectArgsCases(){
 
 static List<Map> correctArgs(){
     def argss = []
-    argss << [args: ['account.image.tag': 'imageTag', 'swagger.image.tag': 'imageTag'],
-              result: 'helm upgrade -f "chart/values-test.yaml" --install --force --wait --namespace "test" --set "account.image.tag=imageTag" --set "swagger.image.tag=imageTag" "FAKE_Job_Name-test" chart/']
+    def tag = 1234
+    argss << [args: ['account.image.tag': 'imageTag', 'swagger.image.tag': 1234, 'any.image.tag': "${tag}"],
+              result: 'helm upgrade -f "chart/values-test.yaml" --install --force --wait --namespace "test" --set-string "account.image.tag=imageTag" --set "swagger.image.tag=1234" --set-string "any.image.tag=1234" "FAKE_Job_Name-test" chart/']
     argss << [args: ['swagger.image.tag': 'imageTag'],
-              result: 'helm upgrade -f "chart/values-test.yaml" --install --force --wait --namespace "test" --set "swagger.image.tag=imageTag" "FAKE_Job_Name-test" chart/']
+              result: 'helm upgrade -f "chart/values-test.yaml" --install --force --wait --namespace "test" --set-string "swagger.image.tag=imageTag" "FAKE_Job_Name-test" chart/']
     argss << [args: [:],
               result: 'helm upgrade -f "chart/values-test.yaml" --install --force --wait --namespace "test" "FAKE_Job_Name-test" chart/']
     argss << [args: null as Map,

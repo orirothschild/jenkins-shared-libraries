@@ -1,5 +1,4 @@
 
-
 def call(String namespaceParameter, Map args=[:]){
     call namespace: namespaceParameter, set: args
 }
@@ -21,7 +20,11 @@ def call(Map params){
     if (args && args.size() > 0){
         exposedArgs = ''
         args.each { k, v ->
-            exposedArgs += ' --set '
+            if (v instanceof CharSequence){
+                exposedArgs += ' --set-string '
+            } else {
+                exposedArgs += ' --set '
+            }
             exposedArgs += "\"$k=$v\""
         }
         exposedArgs += ' '
