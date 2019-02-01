@@ -14,10 +14,6 @@ def call(String statusParam=null, String repoSlugParam=null) {
 
 def call(Map params){
 
-    if (env.BRANCH_NAME == 'master'){
-        echo 'Bitbucket status is ignored cause \'master\' branch'
-        return
-    }
     def status=null
     def repoSlug=null
 
@@ -42,6 +38,12 @@ def call(Map params){
             error "Undefined bitbucket status: ${status}"
         }
     }
+
+    if (env.BRANCH_NAME == 'master'){
+        echo "Bitbucket status '${status}' is ignored cause 'master' branch"
+        return
+    }
+
     bitbucketStatusNotifyParams.commitId = "${commitId()}"
     def repoSlugLocal = repoSlug?.trim()
     if (repoSlugLocal == null || repoSlugLocal == ''){

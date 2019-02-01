@@ -3,6 +3,7 @@ import TestData.CommitIdTestData
 import Utils.Helper
 import org.junit.Before
 import org.junit.Test
+import org.omg.PortableInterceptor.SUCCESSFUL
 
 class BitbucketStatus_MasterBranchTests extends GroovyTestCase {
 
@@ -16,6 +17,7 @@ class BitbucketStatus_MasterBranchTests extends GroovyTestCase {
 
     @Test
     void test_BitbucketStatus_MasterBranch_OnlyEchoIsExecuted(){
+        Helper.setBuildStatus('SUCCESS', bitbucketStatus_)
         def httpRequestIsExecuted = false
         bitbucketStatus_.httpRequest = { Map map ->
             httpRequestIsExecuted = true
@@ -33,7 +35,7 @@ class BitbucketStatus_MasterBranchTests extends GroovyTestCase {
 
         assertFalse('httpRequest is not executed', httpRequestIsExecuted)
         assertFalse('bitbucketStatusNotify is not executed',  notifyIsExecuted)
-        assertEquals('Bitbucket status is ignored cause \'master\' branch', echoMessage)
+        assertEquals('Bitbucket status \'null\' is ignored cause \'master\' branch', echoMessage)
 
     }
 
