@@ -14,6 +14,10 @@ def call(String statusParam=null, String repoSlugParam=null) {
 
 def call(Map params){
 
+    if (env.BRANCH_NAME == 'master'){
+        echo 'Bitbucket status is ignored cause \'master\' branch'
+        return
+    }
     def status=null
     def repoSlug=null
 
