@@ -16,10 +16,14 @@ def call(Map params){
 
     def status=null
     def repoSlug=null
+    def ignoreMaster=true
 
     if (params != null){
         status = params.status
         repoSlug = params.repoSlug
+        if (params.ignoreMaster != null){
+            ignoreMaster = params.ignoreMaster.toBoolean()
+        }
     }
 
     def bitbucketStatusNotifyParams = [:]
@@ -40,7 +44,7 @@ def call(Map params){
         }
     }
 
-    if (env.BRANCH_NAME == 'master'){
+    if (ignoreMaster && env.BRANCH_NAME == 'master'){
         echo "Bitbucket status '${computedBitbucketStatus}' is ignored cause 'master' branch"
         return
     }

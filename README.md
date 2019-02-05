@@ -31,7 +31,7 @@ Here is:
 Variables for declarative pipeline:
     
 * `bitbucketStatus(status_name(optional), repoSlug(optional)) - deprecated`
-* `bitbucketStatus([status: status_name, reposlug: repo_name])`
+* `bitbucketStatus([status: status_name, reposlug: repo_name, ignoreMaster: true(default), false])`
     * Valid status_name: INPROGRESS, SUCCESSFUL, FAILED. 
     * Other statuses will raise **error**
     * If **status_name** is not specified, **status_name** will be related to build status in jenkins.  
@@ -45,15 +45,15 @@ post {
 ```
 ```groovy
 steps {
-    bitbucketStatus status: 'INPROGRESS', repoSlug: 'repoName'
+    bitbucketStatus status: 'INPROGRESS', repoSlug: 'repoName', ignoreMaster: false
 }
 ```
 * `bitbucketStatusSuccessful()`
-* `bitbucketStatusSuccessful([repoSlug: 'repo_name'])`
+* `bitbucketStatusSuccessful([repoSlug: 'repo_name', ignoreMaster: true(default), false])`
 * `bitbucketStatusFailed()`
-* `bitbucketStatusFailed([repoSlug: 'repo_name'])`
+* `bitbucketStatusFailed([repoSlug: 'repo_name', ignoreMaster: true(default), false])`
 * `bitbucketStatusInProgress()`
-* `bitbucketStatusInProgress([repoSlug: 'repo_name'])`
+* `bitbucketStatusInProgress([repoSlug: 'repo_name', ignoreMaster: true(default), false])`
 * `commitId()`
     * Get last commit ID  
 

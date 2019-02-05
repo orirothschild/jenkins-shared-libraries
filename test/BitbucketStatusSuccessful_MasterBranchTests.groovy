@@ -1,4 +1,5 @@
 import TestData.BitbucketStatusTestData
+import TestData.CommitIdTestData
 import Utils.Helper
 import org.junit.Before
 import org.junit.Test
@@ -34,6 +35,27 @@ class BitbucketStatusSuccessful_MasterBranchTests extends GroovyTestCase {
         assertFalse('httpRequest is not executed', httpRequestIsExecuted)
         assertFalse('bitbucketStatusNotify is not executed',  notifyIsExecuted)
         assertEquals('Bitbucket status \'SUCCESSFUL\' is ignored cause \'master\' branch', echoMessage)
+
+    }
+
+    @Test
+    void test_BitbucketStatus_MasterBranchAndNotIgnoreBranch_BitbucketStatusNotifyIsExecuted(){
+        def variables = BitbucketStatusTestData.commonVariables()
+        Helper.setEnvVariables(variables, bitbucketStatusSuccessful_)
+        InjectVars.injectTo(bitbucketStatusSuccessful_, 'commitId', 'imageName')
+        InjectVars.injectClosureTo(bitbucketStatusSuccessful_, 'sh', CommitIdTestData.lastCommitIdClosure)
+        def httpRequestIsExecuted = false
+        bitbucketStatusSuccessful_.httpRequest = { Map map ->
+            httpRequestIsExecuted = true
+        }
+        def notifyIsExecuted = false
+        bitbucketStatusSuccessful_.bitbucketStatusNotify = { Map map ->
+            notifyIsExecuted = true
+        }
+
+        bitbucketStatusSuccessful_ ignoreMaster: false
+
+        assertTrue('bitbucketStatusNotify is not executed',  notifyIsExecuted)
 
     }
 
