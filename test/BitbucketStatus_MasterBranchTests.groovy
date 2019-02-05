@@ -35,7 +35,7 @@ class BitbucketStatus_MasterBranchTests extends GroovyTestCase {
 
         assertFalse('httpRequest is not executed', httpRequestIsExecuted)
         assertFalse('bitbucketStatusNotify is not executed',  notifyIsExecuted)
-        assertEquals('Bitbucket status \'null\' is ignored cause \'master\' branch', echoMessage)
+        assertEquals('Bitbucket status \'SUCCESS\' is ignored cause \'master\' branch', echoMessage)
 
     }
 

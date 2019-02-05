@@ -23,24 +23,25 @@ def call(Map params){
     }
 
     def bitbucketStatusNotifyParams = [:]
+    String computedBitbucketStatus
     if (status == null) {
-        def result = currentBuild.currentResult
-        if (!buildStateMap.containsKey(result)) {
-            echo "bitbucketStatusNotify is muted. Undefined build status: ${result}"
+        computedBitbucketStatus = currentBuild.currentResult
+        if (!buildStateMap.containsKey(computedBitbucketStatus)) {
+            echo "bitbucketStatusNotify is muted. Undefined build status: ${computedBitbucketStatus}"
             return
         }
-        bitbucketStatusNotifyParams.buildState = "${buildStateMap.get(result)}"
+        bitbucketStatusNotifyParams.buildState = "${buildStateMap.get(computedBitbucketStatus)}"
     } else {
-        def statusUpperCase = status.trim().toUpperCase()
-        if (bitbucketStatuses.contains(statusUpperCase)) {
-            bitbucketStatusNotifyParams.buildState = "${statusUpperCase}"
+        computedBitbucketStatus = status.trim().toUpperCase()
+        if (bitbucketStatuses.contains(computedBitbucketStatus)) {
+            bitbucketStatusNotifyParams.buildState = "${computedBitbucketStatus}"
         } else {
             error "Undefined bitbucket status: ${status}"
         }
     }
 
     if (env.BRANCH_NAME == 'master'){
-        echo "Bitbucket status '${status}' is ignored cause 'master' branch"
+        echo "Bitbucket status '${computedBitbucketStatus}' is ignored cause 'master' branch"
         return
     }
 
