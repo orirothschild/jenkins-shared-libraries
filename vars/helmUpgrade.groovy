@@ -46,9 +46,9 @@ def call(Map params){
                 } else {
                     echo "It seems not a upgrading failure. If it's the failure, you can do 'helm rollback --wait \"${releaseName}\" 0'"
                 }
-                error "Exit code ${status}\n${errorText}"
+                error "Helm upgrade exit code ${status}\n${errorText}"
             }
-            error "Exit code ${status}"
+            error "Helm upgrade exit code ${status}"
         }
     }finally{
         sh  returnStdout: true, script: "rm ${stdErr}"

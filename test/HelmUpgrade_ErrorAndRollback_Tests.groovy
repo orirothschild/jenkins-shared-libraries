@@ -100,7 +100,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
             helmUpgrade_(namespace, args)
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
-            assertEquals('Exit code 157\nUPGRADE FAILED: error', ex.message)
+            assertEquals('Helm upgrade exit code 157\nUPGRADE FAILED: error', ex.message)
         }
     }
 
@@ -134,7 +134,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
             helmUpgrade_(namespace, args)
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
-            assertEquals('Exit code 157\nUPGRADE FAILED: error\nRollback failed. Exit code 111', ex.message)
+            assertEquals('Helm upgrade exit code 157\nUPGRADE FAILED: error\nRollback failed. Exit code 111', ex.message)
         }
     }
 
@@ -204,7 +204,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
             helmUpgrade_(namespace, args)
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
-            assertEquals('Exit code 157\nerror', ex.message)
+            assertEquals('Helm upgrade exit code 157\nerror', ex.message)
         }
     }
 
@@ -307,7 +307,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
             helmUpgrade_(namespace, args)
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
-            assertEquals('Exit code 157', ex.message)
+            assertEquals('Helm upgrade exit code 157', ex.message)
         }
     }
 

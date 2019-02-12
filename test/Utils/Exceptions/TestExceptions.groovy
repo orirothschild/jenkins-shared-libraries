@@ -11,4 +11,7 @@ class InvalidBitbucketStatusException extends Exception{}
 class HelmUpgradeException extends Exception {}
 
 @InheritConstructors
+class HelmLintException extends Exception {}
+
+@InheritConstructors
 class StageResultException extends Exception {}
