@@ -28,11 +28,11 @@ def call(Map params){
     def helmLintLog = sh(returnStdout: true, script: 'mktemp /tmp/helm_lint_log.XXXXXX').trim()
     try{
         def status = sh(returnStatus: true, script: "helm lint -f \"chart/values-${namespace}.yaml\" --namespace \"${namespace}\"${exposedArgs}chart/ &>${helmLintLog}")
+        def errorText = sh(returnStdout: true, script: "cat ${helmLintLog}").trim()
+        if (errorText) echo "${errorText}"
         sh(returnStatus: true, script: "helm template -f \"chart/values-${namespace}.yaml\" --namespace \"${namespace}\"${exposedArgs}chart/")
         if (status != 0){
-            def errorText = sh(returnStdout: true, script: "cat ${helmLintLog}").trim()
             if (errorText){
-                echo "${errorText}"
                 errorText.eachLine {
                     if (it =~ /\[ERROR]/) {
                         def findWarning = it =~ /Chart\.yaml: directory name \(.*\) and chart name \(.*\) must be the same/

@@ -174,8 +174,8 @@ class HelmLint_LintAndTemplateError_Tests extends GroovyTestCase {
             assertEquals(5, actualCommands.size())
             assertEquals('mktemp /tmp/helm_lint_log.XXXXXX', actualCommands[0])
             assertEquals(resultCommand[0] + ' &>/tmp/helm_lint_log.1111111', actualCommands[1])
-            assertEquals(resultCommand[1], actualCommands[2])
-            assertEquals('cat /tmp/helm_lint_log.1111111', actualCommands[3])
+            assertEquals('cat /tmp/helm_lint_log.1111111', actualCommands[2])
+            assertEquals(resultCommand[1], actualCommands[3])
             assertEquals('rm /tmp/helm_lint_log.1111111', actualCommands[4])
         }
     }
@@ -214,8 +214,8 @@ class HelmLint_LintAndTemplateError_Tests extends GroovyTestCase {
         assertEquals(5, actualCommands.size())
         assertEquals('mktemp /tmp/helm_lint_log.XXXXXX', actualCommands[0])
         assertEquals(resultCommand[0] + ' &>/tmp/helm_lint_log.1111111', actualCommands[1])
-        assertEquals(resultCommand[1], actualCommands[2])
-        assertEquals('cat /tmp/helm_lint_log.1111111', actualCommands[3])
+        assertEquals('cat /tmp/helm_lint_log.1111111', actualCommands[2])
+        assertEquals(resultCommand[1], actualCommands[3])
         assertEquals('rm /tmp/helm_lint_log.1111111', actualCommands[4])
     }
 
@@ -253,8 +253,8 @@ class HelmLint_LintAndTemplateError_Tests extends GroovyTestCase {
         assertEquals(5, actualCommands.size())
         assertEquals('mktemp /tmp/helm_lint_log.XXXXXX', actualCommands[0])
         assertEquals(resultCommand[0] + ' &>/tmp/helm_lint_log.1111111', actualCommands[1])
-        assertEquals(resultCommand[1], actualCommands[2])
-        assertEquals('cat /tmp/helm_lint_log.1111111', actualCommands[3])
+        assertEquals('cat /tmp/helm_lint_log.1111111', actualCommands[2])
+        assertEquals(resultCommand[1], actualCommands[3])
         assertEquals('rm /tmp/helm_lint_log.1111111', actualCommands[4])
     }
 

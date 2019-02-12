@@ -39,6 +39,8 @@ class HelmLint_CorrectArguments_Tests extends GroovyTestCase {
                 if (command.returnStdout) {
                     if (command.script.contains('mktemp /tmp/helm_lint_log.XXXXXX')) {
                         return "/tmp/helm_lint_log.1111111"
+                    } else if (command.script == 'cat /tmp/helm_lint_log.1111111'){
+                        return '[ERROR] Chart.yaml: directory name (chart) and chart name (site) must be the same\n[ERROR]: error'
                     }
                 } else if (command.returnStatus) {
                     if (command.script.startsWith('helm lint') || command.script.startsWith('helm template')){
@@ -53,21 +55,24 @@ class HelmLint_CorrectArguments_Tests extends GroovyTestCase {
 
         helmLint_ namespace: namespace, set: args
 
-        assertEquals(4, actualCommands.size())
+        assertEquals(5, actualCommands.size())
         assertEquals('mktemp /tmp/helm_lint_log.XXXXXX', actualCommands[0])
         assertEquals(resultCommand[0] + ' &>/tmp/helm_lint_log.1111111', actualCommands[1])
-        assertEquals(resultCommand[1], actualCommands[2])
-        assertEquals('rm /tmp/helm_lint_log.1111111', actualCommands[3])
+        assertEquals('cat /tmp/helm_lint_log.1111111', actualCommands[2])
+        assertEquals(resultCommand[1], actualCommands[3])
+        assertEquals('rm /tmp/helm_lint_log.1111111', actualCommands[4])
     }
 
     @Test
-    void test_HelmLint_CorrectArguments_NoEchoMessages(){
+    void test_HelmLint_CorrectArguments_StdOutAndStdErrInEchoMessages(){
 
         helmLint_.sh = { command ->
             if (command instanceof Map) {
                 if (command.returnStdout) {
                     if (command.script.contains('mktemp /tmp/helm_lint_log.XXXXXX')) {
                         return "/tmp/helm_lint_log.1111111"
+                    } else if (command.script == 'cat /tmp/helm_lint_log.1111111'){
+                        return '[ERROR] Chart.yaml: directory name (chart) and chart name (site) must be the same\n[ERROR]: error'
                     }
                 } else if (command.returnStatus) {
                     if (command.script.startsWith('helm lint') || command.script.startsWith('helm template')){
@@ -82,7 +87,8 @@ class HelmLint_CorrectArguments_Tests extends GroovyTestCase {
 
         helmLint_ namespace: namespace, set: args
 
-        assertEquals(0, messages.size())
+        assertEquals(1, messages.size())
+        assertEquals('[ERROR] Chart.yaml: directory name (chart) and chart name (site) must be the same\n[ERROR]: error', messages[0])
     }
 
 }
