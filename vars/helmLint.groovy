@@ -33,7 +33,7 @@ def call(Map params){
         sh(returnStatus: true, script: "helm template -f \"chart/values-${namespace}.yaml\" --namespace \"${namespace}\"${exposedArgs}chart/")
         if (status != 0){
             if (errorText){
-                errorText.eachLine {
+                errorText.split('\n').each {
                     if (it =~ /\[ERROR]/) {
                         def findWarning = it =~ /Chart\.yaml: directory name \(.*\) and chart name \(.*\) must be the same/
                         if (!findWarning) {
