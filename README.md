@@ -59,7 +59,7 @@ steps {
 * `deploy([namespace: String, helmArgs: Map, postDeploy: List<Map>])`
     * **namespace** - k8s namespace of the deployment
     * **helmArgs** - --set arguments for helm
-    * **postDeploy** - jobs to be run after the deployment (suitable for runeTests)
+    * **postDeploy** - jobs to be run after the deployment (suitable for runTests)
     * Requires **helmUpgrade()**
     * Requires **runTests()**
     * Requires **imageName()**
