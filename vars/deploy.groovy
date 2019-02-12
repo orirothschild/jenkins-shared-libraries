@@ -17,7 +17,7 @@ def call(Map params) {
             return
         }
         def batch = [:]
-        for (job in jobList) {
+        jobList.each { job ->
             batch.put(job['job']?.trim(), {
                 sanitizeThenRun(job)
             })
@@ -33,6 +33,7 @@ def sanitizeThenRun(Map runnable) {
         jobName = runnable['job']
     } else {
         error "job name missing"
+        return
     }
     if (runnable.containsKey('parameters')) {
         parameters = (List)runnable['parameters']

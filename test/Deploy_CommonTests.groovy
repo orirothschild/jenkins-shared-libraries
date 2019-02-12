@@ -32,7 +32,18 @@ class Deploy_CommonTests extends GroovyTestCase {
     }
 
     @Test
-    void test_Deploy_RunTestsIsCalledOnce() {
+    void test_Deploy_SanitizeThenRunThrowsErrorIfJobNameMissing() {
+        def errorMsg = ""
+        def runTestsCalled = false
+        deploy_.runTests = {runTestsCalled = true; return null}
+        deploy_.error = {msg -> errorMsg = (String)msg; return null}
+        deploy_.sanitizeThenRun([:])
+        assertEquals(errorMsg, "job name missing")
+        assertFalse(runTestsCalled)
+    }
+
+    @Test
+    void test_Deploy_RunTestsIsCalledOnceIfOnlyOneJobProvided() {
         deploy_.helmUpgrade = {return null}
         def runParameters = [:]
         def runCount = 0
@@ -50,24 +61,32 @@ class Deploy_CommonTests extends GroovyTestCase {
     }
 
     @Test
-    void test_Deploy_ParallelIsCalled() {
+    void test_Deploy_ParallelIsCalledIfMoreThenOneJobProvided() {
         deploy_.helmUpgrade = {return null}
         def parallelParameters = [:]
         deploy_.parallel = {Map map -> parallelParameters = map; return null}
-        Map firstJob = [
-            'job': 'test/master-1',
-            'parameters': ['test-param-1']
+        def jobs = [
+            [
+                'job': 'test/master-0',
+                'parameters': ['test-param-0']
+            ],
+            [
+                'job': 'test/master-1',
+                'parameters': ['test-param-1']
+            ]
         ]
-        Map secondJob = [
-            'job': 'test/master-2',
-            'parameters': ['test-param-2']
-        ]
-        deploy_("test", [:], [firstJob, secondJob])
-        assertEquals(parallelParameters.size(), 2)
-        assertTrue(parallelParameters.containsKey('test/master-1'))
-        assertTrue(parallelParameters['test/master-1'] instanceof Closure)
-        assertTrue(parallelParameters.containsKey('test/master-2'))
-        assertTrue(parallelParameters['test/master-2'] instanceof Closure)
+        deploy_("test", [:], jobs)
+        assertEquals(parallelParameters.size(), jobs.size())
+        jobs.each{ job ->
+            assertTrue(parallelParameters.containsKey(job['job']))
+            assertTrue(parallelParameters[job['job']] instanceof Closure)
+            def callable = (Closure)parallelParameters[job['job']]
+            def runParameters = [:]
+            callable.runTests = {Map map -> runParameters = map; return null}
+            callable.call()
+            assertEquals(runParameters['job'], job['job'])
+            assertEquals(runParameters['parameters'], job['parameters'])
+        }
     }
 
 }
