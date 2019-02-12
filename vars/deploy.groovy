@@ -3,26 +3,32 @@ def call(String namespace, Map helmArgs=[:], List<Map> postDeploy=[]) {
 }
 
 def call(Map params) {
-    lock(resource: "${(String)params['namespace']}-${imageName()}", inversePrecedence: true) {
-        helmUpgrade namespace: (String)params['namespace'], set: (Map)params['helmArgs']
-        List<Map> jobList = []
-        if (params.containsKey('postDeploy')) {
-            jobList = (List<Map>)params['postDeploy']
+    try {
+        lock(resource: "${(String)params['namespace']}-${imageName()}", inversePrecedence: true) {
+            helmUpgrade namespace: (String)params['namespace'], set: (Map)params['helmArgs']
+            List<Map> jobList = []
+            if (params.containsKey('postDeploy')) {
+                jobList = (List<Map>)params['postDeploy']
+            }
+            if (jobList.size() < 1) {
+                return
+            }
+            if (jobList.size() == 1) {
+                sanitizeThenRun(jobList[0])
+                return
+            }
+            def batch = [:]
+            jobList.each { job ->
+                batch.put(job['job']?.trim(), {
+                    sanitizeThenRun(job)
+                })
+            }
+            parallel(batch)
         }
-        if (jobList.size() < 1) {
-            return
-        }
-        if (jobList.size() == 1) {
-            sanitizeThenRun(jobList[0])
-            return
-        }
-        def batch = [:]
-        jobList.each { job ->
-            batch.put(job['job']?.trim(), {
-                sanitizeThenRun(job)
-            })
-        }
-        parallel(batch)
+    } catch (Exception e) {
+        throw e
+    } finally {
+        milestone()
     }
 }
 

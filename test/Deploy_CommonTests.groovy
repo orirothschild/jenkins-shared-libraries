@@ -14,6 +14,7 @@ class Deploy_CommonTests extends GroovyTestCase {
         InjectVars.injectTo(deploy_, 'commitId', 'imageName')
         deploy_.lock = {Map map, Closure body -> body.call(); return null}
         deploy_.helmUpgrade = {return null}
+        deploy_.milestone = {return null}
     }
 
     @Test
@@ -23,6 +24,14 @@ class Deploy_CommonTests extends GroovyTestCase {
         deploy_.imageName = {return "foo"}
         deploy_("test")
         assertEquals(lockParameters['resource'], "test-foo")
+    }
+
+    @Test
+    void test_Deploy_MilestoneIsCalled() {
+        def milestoneCalled = false
+        deploy_.milestone = {milestoneCalled = true; return null}
+        deploy_("test")
+        assertTrue(milestoneCalled)
     }
 
     @Test
