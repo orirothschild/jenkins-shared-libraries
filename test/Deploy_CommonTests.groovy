@@ -13,6 +13,16 @@ class Deploy_CommonTests extends GroovyTestCase {
         Helper.setEnvVariables(variables, deploy_)
         InjectVars.injectTo(deploy_, 'commitId', 'imageName')
         deploy_.lock = {Map map, Closure body -> body.call(); return null}
+        deploy_.helmUpgrade = {return null}
+    }
+
+    @Test
+    void test_Deploy_LockIsCalled() {
+        def lockParameters = [:]
+        deploy_.lock = {Map map, Closure body -> lockParameters = map; return null}
+        deploy_.imageName = {return "foo"}
+        deploy_("test")
+        assertEquals(lockParameters['resource'], "test-foo")
     }
 
     @Test
@@ -44,7 +54,6 @@ class Deploy_CommonTests extends GroovyTestCase {
 
     @Test
     void test_Deploy_RunTestsIsCalledOnceIfOnlyOneJobProvided() {
-        deploy_.helmUpgrade = {return null}
         def runParameters = [:]
         def runCount = 0
         deploy_.runTests = {Map map -> runParameters = map; runCount ++; return null}
@@ -62,7 +71,6 @@ class Deploy_CommonTests extends GroovyTestCase {
 
     @Test
     void test_Deploy_ParallelIsCalledIfMoreThenOneJobProvided() {
-        deploy_.helmUpgrade = {return null}
         def parallelParameters = [:]
         deploy_.parallel = {Map map -> parallelParameters = map; return null}
         def jobs = [

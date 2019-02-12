@@ -3,7 +3,7 @@ def call(String namespace, Map helmArgs=[:], List<Map> postDeploy=[]) {
 }
 
 def call(Map params) {
-    lock(resource: "deployment-${imageName()}", inversePrecedence: true) {
+    lock(resource: "${(String)params['namespace']}-${imageName()}", inversePrecedence: true) {
         helmUpgrade namespace: (String)params['namespace'], set: (Map)params['helmArgs']
         List<Map> jobList = []
         if (params.containsKey('postDeploy')) {
