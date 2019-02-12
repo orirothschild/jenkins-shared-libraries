@@ -56,7 +56,33 @@ steps {
 * `bitbucketStatusInProgress([repoSlug: 'repo_name', ignoreMaster: true(default), false])`
 * `commitId()`
     * Get last commit ID  
-
+* `deploy([namespace: String, helmArgs: Map, postDeploy: List<Map>])`
+    * **namespace** - k8s namespace of the deployment
+    * **helmArgs** - --set arguments for helm
+    * **postDeploy** - jobs to be run after the deployment (suitable for runeTests)
+    * Requires **helmUpgrade()**
+    * Requires **runTests()**
+    * Requires **imageName()**
+    * Requires **Lockable Resources plugin**
+```groovy
+container('helm') {
+    deploy namespace: 'test',
+        helmArgs: ['image.tag': imageTag()],
+        postDeploy: [
+            [
+                job: 'tests-api/master',
+                parameters: [
+                    string(name: 'TAGS', value: 'Project-1'),
+                    booleanParam(name: 'RUN_TESTS', value: true)
+                ]
+            ],
+            [
+                job: 'tests-web/master',
+                parameters: [string(name: 'TAGS', value: 'Project-1')]
+            ]
+        ]
+}
+```
 * `dockerBuild(docker_file_path(String, optional), imageName(String, optional)) -deprecated`
 * `dockerBuild([dockerfile: docker_file_path, imageName: "imagename"])`
     * Required **Multibranch plugin**
