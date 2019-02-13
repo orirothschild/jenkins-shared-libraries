@@ -2,9 +2,7 @@ import TestData.HelmUpgradeTestData
 import Utils.Exceptions.HelmUpgradeException
 import Utils.Helper
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.ExpectedException
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
@@ -33,6 +31,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
         InjectVars.injectTo(helmUpgrade_, 'imageName')
     }
 
+
     @Test
     void test_HelmUpgrade_ErrorWithHelmUpgradeMessage_rollbackIsExecuted(){
         def actualCommands = []
@@ -48,6 +47,8 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
                 } else if (command.returnStatus) {
                     if (command.script.startsWith('helm upgrade')){
                         return 1
+                    } else if (command.script.startsWith('helm rollback')){
+                        return 0
                     }
                 }
             } else{
@@ -58,7 +59,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
         helmUpgrade_.echo = {String msg -> }
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
         try {
-            helmUpgrade_(namespace, args)
+            helmUpgrade_ namespace: namespace, set: args
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
             assertEquals(5, actualCommands.size())
@@ -85,7 +86,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
                 } else if (command.returnStatus) {
                     if (command.script.startsWith('helm upgrade')){
                         return 157
-                    }else if (command.script.startsWith('helm rollback')){
+                    } else if (command.script.startsWith('helm rollback')){
                         return 0
                     }
                 }
@@ -97,7 +98,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
         helmUpgrade_.echo = {String msg -> }
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
         try {
-            helmUpgrade_(namespace, args)
+            helmUpgrade_ namespace: namespace, set: args
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
             assertEquals('Helm upgrade exit code 157\nUPGRADE FAILED: error', ex.message)
@@ -119,7 +120,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
                 } else if (command.returnStatus) {
                     if (command.script.startsWith('helm upgrade')){
                         return 157
-                    }else if (command.script.startsWith('helm rollback')){
+                    } else if (command.script.startsWith('helm rollback')){
                         return 111
                     }
                 }
@@ -131,7 +132,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
         helmUpgrade_.echo = {String msg -> }
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
         try {
-            helmUpgrade_(namespace, args)
+            helmUpgrade_ namespace: namespace, set: args
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
             assertEquals('Helm upgrade exit code 157\nUPGRADE FAILED: error\nRollback failed. Exit code 111', ex.message)
@@ -154,8 +155,6 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
                 } else if (command.returnStatus) {
                     if (command.script.startsWith('helm upgrade')){
                         return 1
-                    } else if (command.script.startsWith('helm rollback')){
-                        return 0
                     }
                 }
             } else{
@@ -165,7 +164,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
         helmUpgrade_.echo = {}
         try {
-            helmUpgrade_(namespace, args)
+            helmUpgrade_ namespace: namespace, set: args
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
             assertEquals(4, actualCommands.size())
@@ -201,7 +200,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
         helmUpgrade_.echo = {}
         try {
-            helmUpgrade_(namespace, args)
+            helmUpgrade_ namespace: namespace, set: args
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
             assertEquals('Helm upgrade exit code 157\nerror', ex.message)
@@ -234,7 +233,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
         helmUpgrade_.echo = {msg -> actualMessage = msg.toString(); return null}
         try {
-            helmUpgrade_(namespace, args)
+            helmUpgrade_ namespace: namespace, set: args
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
             assertEquals("It seems not a upgrading failure. If it's the failure, you can do 'helm rollback --wait \"FAKE_Job_Name-test\" 0'", actualMessage)
@@ -267,7 +266,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
         helmUpgrade_.echo = {}
         try {
-            helmUpgrade_(namespace, args)
+            helmUpgrade_ namespace: namespace, set: args
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
             assertEquals(4, actualCommands.size())
@@ -304,12 +303,11 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
         helmUpgrade_.echo = {}
         try {
-            helmUpgrade_(namespace, args)
+            helmUpgrade_ namespace: namespace, set: args
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
             assertEquals('Helm upgrade exit code 157', ex.message)
         }
     }
-
 
 }

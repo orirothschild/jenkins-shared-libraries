@@ -39,7 +39,7 @@ class BitbucketStatus_DefinedBuildStatus_ValidBitBucketStatus_Tests extends Groo
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
         def expectedStatus = "${validBitbucketStatus}".toString()
 
-        bitbucketStatus_(validBitbucketStatus)
+        bitbucketStatus_ status: validBitbucketStatus
 
         assertEquals(expectedStatus, actualParameters['buildState'])
 
@@ -51,7 +51,7 @@ class BitbucketStatus_DefinedBuildStatus_ValidBitBucketStatus_Tests extends Groo
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_(validBitbucketStatus)
+        bitbucketStatus_ status: validBitbucketStatus
 
         assertEquals('1111111222222222222222222222222222222222', actualParameters['commitId'])
 
@@ -63,7 +63,7 @@ class BitbucketStatus_DefinedBuildStatus_ValidBitBucketStatus_Tests extends Groo
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_(validBitbucketStatus)
+        bitbucketStatus_ status: validBitbucketStatus
 
         assertEquals('Job_Name', actualParameters['repoSlug'])
 
@@ -75,7 +75,7 @@ class BitbucketStatus_DefinedBuildStatus_ValidBitBucketStatus_Tests extends Groo
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_(validBitbucketStatus, '')
+        bitbucketStatus_ status: validBitbucketStatus, repoSlug: ''
 
         assertEquals('Job_Name', actualParameters['repoSlug'])
 
@@ -87,7 +87,7 @@ class BitbucketStatus_DefinedBuildStatus_ValidBitBucketStatus_Tests extends Groo
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_(validBitbucketStatus, null)
+        bitbucketStatus_ status: validBitbucketStatus, repoSlug: null
 
         assertEquals('Job_Name', actualParameters['repoSlug'])
 
@@ -99,7 +99,7 @@ class BitbucketStatus_DefinedBuildStatus_ValidBitBucketStatus_Tests extends Groo
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_(validBitbucketStatus, ' ')
+        bitbucketStatus_ status: validBitbucketStatus, repoSlug: ' '
 
         assertEquals('Job_Name', actualParameters['repoSlug'])
 
@@ -112,7 +112,7 @@ class BitbucketStatus_DefinedBuildStatus_ValidBitBucketStatus_Tests extends Groo
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_(validBitbucketStatus, 'another_repoSlug')
+        bitbucketStatus_ status: validBitbucketStatus, repoSlug: 'another_repoSlug'
 
         assertEquals('another_repoSlug', actualParameters['repoSlug'])
 

@@ -19,7 +19,7 @@ class BitbucketStatus_UndefinedBuildStatus_ValidBitBucketStatus_Tests extends Gr
     protected String buildStatus
     protected String customBitbucketStatus
 
-    BitbucketStatus_UndefinedBuildStatus_ValidBitBucketStatus_Tests(List list){
+	BitbucketStatus_UndefinedBuildStatus_ValidBitBucketStatus_Tests(List list){
         this.buildStatus = list[0]
         this.customBitbucketStatus = list[1]
     }
@@ -39,7 +39,7 @@ class BitbucketStatus_UndefinedBuildStatus_ValidBitBucketStatus_Tests extends Gr
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> bitbucketStatusNotifyWasExecuted = true; return null}
         bitbucketStatus_.echo = { str -> return null}
 
-        bitbucketStatus_(customBitbucketStatus)
+        bitbucketStatus_ status: customBitbucketStatus
 
         assertTrue(bitbucketStatusNotifyWasExecuted)
 
@@ -53,7 +53,7 @@ class BitbucketStatus_UndefinedBuildStatus_ValidBitBucketStatus_Tests extends Gr
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> null}
         bitbucketStatus_.echo = { str -> return null}
 
-        bitbucketStatus_(customBitbucketStatus)
+        bitbucketStatus_ status: customBitbucketStatus
 
         assertFalse(httpRequestWasExecuted)
 
@@ -65,7 +65,7 @@ class BitbucketStatus_UndefinedBuildStatus_ValidBitBucketStatus_Tests extends Gr
         def echoIsExecuted = false
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> null}
         bitbucketStatus_.echo = { str -> echoIsExecuted = true; return null }
-        bitbucketStatus_(customBitbucketStatus)
+        bitbucketStatus_ status: customBitbucketStatus
 
         assertFalse(echoIsExecuted)
 

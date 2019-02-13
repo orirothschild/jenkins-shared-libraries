@@ -19,7 +19,7 @@ class BitbucketStatusFirstBuild_UndefinedBuildStatus_ValidBitBucketStatus_Tests 
     protected String buildStatus
     protected String customBitbucketStatus
 
-    BitbucketStatusFirstBuild_UndefinedBuildStatus_ValidBitBucketStatus_Tests(List list){
+	BitbucketStatusFirstBuild_UndefinedBuildStatus_ValidBitBucketStatus_Tests(List list){
         this.buildStatus = list[0]
         this.customBitbucketStatus = list[1]
     }
@@ -40,7 +40,7 @@ class BitbucketStatusFirstBuild_UndefinedBuildStatus_ValidBitBucketStatus_Tests 
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> bitbucketStatusNotifyWasExecuted = true; return null}
         bitbucketStatus_.echo = { str -> return null}
 
-        bitbucketStatus_(customBitbucketStatus)
+        bitbucketStatus_ status: customBitbucketStatus
 
         assertFalse(bitbucketStatusNotifyWasExecuted)
 
@@ -53,7 +53,7 @@ class BitbucketStatusFirstBuild_UndefinedBuildStatus_ValidBitBucketStatus_Tests 
         bitbucketStatus_.httpRequest = { Map map -> httpRequestWasExecuted = true; BitbucketStatusTestData.httpRequestMock(map)}
         bitbucketStatus_.echo = { str -> return null}
 
-        bitbucketStatus_(customBitbucketStatus)
+        bitbucketStatus_ status: customBitbucketStatus
 
         assertTrue(httpRequestWasExecuted)
 
@@ -66,7 +66,7 @@ class BitbucketStatusFirstBuild_UndefinedBuildStatus_ValidBitBucketStatus_Tests 
         bitbucketStatus_.httpRequest = { Map map -> BitbucketStatusTestData.httpRequestMock(map)}
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> null}
         bitbucketStatus_.echo = { str -> echoIsExecuted = true; return null }
-        bitbucketStatus_(customBitbucketStatus)
+        bitbucketStatus_ status: customBitbucketStatus
 
         assertFalse(echoIsExecuted)
 

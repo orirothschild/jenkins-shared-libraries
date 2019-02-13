@@ -17,7 +17,7 @@ class BitbucketStatusFirstBuild_NullBitbucketStatus_UndefinedBuildStatus_Tests e
 
     protected String buildStatus
 
-    BitbucketStatusFirstBuild_NullBitbucketStatus_UndefinedBuildStatus_Tests(String buildStatus){
+	BitbucketStatusFirstBuild_NullBitbucketStatus_UndefinedBuildStatus_Tests(String buildStatus){
         this.buildStatus = buildStatus
     }
     @Before
@@ -35,7 +35,7 @@ class BitbucketStatusFirstBuild_NullBitbucketStatus_UndefinedBuildStatus_Tests e
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> bitbucketStatusNotifyWasExecuted = true; return null}
         bitbucketStatus_.echo = { str -> return null}
 
-        bitbucketStatus_(null)
+        bitbucketStatus_ status: null
 
         assertFalse(bitbucketStatusNotifyWasExecuted)
 
@@ -48,7 +48,7 @@ class BitbucketStatusFirstBuild_NullBitbucketStatus_UndefinedBuildStatus_Tests e
         bitbucketStatus_.httpRequest = { Map map -> httpRequestWasExecuted = true; return null}
         bitbucketStatus_.echo = { str -> return null}
 
-        bitbucketStatus_(null)
+        bitbucketStatus_ status: null
 
         assertFalse(httpRequestWasExecuted)
 
@@ -60,7 +60,7 @@ class BitbucketStatusFirstBuild_NullBitbucketStatus_UndefinedBuildStatus_Tests e
         def actualMessage = ""
         bitbucketStatus_.echo = { str -> actualMessage = str}
         def expectedMessage = "bitbucketStatusNotify is muted. Undefined build status: ${buildStatus}".toString()
-        bitbucketStatus_(null)
+        bitbucketStatus_ status: null
 
         assertEquals(expectedMessage, actualMessage)
 

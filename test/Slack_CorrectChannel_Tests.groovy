@@ -38,7 +38,7 @@ class Slack_CorrectChannel_Tests extends GroovyTestCase {
         slack_.slackSend = { Map map -> actualParameters = map; return null}
         def expectedChannel = channel?.toString()
 
-        slack_(channel, allure)
+        slack_ channel: channel, allure: allure
 
         assertEquals(expectedChannel, actualParameters['channel'])
 
@@ -52,7 +52,7 @@ class Slack_CorrectChannel_Tests extends GroovyTestCase {
         slack_.slackSend = { Map map -> actualParameters = map; return null}
         def expectedChannel = channel?.toString()
 
-        slack_(channel, allure)
+        slack_ channel: channel, allure: allure
 
         assertEquals(expectedChannel, actualParameters['channel'])
 
@@ -66,7 +66,7 @@ class Slack_CorrectChannel_Tests extends GroovyTestCase {
         slack_.slackSend = { Map map -> actualParameters = map; return null}
         def expectedChannel = channel?.toString()
 
-        slack_(channel, allure)
+        slack_ channel: channel, allure: allure
 
         assertEquals(expectedChannel, actualParameters['channel'])
 

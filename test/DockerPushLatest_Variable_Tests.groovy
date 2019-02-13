@@ -10,7 +10,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class DockerPushLatest_Variable_MapParams_Tests extends GroovyTestCase {
+class DockerPushLatest_Variable_Tests extends GroovyTestCase {
 
     @Parameterized.Parameters(name = "{0}")
     static Collection<Object> data() {
@@ -21,7 +21,7 @@ class DockerPushLatest_Variable_MapParams_Tests extends GroovyTestCase {
     protected String imageName
     protected dockerPushLatest_ = new dockerPushLatest()
 
-	DockerPushLatest_Variable_MapParams_Tests(String imageName){
+	DockerPushLatest_Variable_Tests(String imageName){
         this.imageName = imageName
     }
 

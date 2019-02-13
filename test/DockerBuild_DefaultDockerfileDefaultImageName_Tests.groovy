@@ -43,7 +43,7 @@ class DockerBuild_DefaultDockerfileDefaultImageName_Tests extends GroovyTestCase
                 'docker build . -f \"./Dockerfile\" -t \"registry.com/bilderlings/Job_Name:master-1\" -t \"registry.com/bilderlings/Job_Name:1111111\"'
         ]
 
-        dockerBuild_(path, imageName)
+        dockerBuild_ dockerfile: path, imageName: imageName
 
         assertEquals(expectedCommands, actualCommands)
 

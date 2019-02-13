@@ -8,17 +8,17 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class DockerPushLatest_CustomImageNameMapParams_Tests extends GroovyTestCase {
+class DockerPushLatest_DefaultImageName_Tests extends GroovyTestCase {
 
     @Parameterized.Parameters(name = "{0}")
     static Collection<Object> data() {
-        DockerTestData.customImageNames()
+        DockerTestData.defaultImageNames()
     }
 
     protected String imageName
     protected dockerPushLatest_ = new dockerPushLatest()
 
-	DockerPushLatest_CustomImageNameMapParams_Tests(String imageName){
+	DockerPushLatest_DefaultImageName_Tests(String imageName){
         this.imageName = imageName
     }
 
@@ -26,7 +26,7 @@ class DockerPushLatest_CustomImageNameMapParams_Tests extends GroovyTestCase {
     void setUp(){
         def variables = DockerPushLatestTestData.commonVariables()
         Helper.setEnvVariables(variables, dockerPushLatest_)
-        InjectVars.injectTo(dockerPushLatest_, 'imageTag', 'imageName', 'commitId')
+        InjectVars.injectTo(dockerPushLatest_, 'imageName', 'imageTag', 'commitId')
     }
 
     @Test
@@ -39,8 +39,8 @@ class DockerPushLatest_CustomImageNameMapParams_Tests extends GroovyTestCase {
             actualShellCommands << command
         }
         def expectedShellCommands = [
-                "docker tag \"registry.com/bilderlings/${imageName}:1111111\" \"registry.com/bilderlings/${imageName}:latest\"".toString(),
-                "docker push \"registry.com/bilderlings/${imageName}:latest\"".toString(),
+                'docker tag \"registry.com/bilderlings/Job_Name:1111111\" \"registry.com/bilderlings/Job_Name:latest\"',
+                'docker push \"registry.com/bilderlings/Job_Name:latest\"',
         ]
 
         dockerPushLatest_ imageName: imageName

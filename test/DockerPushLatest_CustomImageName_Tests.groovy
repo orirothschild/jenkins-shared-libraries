@@ -18,7 +18,7 @@ class DockerPushLatest_CustomImageName_Tests extends GroovyTestCase {
     protected String imageName
     protected dockerPushLatest_ = new dockerPushLatest()
 
-    DockerPushLatest_CustomImageName_Tests(String imageName){
+	DockerPushLatest_CustomImageName_Tests(String imageName){
         this.imageName = imageName
     }
 
@@ -43,7 +43,7 @@ class DockerPushLatest_CustomImageName_Tests extends GroovyTestCase {
                 "docker push \"registry.com/bilderlings/${imageName}:latest\"".toString(),
         ]
 
-        dockerPushLatest_(imageName)
+        dockerPushLatest_ imageName: imageName
 
         assertEquals(expectedShellCommands, actualShellCommands)
 

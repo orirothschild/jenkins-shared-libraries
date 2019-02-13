@@ -18,7 +18,7 @@ class DockerBuild_CustomDockerfileCustomImageName_Tests extends GroovyTestCase {
     protected String imagename
     protected dockerBuild_ = new dockerBuild()
 
-    DockerBuild_CustomDockerfileCustomImageName_Tests(List list){
+	DockerBuild_CustomDockerfileCustomImageName_Tests(List list){
         this.path = list[0]
         this.imagename = list[1]
     }
@@ -43,7 +43,7 @@ class DockerBuild_CustomDockerfileCustomImageName_Tests extends GroovyTestCase {
                 "docker build . -f \"${path}\" -t \"registry.com/bilderlings/${imagename}:master-1\" -t \"registry.com/bilderlings/${imagename}:1111111\"".toString()
         ]
 
-        dockerBuild_(path, imagename)
+        dockerBuild_ dockerfile: path, imageName: imagename
 
         assertEquals(expectedCommands, actualCommands)
 

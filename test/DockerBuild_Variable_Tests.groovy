@@ -45,7 +45,7 @@ class DockerBuild_Variable_Tests extends GroovyTestCase {
         dockerBuild_.error = {String msg -> throw new DockerRegistryIsNotDefinedException(msg) }
         thrown.expect(DockerRegistryIsNotDefinedException.class)
         thrown.expectMessage('Variable DOCKER_REGISTRY is not defined')
-        dockerBuild_(path, imageName)
+        dockerBuild_ dockerfile: path, imagename: imageName
     }
 
     @Test
@@ -56,7 +56,7 @@ class DockerBuild_Variable_Tests extends GroovyTestCase {
         def expectedCommands = []
 
         try {
-            dockerBuild_(path, imageName)
+            dockerBuild_ dockerfile: path, imageName: imageName
             fail("Expected an DockerRegistryIsNotDefined to be thrown")
         }catch(DockerRegistryIsNotDefinedException e){
             assertEquals(expectedCommands, actualCommands)

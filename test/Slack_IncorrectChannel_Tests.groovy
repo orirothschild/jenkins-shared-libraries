@@ -20,7 +20,7 @@ class Slack_IncorrectChannel_Tests extends GroovyTestCase {
     private channel
     private allure
 
-    Slack_IncorrectChannel_Tests(List list){
+	Slack_IncorrectChannel_Tests(List list){
         this.channel = list[0]
         this.allure = list[1]
     }
@@ -39,7 +39,7 @@ class Slack_IncorrectChannel_Tests extends GroovyTestCase {
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
 
-        slack_(channel, allure)
+        slack_ channel: channel, allure: allure
 
         assertNull(actualParameters['channel'])
 
@@ -52,7 +52,7 @@ class Slack_IncorrectChannel_Tests extends GroovyTestCase {
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
 
-        slack_(channel, allure)
+        slack_ channel: channel, allure: allure
 
         assertNull(actualParameters['channel'])
 
@@ -65,7 +65,7 @@ class Slack_IncorrectChannel_Tests extends GroovyTestCase {
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
 
-        slack_(channel, allure)
+        slack_ channel: channel, allure: allure
 
         assertNull(actualParameters['channel'])
 

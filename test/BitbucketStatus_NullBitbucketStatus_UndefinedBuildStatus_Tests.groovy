@@ -17,7 +17,7 @@ class BitbucketStatus_NullBitbucketStatus_UndefinedBuildStatus_Tests extends Gro
 
     protected String buildStatus
 
-    BitbucketStatus_NullBitbucketStatus_UndefinedBuildStatus_Tests(String buildStatus){
+	BitbucketStatus_NullBitbucketStatus_UndefinedBuildStatus_Tests(String buildStatus){
         this.buildStatus = buildStatus
     }
     @Before
@@ -35,7 +35,7 @@ class BitbucketStatus_NullBitbucketStatus_UndefinedBuildStatus_Tests extends Gro
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> bitbucketStatusNotifyWasExecuted = true; return null}
         bitbucketStatus_.echo = { str -> return null}
 
-        bitbucketStatus_(null)
+        bitbucketStatus_ status: null
 
         assertFalse(bitbucketStatusNotifyWasExecuted)
 
@@ -48,7 +48,7 @@ class BitbucketStatus_NullBitbucketStatus_UndefinedBuildStatus_Tests extends Gro
         bitbucketStatus_.httpRequest = { Map map -> httpRequestWasExecuted = true; return null}
         bitbucketStatus_.echo = { str -> return null}
 
-        bitbucketStatus_(null)
+        bitbucketStatus_ status: null
 
         assertFalse(httpRequestWasExecuted)
 
@@ -60,7 +60,7 @@ class BitbucketStatus_NullBitbucketStatus_UndefinedBuildStatus_Tests extends Gro
         def actualMessage = ""
         bitbucketStatus_.echo = { str -> actualMessage = str}
         def expectedMessage = "bitbucketStatusNotify is muted. Undefined build status: ${buildStatus}".toString()
-        bitbucketStatus_(null)
+        bitbucketStatus_ status: null
 
         assertEquals(expectedMessage, actualMessage)
 

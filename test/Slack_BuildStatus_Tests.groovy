@@ -20,7 +20,7 @@ class Slack_BuildStatus_Tests extends GroovyTestCase {
     protected allure
     protected slack_ = new slack()
 
-    Slack_BuildStatus_Tests(List list){
+	Slack_BuildStatus_Tests(List list){
         this.channel = list[0]
         this.allure = list[1]
     }
@@ -38,7 +38,7 @@ class Slack_BuildStatus_Tests extends GroovyTestCase {
         def slackSendWasExecuted = false
         slack_.slackSend = { Map map -> slackSendWasExecuted = true; return null}
 
-        slack_(channel, allure)
+        slack_ channel: channel, allure: allure
 
         assertTrue(slackSendWasExecuted)
 
@@ -50,7 +50,7 @@ class Slack_BuildStatus_Tests extends GroovyTestCase {
         def slackSendWasExecuted = false
         slack_.slackSend = { Map map -> slackSendWasExecuted = true; return null}
 
-        slack_(channel, allure)
+        slack_ channel: channel, allure: allure
 
         assertTrue(slackSendWasExecuted)
 
@@ -62,7 +62,7 @@ class Slack_BuildStatus_Tests extends GroovyTestCase {
         def slackSendWasExecuted = false
         slack_.slackSend = { Map map -> slackSendWasExecuted = true; return null}
 
-        slack_(channel, allure)
+        slack_ channel: channel, allure: allure
 
         assertTrue(slackSendWasExecuted)
 
@@ -75,7 +75,7 @@ class Slack_BuildStatus_Tests extends GroovyTestCase {
         slack_.slackSend = { Map map -> slackSendWasExecuted = true; return null}
         slack_.echo = { str -> return null}
 
-        slack_(channel, allure)
+        slack_ channel: channel, allure: allure
 
         assertFalse(slackSendWasExecuted)
 
@@ -87,7 +87,7 @@ class Slack_BuildStatus_Tests extends GroovyTestCase {
         def actualMessage = ""
         slack_.echo = { str -> actualMessage = str}
         def expectedMessage = 'slackSend is muted. Undefined build status: UNDEFINED'
-        slack_(channel, allure)
+        slack_ channel: channel, allure: allure
 
         assertEquals(actualMessage, expectedMessage)
 

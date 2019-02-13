@@ -22,7 +22,7 @@ class BitbucketStatusFirstBuild_UndefinedBuildStatus_InvalidBitbucketStatus_Test
     protected String invalidBitbucketStatus
     protected String buildStatus
 
-    BitbucketStatusFirstBuild_UndefinedBuildStatus_InvalidBitbucketStatus_Tests(List list){
+	BitbucketStatusFirstBuild_UndefinedBuildStatus_InvalidBitbucketStatus_Tests(List list){
         this.buildStatus = list[0]
         this.invalidBitbucketStatus = list[1]
     }
@@ -45,7 +45,7 @@ class BitbucketStatusFirstBuild_UndefinedBuildStatus_InvalidBitbucketStatus_Test
         thrown.expect(InvalidBitbucketStatusException.class)
         thrown.expectMessage("Undefined bitbucket status: ${invalidBitbucketStatus}".toString())
 
-        bitbucketStatus_(invalidBitbucketStatus)
+        bitbucketStatus_ status: invalidBitbucketStatus
 
     }
 
@@ -56,7 +56,7 @@ class BitbucketStatusFirstBuild_UndefinedBuildStatus_InvalidBitbucketStatus_Test
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> bitbucketStatusNotifyWasExecuted = true; return null}
         bitbucketStatus_.error = { msg -> throw new InvalidBitbucketStatusException(msg.toString()) }
         try {
-            bitbucketStatus_(invalidBitbucketStatus)
+            bitbucketStatus_ status: invalidBitbucketStatus
             fail("Expected an InvalidBitbucketStatusException to be thrown")
         }catch(InvalidBitbucketStatusException e){
             assertFalse(bitbucketStatusNotifyWasExecuted)
@@ -71,7 +71,7 @@ class BitbucketStatusFirstBuild_UndefinedBuildStatus_InvalidBitbucketStatus_Test
         bitbucketStatus_.error = { msg -> throw new InvalidBitbucketStatusException(msg.toString()) }
 
         try {
-            bitbucketStatus_(invalidBitbucketStatus)
+            bitbucketStatus_ status: invalidBitbucketStatus
             fail("Expected an InvalidBitbucketStatusException to be thrown")
         }catch(InvalidBitbucketStatusException e){
             assertFalse(httpRequestWasExecuted)

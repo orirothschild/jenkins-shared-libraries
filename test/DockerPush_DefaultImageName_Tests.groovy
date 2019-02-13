@@ -43,7 +43,7 @@ class DockerPush_DefaultImageName_Tests extends GroovyTestCase {
                 'docker push \"registry.com/bilderlings/Job_Name:1111111\"'
         ]
 
-        dockerPush_(imageName)
+        dockerPush_ imageName: imageName
 
         assertEquals(expectedShellCommands, actualCommands)
 

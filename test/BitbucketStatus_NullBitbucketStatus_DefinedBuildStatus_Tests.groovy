@@ -17,7 +17,7 @@ class BitbucketStatus_NullBitbucketStatus_DefinedBuildStatus_Tests extends Groov
 
     protected String buildStatus
 
-    BitbucketStatus_NullBitbucketStatus_DefinedBuildStatus_Tests(String buildStatus){
+	BitbucketStatus_NullBitbucketStatus_DefinedBuildStatus_Tests(String buildStatus){
         this.buildStatus = buildStatus
     }
     @Before
@@ -34,7 +34,7 @@ class BitbucketStatus_NullBitbucketStatus_DefinedBuildStatus_Tests extends Groov
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_(null)
+        bitbucketStatus_ status: null
 
         assertEquals(BitbucketStatusTestData.buildStateMap()[buildStatus], actualParameters['buildState'])
 
@@ -46,7 +46,7 @@ class BitbucketStatus_NullBitbucketStatus_DefinedBuildStatus_Tests extends Groov
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_(null)
+        bitbucketStatus_ status: null
 
         assertEquals('1111111222222222222222222222222222222222', actualParameters['commitId'])
 
@@ -58,7 +58,7 @@ class BitbucketStatus_NullBitbucketStatus_DefinedBuildStatus_Tests extends Groov
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_(null)
+        bitbucketStatus_ status: null
 
         assertEquals('Job_Name', actualParameters['repoSlug'])
 
@@ -71,7 +71,7 @@ class BitbucketStatus_NullBitbucketStatus_DefinedBuildStatus_Tests extends Groov
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_(null, '')
+        bitbucketStatus_ status: null, repoSlug: ''
 
         assertEquals('Job_Name', actualParameters['repoSlug'])
 
@@ -83,7 +83,7 @@ class BitbucketStatus_NullBitbucketStatus_DefinedBuildStatus_Tests extends Groov
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_(null, null)
+        bitbucketStatus_ status: null, repoSlug: null
 
         assertEquals('Job_Name', actualParameters['repoSlug'])
 
@@ -95,7 +95,7 @@ class BitbucketStatus_NullBitbucketStatus_DefinedBuildStatus_Tests extends Groov
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_(null, ' ')
+        bitbucketStatus_ status: null, repoSlug: ' '
 
         assertEquals('Job_Name', actualParameters['repoSlug'])
 
@@ -107,7 +107,7 @@ class BitbucketStatus_NullBitbucketStatus_DefinedBuildStatus_Tests extends Groov
         def actualParameters = [:]
         bitbucketStatus_.bitbucketStatusNotify = { Map map -> actualParameters = map; return null}
 
-        bitbucketStatus_(null, 'another_repoSlug')
+        bitbucketStatus_ status: null, repoSlug: 'another_repoSlug'
 
         assertEquals('another_repoSlug', actualParameters['repoSlug'])
 

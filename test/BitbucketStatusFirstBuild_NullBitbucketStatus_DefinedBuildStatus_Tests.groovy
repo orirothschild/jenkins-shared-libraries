@@ -18,7 +18,7 @@ class BitbucketStatusFirstBuild_NullBitbucketStatus_DefinedBuildStatus_Tests ext
 
     protected String buildStatus
 
-    BitbucketStatusFirstBuild_NullBitbucketStatus_DefinedBuildStatus_Tests(String buildStatus){
+	BitbucketStatusFirstBuild_NullBitbucketStatus_DefinedBuildStatus_Tests(String buildStatus){
         this.buildStatus = buildStatus
     }
     @Before
@@ -40,7 +40,7 @@ class BitbucketStatusFirstBuild_NullBitbucketStatus_DefinedBuildStatus_Tests ext
         }
         def expectedUrl = 'https://api.bitbucket.org/2.0/repositories/bilderlings/Job_Name/commit/1111111222222222222222222222222222222222/statuses/build'
 
-        bitbucketStatus_(null)
+        bitbucketStatus_ status: null
 
         assertTrue('We should have 2 requests', actualHttpRequestParameters.size() == 2)
         assertEquals(expectedUrl, actualHttpRequestParameters[1]['url'])
@@ -56,7 +56,7 @@ class BitbucketStatusFirstBuild_NullBitbucketStatus_DefinedBuildStatus_Tests ext
             return BitbucketStatusTestData.httpRequestMock(map)
         }
 
-        bitbucketStatus_(null)
+        bitbucketStatus_ status: null
 
         assertTrue('We should have 2 requests', actualHttpRequestParameters.size() == 2)
         assertEquals('bitbucket-oauth-credentials', actualHttpRequestParameters[1]['authentication'])
@@ -72,7 +72,7 @@ class BitbucketStatusFirstBuild_NullBitbucketStatus_DefinedBuildStatus_Tests ext
             return BitbucketStatusTestData.httpRequestMock(map)
         }
 
-        bitbucketStatus_(null)
+        bitbucketStatus_ status: null
 
         assertTrue('We should have 2 requests', actualHttpRequestParameters.size() == 2)
         assertEquals('POST', actualHttpRequestParameters[1]['httpMode'])
@@ -88,7 +88,7 @@ class BitbucketStatusFirstBuild_NullBitbucketStatus_DefinedBuildStatus_Tests ext
             return BitbucketStatusTestData.httpRequestMock(map)
         }
 
-        bitbucketStatus_(null)
+        bitbucketStatus_ status: null
 
         assertTrue('We should have 2 requests', actualHttpRequestParameters.size() == 2)
         assertEquals('APPLICATION_JSON', actualHttpRequestParameters[1]['contentType'])
@@ -104,7 +104,7 @@ class BitbucketStatusFirstBuild_NullBitbucketStatus_DefinedBuildStatus_Tests ext
             return BitbucketStatusTestData.httpRequestMock(map)
         }
 
-        bitbucketStatus_(null)
+        bitbucketStatus_ status: null
 
         assertTrue('We should have 2 requests', actualHttpRequestParameters.size() == 2)
         assertEquals('200:201', actualHttpRequestParameters[1]['validResponseCodes'])
@@ -128,7 +128,7 @@ class BitbucketStatusFirstBuild_NullBitbucketStatus_DefinedBuildStatus_Tests ext
         ]
         def expectedBody = JsonOutput.toJson(data)
 
-        bitbucketStatus_(null)
+        bitbucketStatus_ status: null
 
         assertTrue('We should have 2 requests', actualHttpRequestParameters.size() == 2)
         assertEquals(expectedBody, actualHttpRequestParameters[1]['requestBody'])
@@ -146,7 +146,7 @@ class BitbucketStatusFirstBuild_NullBitbucketStatus_DefinedBuildStatus_Tests ext
 
         def expectedHeader = [name: 'Authorization', value: 'Bearer fake_access_token=']
 
-        bitbucketStatus_(null)
+        bitbucketStatus_ status: null
 
         assertTrue('We should have 2 requests', actualHttpRequestParameters.size() == 2)
         def actualHeaders = actualHttpRequestParameters[1]['customHeaders']
