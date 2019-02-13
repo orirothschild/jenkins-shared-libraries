@@ -13,6 +13,7 @@ class Deploy_CommonTests extends GroovyTestCase {
         Helper.setEnvVariables(variables, deploy_)
         InjectVars.injectTo(deploy_, 'commitId', 'imageName')
         deploy_.lock = {Map map, Closure body -> body.call(); return null}
+        deploy_.helmLint = {return null}
         deploy_.helmUpgrade = {return null}
         deploy_.milestone = {return null}
     }
