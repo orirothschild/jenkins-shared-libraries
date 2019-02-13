@@ -35,6 +35,8 @@ def call(Map params){
             if (errorText){
                 errorText.split('\n').each {
                     if (it =~ /\[ERROR]/) {
+                        //helm 2 always add error about chart name and directory
+                        // it fixed in helm 3 - https://github.com/helm/helm/issues/1979#issuecomment-459770487
                         def findWarning = it =~ /Chart\.yaml: directory name \(.*\) and chart name \(.*\) must be the same/
                         if (!findWarning) {
                             error "Helm lint exit code ${status}\n${errorText}"
