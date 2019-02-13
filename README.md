@@ -30,7 +30,6 @@ Here is:
 
 Variables for declarative pipeline:
     
-* `bitbucketStatus(status_name(optional), repoSlug(optional)) - deprecated`
 * `bitbucketStatus([status: status_name, reposlug: repo_name, ignoreMaster: true(default), false])`
     * Valid status_name: INPROGRESS, SUCCESSFUL, FAILED. 
     * Other statuses will raise **error**
@@ -83,7 +82,6 @@ container('helm') {
         ]
 }
 ```
-* `dockerBuild(docker_file_path(String, optional), imageName(String, optional)) -deprecated`
 * `dockerBuild([dockerfile: docker_file_path, imageName: "imagename"])`
     * Required **Multibranch plugin**
     * Required variable **env.DOCKER_REGISTRY**
@@ -109,7 +107,6 @@ steps {
     }
 }
 ```
-* `dockerPush(imageName(String, optional)) - deprecated`
 * `dockerPush([imageName: 'imagename')`
     * Required **Multibranch plugin**
     * Required variable **env.DOCKER_REGISTRY**
@@ -130,7 +127,6 @@ steps {
     }
 }
 ```   
-* `dockerPushLatest(imageName(String, optional)) - deprecated`
 * `dockerPushLatest([imageName: 'imagename'])`
     * *Tag and push* image on latest
     * Required **Multibranch plugin**
@@ -151,7 +147,14 @@ steps {
     }
 }
 ```    
-* `helmUpgrade(namespace(String), helmArgs(Map)) - deprecated`
+* `helmLint([namespace: 'namespace', set: Map)`
+    * **namespace** must be valid, not null, empty or only whitespaces
+    * **helmArgs** will be set via --set
+```groovy
+steps {
+    helmLint namespace: 'test', set: ['account.image.tag': imageTag()]
+}
+```  
 * `helmUpgrade([namespace: 'namespace', set: Map)`
     * **namespace** must be valid, not null, empty or only whitespaces
     * **helmArgs** will be set via --set
@@ -171,9 +174,7 @@ steps {
 steps {    
     runTests job: 'JOB_NAME/master', parameters: [TAGS: 'TEST_CATEGORY']    
 }
-```
-
-* `slack(channel_name(String, optional), allure(Boolean, optional, default: false)) - deprecated`    
+```   
 * `slack([channel: channel_name, allure: boolean_value])`
 	* Required **Multibranch plugin**
 	* **Default channel** will be taken from Slack configuration in Jenkins
