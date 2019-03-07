@@ -14,6 +14,7 @@ def call(Map params){
     }
 
     if (!namespace){
+        currentBuild.result = 'FAILURE'
         error "Undefined namespace: ${params.namespace}"
     }
     def exposedArgs = ' '
@@ -46,8 +47,10 @@ def call(Map params){
                 } else {
                     echo "It seems not a upgrading failure. If it's the failure, you can do 'helm rollback --wait \"${releaseName}\" 0'"
                 }
+                currentBuild.result = 'FAILURE'
                 error "Helm upgrade exit code ${status}\n${errorText}"
             }
+            currentBuild.result = 'FAILURE'
             error "Helm upgrade exit code ${status}"
         }
     }finally{

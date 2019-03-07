@@ -39,6 +39,7 @@ def sanitizeThenRun(Map runnable) {
     if (runnable.containsKey('job')) {
         jobName = runnable['job']
     } else {
+        currentBuild.result = 'FAILURE'
         error "job name missing"
         return
     }

@@ -10,6 +10,7 @@ def call(Map params){
     }
 
     if (!namespace){
+        currentBuild.result = 'FAILURE'
         error "Undefined namespace: ${params.namespace}"
     }
     def exposedArgs = ' '
@@ -39,11 +40,13 @@ def call(Map params){
                         // it fixed in helm 3 - https://github.com/helm/helm/issues/1979#issuecomment-459770487
                         def findWarning = it =~ /Chart\.yaml: directory name \(.*\) and chart name \(.*\) must be the same/
                         if (!findWarning) {
+                            currentBuild.result = 'FAILURE'
                             error "Helm lint exit code ${status}\n${errorText}"
                         }
                     }
                 }
             } else {
+                currentBuild.result = 'FAILURE'
                 error "Helm lint exit code ${status}"
             }
         }

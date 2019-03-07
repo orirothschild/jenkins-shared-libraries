@@ -21,6 +21,7 @@ def call(Map params){
         imageNameLocal = imageNameParam
     }
     if ("${env.DOCKER_REGISTRY}" == 'null') {
+        currentBuild.result = 'FAILURE'
         error 'Variable DOCKER_REGISTRY is not defined'
     }
 

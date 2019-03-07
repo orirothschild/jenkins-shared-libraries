@@ -1,3 +1,4 @@
+import TestData.BuildResult
 import TestData.HelmUpgradeTestData
 import Utils.Helper
 import org.junit.Before
@@ -56,6 +57,7 @@ class Deploy_CommonTests extends GroovyTestCase {
         def errorMsg = ""
         def runTestsCalled = false
         deploy_.runTests = {runTestsCalled = true; return null}
+        deploy_.currentBuild = new BuildResult()
         deploy_.error = {msg -> errorMsg = (String)msg; return null}
         deploy_.sanitizeThenRun([:])
         assertEquals(errorMsg, "job name missing")

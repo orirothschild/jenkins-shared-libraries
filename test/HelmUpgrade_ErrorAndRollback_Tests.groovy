@@ -1,3 +1,4 @@
+import TestData.BuildResult
 import TestData.HelmUpgradeTestData
 import Utils.Exceptions.HelmUpgradeException
 import Utils.Helper
@@ -29,6 +30,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
     void setUp(){
         Helper.setEnvVariables(HelmUpgradeTestData.commonVariables(), helmUpgrade_)
         InjectVars.injectTo(helmUpgrade_, 'imageName')
+        helmUpgrade_.currentBuild = new BuildResult()
     }
 
 
@@ -55,7 +57,6 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
                 actualCommands << command
             }
         }
-
         helmUpgrade_.echo = {String msg -> }
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
         try {
@@ -161,6 +162,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
                 actualCommands << command
             }
         }
+
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
         helmUpgrade_.echo = {}
         try {
@@ -197,6 +199,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
                 actualCommands << command
             }
         }
+
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
         helmUpgrade_.echo = {}
         try {
@@ -229,6 +232,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
                 actualCommands << command
             }
         }
+
         def actualMessage = ''
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
         helmUpgrade_.echo = {msg -> actualMessage = msg.toString(); return null}
@@ -263,6 +267,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
                 actualCommands << command
             }
         }
+
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
         helmUpgrade_.echo = {}
         try {
@@ -300,6 +305,7 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
                 actualCommands << command
             }
         }
+
         helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
         helmUpgrade_.echo = {}
         try {
@@ -307,6 +313,39 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
             assertEquals('Helm upgrade exit code 157', ex.message)
+        }
+    }
+
+    @Test
+    void test_HelmUpgrade_ErrorWithoutMessage_buildStatusIsFailure(){
+
+        def actualCommands = []
+        helmUpgrade_.sh = { command ->
+            if (command instanceof Map) {
+                actualCommands << command.script
+                if (command.returnStdout) {
+                    if (command.script == 'mktemp /tmp/helm_upgrade_stderr.XXXXXX') {
+                        return "/tmp/helm_upgrade_stderr.1111111"
+                    } else if (command.script == 'cat /tmp/helm_upgrade_stderr.1111111'){
+                        return ''
+                    }
+                } else if (command.returnStatus) {
+                    if (command.script.startsWith('helm upgrade')){
+                        return 157
+                    }
+                }
+            } else{
+                actualCommands << command
+            }
+        }
+
+        helmUpgrade_.error = {msg -> throw new HelmUpgradeException(msg.toString())}
+        helmUpgrade_.echo = {}
+        try {
+            helmUpgrade_ namespace: namespace, set: args
+            fail('No HelmUpgradeException was thrown')
+        }catch(HelmUpgradeException ex){
+            assertEquals('FAILURE', helmUpgrade_.currentBuild.currentResult)
         }
     }
 

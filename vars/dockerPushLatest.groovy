@@ -21,6 +21,7 @@ def call(Map params){
     }
 
     if (!env.DOCKER_REGISTRY) {
+        currentBuild.result = 'FAILURE'
         error 'Variable DOCKER_REGISTRY is not defined'
     }
 

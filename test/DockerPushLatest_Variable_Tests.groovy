@@ -1,3 +1,4 @@
+import TestData.BuildResult
 import TestData.Docker.DockerPushLatestTestData
 import TestData.Docker.DockerTestData
 import Utils.Exceptions.DockerRegistryIsNotDefinedException
@@ -33,6 +34,7 @@ class DockerPushLatest_Variable_Tests extends GroovyTestCase {
         def variables = DockerPushLatestTestData.commonVariablesWithoutDockerRegistry()
         Helper.setEnvVariables(variables, dockerPushLatest_)
         InjectVars.injectTo(dockerPushLatest_,'imageName', 'imageTag')
+        dockerPushLatest_.currentBuild = new BuildResult()
     }
 
     @Test
@@ -57,6 +59,19 @@ class DockerPushLatest_Variable_Tests extends GroovyTestCase {
             fail("Expected an DockerRegistryIsNotDefined to be thrown")
         }catch(DockerRegistryIsNotDefinedException e){
             assertEquals(expectedCommands, actualCommands)
+        }
+    }
+
+    @Test
+    void test_DockerPushLatest_DockerRegistryIsNotDefined_buildStatusIsFailure(){
+        dockerPushLatest_.sh = { command -> return null}
+        dockerPushLatest_.error = { String msg -> throw new DockerRegistryIsNotDefinedException(msg) }
+
+        try {
+            dockerPushLatest_ imageName: imageName
+            fail("Expected an DockerRegistryIsNotDefined to be thrown")
+        }catch(DockerRegistryIsNotDefinedException e){
+            assertEquals('FAILURE', dockerPushLatest_.currentBuild.currentResult)
         }
     }
 }
