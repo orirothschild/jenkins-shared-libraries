@@ -37,7 +37,6 @@ class DockerBuild_Variable_Tests extends GroovyTestCase {
         def variables = DockerBuildTestData.commonVariablesWithoutDockerRegistry()
         Helper.setEnvVariables(variables, dockerBuild_)
         InjectVars.injectTo(dockerBuild_, 'imageName', 'imageTag', 'commitId')
-        dockerBuild_.currentBuild = new BuildResult()
     }
 
     @Test
@@ -62,18 +61,6 @@ class DockerBuild_Variable_Tests extends GroovyTestCase {
             fail("Expected an DockerRegistryIsNotDefined to be thrown")
         }catch(DockerRegistryIsNotDefinedException e){
             assertEquals(expectedCommands, actualCommands)
-        }
-    }
-
-    @Test
-    void test_DockerBuild_DockerRegistryIsNotDefined_buildResultIsFailure(){
-        dockerBuild_.sh = { command -> return null}
-        dockerBuild_.error = {String msg -> throw new DockerRegistryIsNotDefinedException(msg) }
-        try {
-            dockerBuild_ dockerfile: path, imageName: imageName
-            fail("Expected an DockerRegistryIsNotDefined to be thrown")
-        }catch(DockerRegistryIsNotDefinedException e){
-            assertEquals("FAILURE", dockerBuild_.currentBuild.currentResult)
         }
     }
 

@@ -32,7 +32,6 @@ class HelmUpgrade_Namespace_Tests extends GroovyTestCase {
     void setUp(){
         Helper.setEnvVariables(HelmUpgradeTestData.commonVariables(), helmUpgrade_)
         InjectVars.injectTo(helmUpgrade_, 'imageName')
-        helmUpgrade_.currentBuild = new BuildResult()
     }
 
     @Test
@@ -72,20 +71,6 @@ class HelmUpgrade_Namespace_Tests extends GroovyTestCase {
             fail('Expected an HelmUpgradeException to be thrown')
         }catch(HelmUpgradeException e){
             assertEquals([], actualCommands)
-        }
-    }
-
-    @Test
-    void test_HelmUpgradeMap_IncorrectNamespace_buildStatusIsFailure(){
-
-        def actualCommands = []
-        helmUpgrade_.sh = {command -> actualCommands << command}
-        helmUpgrade_.error = { String msg -> throw new HelmUpgradeException(msg) }
-        try{
-            helmUpgrade_ namespace: namespace, set: args
-            fail('Expected an HelmUpgradeException to be thrown')
-        }catch(HelmUpgradeException e){
-            assertEquals('FAILURE', helmUpgrade_.currentBuild.currentResult)
         }
     }
 

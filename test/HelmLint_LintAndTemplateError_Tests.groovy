@@ -30,7 +30,6 @@ class HelmLint_LintAndTemplateError_Tests extends GroovyTestCase {
     void setUp(){
         Helper.setEnvVariables(HelmLintTestData.commonVariables(), helmLint_)
         InjectVars.injectTo(helmLint_, 'imageName')
-        helmLint_.currentBuild = new BuildResult()
     }
 
     @Test
@@ -138,42 +137,6 @@ class HelmLint_LintAndTemplateError_Tests extends GroovyTestCase {
             fail('No HelmLintException was thrown')
         }catch(HelmLintException ex){
             assertEquals('Helm lint exit code 1\n[ERROR] Chart.yaml: directory name (chart) and chart name (site) must be the same\n[ERROR]: error', ex.message)
-        }
-    }
-
-    @Test
-    void test_HelmLint_ErrorWithHelmLintWithErrorMessageAndWarningError_buildStatusIsError(){
-        def actualCommands = []
-        helmLint_.sh = { command ->
-            if (command instanceof Map) {
-                actualCommands << command.script
-                if (command.returnStdout) {
-                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_lint_log.XXXXXX') {
-                        return "/tmp/helm_lint_log.1111111"
-                    } else if (command.script == '#!/bin/sh -e\ncat /tmp/helm_lint_log.1111111'){
-                        return '[ERROR] Chart.yaml: directory name (chart) and chart name (site) must be the same\n[ERROR]: error'
-                    }
-                } else if (command.returnStatus) {
-                    if (command.script.startsWith('helm lint')){
-                        return 1
-                    }else if (command.script.startsWith('helm template')){
-                        return 0
-                    }
-                }
-            } else{
-                actualCommands << command
-            }
-        }
-
-        helmLint_.echo = { String msg -> }
-        helmLint_.error = { String msg ->
-            throw new HelmLintException(msg.toString())
-        }
-        try {
-            helmLint_ namespace: namespace, set: args
-            fail('No HelmLintException was thrown')
-        }catch(HelmLintException ex){
-            assertEquals('FAILURE', helmLint_.currentBuild.currentResult)
         }
     }
 
