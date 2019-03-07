@@ -38,7 +38,7 @@ class HelmUpgrade_CorrectArguments_Tests extends GroovyTestCase {
             if (command instanceof Map) {
                 actualCommands << command.script
                 if (command.returnStdout) {
-                    if (command.script.contains('mktemp /tmp/helm_upgrade_stderr.XXXXXX')) {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_upgrade_stderr.XXXXXX') {
                         return "/tmp/helm_upgrade_stderr.1111111"
                     }
                 } else if (command.returnStatus) {
@@ -55,9 +55,9 @@ class HelmUpgrade_CorrectArguments_Tests extends GroovyTestCase {
         helmUpgrade_(namespace, args)
 
         assertEquals(3, actualCommands.size())
-        assertEquals('mktemp /tmp/helm_upgrade_stderr.XXXXXX', actualCommands[0])
+        assertEquals('#!/bin/sh -e\nmktemp /tmp/helm_upgrade_stderr.XXXXXX', actualCommands[0])
         assertEquals(resultCommand + ' 2>/tmp/helm_upgrade_stderr.1111111', actualCommands[1])
-        assertEquals('rm /tmp/helm_upgrade_stderr.1111111', actualCommands[2])
+        assertEquals('#!/bin/sh -e\nrm /tmp/helm_upgrade_stderr.1111111', actualCommands[2])
     }
 
     @Test
@@ -66,7 +66,7 @@ class HelmUpgrade_CorrectArguments_Tests extends GroovyTestCase {
         helmUpgrade_.sh = {command ->
             if (command instanceof Map) {
                 if (command.returnStdout) {
-                    if (command.script.contains('mktemp /tmp/helm_upgrade_stderr.XXXXXX')) {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_upgrade_stderr.XXXXXX') {
                         return "/tmp/helm_upgrade_stderr.1111111"
                     }
                 } else if (command.returnStatus) {
@@ -93,7 +93,7 @@ class HelmUpgrade_CorrectArguments_Tests extends GroovyTestCase {
             if (command instanceof Map) {
                 actualCommands << command.script
                 if (command.returnStdout) {
-                    if (command.script.contains('mktemp /tmp/helm_upgrade_stderr.XXXXXX')) {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_upgrade_stderr.XXXXXX') {
                         return "/tmp/helm_upgrade_stderr.1111111"
                     }
                 } else if (command.returnStatus) {
@@ -110,9 +110,9 @@ class HelmUpgrade_CorrectArguments_Tests extends GroovyTestCase {
         helmUpgrade_ namespace: namespace, set: args
 
         assertEquals(3, actualCommands.size())
-        assertEquals('mktemp /tmp/helm_upgrade_stderr.XXXXXX', actualCommands[0])
+        assertEquals('#!/bin/sh -e\nmktemp /tmp/helm_upgrade_stderr.XXXXXX', actualCommands[0])
         assertEquals(resultCommand + ' 2>/tmp/helm_upgrade_stderr.1111111', actualCommands[1])
-        assertEquals('rm /tmp/helm_upgrade_stderr.1111111', actualCommands[2])
+        assertEquals('#!/bin/sh -e\nrm /tmp/helm_upgrade_stderr.1111111', actualCommands[2])
 
 
     }

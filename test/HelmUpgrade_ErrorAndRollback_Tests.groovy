@@ -41,9 +41,9 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
             if (command instanceof Map) {
                 actualCommands << command.script
                 if (command.returnStdout) {
-                    if (command.script == 'mktemp /tmp/helm_upgrade_stderr.XXXXXX') {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_upgrade_stderr.XXXXXX') {
                         return "/tmp/helm_upgrade_stderr.1111111"
-                    } else if (command.script == 'cat /tmp/helm_upgrade_stderr.1111111'){
+                    } else if (command.script == '#!/bin/sh -e\ncat /tmp/helm_upgrade_stderr.1111111'){
                         return 'UPGRADE FAILED: error'
                     }
                 } else if (command.returnStatus) {
@@ -64,11 +64,11 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
             assertEquals(5, actualCommands.size())
-            assertEquals('mktemp /tmp/helm_upgrade_stderr.XXXXXX', actualCommands[0])
+            assertEquals('#!/bin/sh -e\nmktemp /tmp/helm_upgrade_stderr.XXXXXX', actualCommands[0])
             assertEquals(resultCommand + ' 2>/tmp/helm_upgrade_stderr.1111111', actualCommands[1])
-            assertEquals('cat /tmp/helm_upgrade_stderr.1111111', actualCommands[2])
+            assertEquals('#!/bin/sh -e\ncat /tmp/helm_upgrade_stderr.1111111', actualCommands[2])
             assertEquals('helm rollback --wait "FAKE_Job_Name-test" 0', actualCommands[3])
-            assertEquals('rm /tmp/helm_upgrade_stderr.1111111', actualCommands[4])
+            assertEquals('#!/bin/sh -e\nrm /tmp/helm_upgrade_stderr.1111111', actualCommands[4])
         }
     }
 
@@ -79,9 +79,9 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
             if (command instanceof Map) {
                 actualCommands << command.script
                 if (command.returnStdout) {
-                    if (command.script == 'mktemp /tmp/helm_upgrade_stderr.XXXXXX') {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_upgrade_stderr.XXXXXX') {
                         return "/tmp/helm_upgrade_stderr.1111111"
-                    } else if (command.script == 'cat /tmp/helm_upgrade_stderr.1111111'){
+                    } else if (command.script == '#!/bin/sh -e\ncat /tmp/helm_upgrade_stderr.1111111'){
                         return 'UPGRADE FAILED: error'
                     }
                 } else if (command.returnStatus) {
@@ -113,9 +113,9 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
             if (command instanceof Map) {
                 actualCommands << command.script
                 if (command.returnStdout) {
-                    if (command.script == 'mktemp /tmp/helm_upgrade_stderr.XXXXXX') {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_upgrade_stderr.XXXXXX') {
                         return "/tmp/helm_upgrade_stderr.1111111"
-                    } else if (command.script == 'cat /tmp/helm_upgrade_stderr.1111111'){
+                    } else if (command.script == '#!/bin/sh -e\ncat /tmp/helm_upgrade_stderr.1111111'){
                         return 'UPGRADE FAILED: error'
                     }
                 } else if (command.returnStatus) {
@@ -148,9 +148,9 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
             if (command instanceof Map) {
                 actualCommands << command.script
                 if (command.returnStdout) {
-                    if (command.script == 'mktemp /tmp/helm_upgrade_stderr.XXXXXX') {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_upgrade_stderr.XXXXXX') {
                         return "/tmp/helm_upgrade_stderr.1111111"
-                    } else if (command.script == 'cat /tmp/helm_upgrade_stderr.1111111'){
+                    } else if (command.script == '#!/bin/sh -e\ncat /tmp/helm_upgrade_stderr.1111111'){
                         return 'error'
                     }
                 } else if (command.returnStatus) {
@@ -170,10 +170,10 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
             assertEquals(4, actualCommands.size())
-            assertEquals('mktemp /tmp/helm_upgrade_stderr.XXXXXX', actualCommands[0])
+            assertEquals('#!/bin/sh -e\nmktemp /tmp/helm_upgrade_stderr.XXXXXX', actualCommands[0])
             assertEquals(resultCommand + ' 2>/tmp/helm_upgrade_stderr.1111111', actualCommands[1])
-            assertEquals('cat /tmp/helm_upgrade_stderr.1111111', actualCommands[2])
-            assertEquals('rm /tmp/helm_upgrade_stderr.1111111', actualCommands[3])
+            assertEquals('#!/bin/sh -e\ncat /tmp/helm_upgrade_stderr.1111111', actualCommands[2])
+            assertEquals('#!/bin/sh -e\nrm /tmp/helm_upgrade_stderr.1111111', actualCommands[3])
         }
     }
 
@@ -185,9 +185,9 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
             if (command instanceof Map) {
                 actualCommands << command.script
                 if (command.returnStdout) {
-                    if (command.script == 'mktemp /tmp/helm_upgrade_stderr.XXXXXX') {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_upgrade_stderr.XXXXXX') {
                         return "/tmp/helm_upgrade_stderr.1111111"
-                    } else if (command.script == 'cat /tmp/helm_upgrade_stderr.1111111'){
+                    } else if (command.script == '#!/bin/sh -e\ncat /tmp/helm_upgrade_stderr.1111111'){
                         return 'error'
                     }
                 } else if (command.returnStatus) {
@@ -218,9 +218,9 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
             if (command instanceof Map) {
                 actualCommands << command.script
                 if (command.returnStdout) {
-                    if (command.script == 'mktemp /tmp/helm_upgrade_stderr.XXXXXX') {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_upgrade_stderr.XXXXXX') {
                         return "/tmp/helm_upgrade_stderr.1111111"
-                    } else if (command.script == 'cat /tmp/helm_upgrade_stderr.1111111'){
+                    } else if (command.script == '#!/bin/sh -e\ncat /tmp/helm_upgrade_stderr.1111111'){
                         return 'error'
                     }
                 } else if (command.returnStatus) {
@@ -253,9 +253,9 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
             if (command instanceof Map) {
                 actualCommands << command.script
                 if (command.returnStdout) {
-                    if (command.script == 'mktemp /tmp/helm_upgrade_stderr.XXXXXX') {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_upgrade_stderr.XXXXXX') {
                         return "/tmp/helm_upgrade_stderr.1111111"
-                    } else if (command.script == 'cat /tmp/helm_upgrade_stderr.1111111'){
+                    } else if (command.script == '#!/bin/sh -e\ncat /tmp/helm_upgrade_stderr.1111111'){
                         return ''
                     }
                 } else if (command.returnStatus) {
@@ -275,10 +275,10 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
             fail('No HelmUpgradeException was thrown')
         }catch(HelmUpgradeException ex){
             assertEquals(4, actualCommands.size())
-            assertEquals('mktemp /tmp/helm_upgrade_stderr.XXXXXX', actualCommands[0])
+            assertEquals('#!/bin/sh -e\nmktemp /tmp/helm_upgrade_stderr.XXXXXX', actualCommands[0])
             assertEquals(resultCommand + ' 2>/tmp/helm_upgrade_stderr.1111111', actualCommands[1])
-            assertEquals('cat /tmp/helm_upgrade_stderr.1111111', actualCommands[2])
-            assertEquals('rm /tmp/helm_upgrade_stderr.1111111', actualCommands[3])
+            assertEquals('#!/bin/sh -e\ncat /tmp/helm_upgrade_stderr.1111111', actualCommands[2])
+            assertEquals('#!/bin/sh -e\nrm /tmp/helm_upgrade_stderr.1111111', actualCommands[3])
         }
     }
 
@@ -291,9 +291,9 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
             if (command instanceof Map) {
                 actualCommands << command.script
                 if (command.returnStdout) {
-                    if (command.script == 'mktemp /tmp/helm_upgrade_stderr.XXXXXX') {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_upgrade_stderr.XXXXXX') {
                         return "/tmp/helm_upgrade_stderr.1111111"
-                    } else if (command.script == 'cat /tmp/helm_upgrade_stderr.1111111'){
+                    } else if (command.script == '#!/bin/sh -e\ncat /tmp/helm_upgrade_stderr.1111111'){
                         return ''
                     }
                 } else if (command.returnStatus) {
@@ -324,9 +324,9 @@ class HelmUpgrade_ErrorAndRollback_Tests extends GroovyTestCase {
             if (command instanceof Map) {
                 actualCommands << command.script
                 if (command.returnStdout) {
-                    if (command.script == 'mktemp /tmp/helm_upgrade_stderr.XXXXXX') {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_upgrade_stderr.XXXXXX') {
                         return "/tmp/helm_upgrade_stderr.1111111"
-                    } else if (command.script == 'cat /tmp/helm_upgrade_stderr.1111111'){
+                    } else if (command.script == '#!/bin/sh -e\ncat /tmp/helm_upgrade_stderr.1111111'){
                         return ''
                     }
                 } else if (command.returnStatus) {

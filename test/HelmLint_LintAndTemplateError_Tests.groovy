@@ -40,9 +40,9 @@ class HelmLint_LintAndTemplateError_Tests extends GroovyTestCase {
             if (command instanceof Map) {
                 actualCommands << command.script
                 if (command.returnStdout) {
-                    if (command.script == 'mktemp /tmp/helm_lint_log.XXXXXX') {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_lint_log.XXXXXX') {
                         return "/tmp/helm_lint_log.1111111"
-                    } else if (command.script == 'cat /tmp/helm_lint_log.1111111'){
+                    } else if (command.script == '#!/bin/sh -e\ncat /tmp/helm_lint_log.1111111'){
                         return '[ERROR]: error'
                     }
                 } else if (command.returnStatus) {
@@ -76,9 +76,9 @@ class HelmLint_LintAndTemplateError_Tests extends GroovyTestCase {
             if (command instanceof Map) {
                 actualCommands << command.script
                 if (command.returnStdout) {
-                    if (command.script == 'mktemp /tmp/helm_lint_log.XXXXXX') {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_lint_log.XXXXXX') {
                         return "/tmp/helm_lint_log.1111111"
-                    } else if (command.script == 'cat /tmp/helm_lint_log.1111111'){
+                    } else if (command.script == '#!/bin/sh -e\ncat /tmp/helm_lint_log.1111111'){
                         return ''
                     }
                 } else if (command.returnStatus) {
@@ -112,9 +112,9 @@ class HelmLint_LintAndTemplateError_Tests extends GroovyTestCase {
             if (command instanceof Map) {
                 actualCommands << command.script
                 if (command.returnStdout) {
-                    if (command.script == 'mktemp /tmp/helm_lint_log.XXXXXX') {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_lint_log.XXXXXX') {
                         return "/tmp/helm_lint_log.1111111"
-                    } else if (command.script == 'cat /tmp/helm_lint_log.1111111'){
+                    } else if (command.script == '#!/bin/sh -e\ncat /tmp/helm_lint_log.1111111'){
                         return '[ERROR] Chart.yaml: directory name (chart) and chart name (site) must be the same\n[ERROR]: error'
                     }
                 } else if (command.returnStatus) {
@@ -148,9 +148,9 @@ class HelmLint_LintAndTemplateError_Tests extends GroovyTestCase {
             if (command instanceof Map) {
                 actualCommands << command.script
                 if (command.returnStdout) {
-                    if (command.script == 'mktemp /tmp/helm_lint_log.XXXXXX') {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_lint_log.XXXXXX') {
                         return "/tmp/helm_lint_log.1111111"
-                    } else if (command.script == 'cat /tmp/helm_lint_log.1111111'){
+                    } else if (command.script == '#!/bin/sh -e\ncat /tmp/helm_lint_log.1111111'){
                         return '[ERROR] Chart.yaml: directory name (chart) and chart name (site) must be the same\n[ERROR]: error'
                     }
                 } else if (command.returnStatus) {
@@ -184,9 +184,9 @@ class HelmLint_LintAndTemplateError_Tests extends GroovyTestCase {
             if (command instanceof Map) {
                 actualCommands << command.script
                 if (command.returnStdout) {
-                    if (command.script == 'mktemp /tmp/helm_lint_log.XXXXXX') {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_lint_log.XXXXXX') {
                         return "/tmp/helm_lint_log.1111111"
-                    } else if (command.script == 'cat /tmp/helm_lint_log.1111111'){
+                    } else if (command.script == '#!/bin/sh -e\ncat /tmp/helm_lint_log.1111111'){
                         return '[ERROR] Chart.yaml: directory name (chart) and chart name (site) must be the same\n[ERROR]: error'
                     }
                 } else if (command.returnStatus) {
@@ -210,11 +210,11 @@ class HelmLint_LintAndTemplateError_Tests extends GroovyTestCase {
             fail('No HelmLintException was thrown')
         }catch(HelmLintException ex){
             assertEquals(5, actualCommands.size())
-            assertEquals('mktemp /tmp/helm_lint_log.XXXXXX', actualCommands[0])
+            assertEquals('#!/bin/sh -e\nmktemp /tmp/helm_lint_log.XXXXXX', actualCommands[0])
             assertEquals(resultCommand[0] + ' &>/tmp/helm_lint_log.1111111', actualCommands[1])
-            assertEquals('cat /tmp/helm_lint_log.1111111', actualCommands[2])
+            assertEquals('#!/bin/sh -e\ncat /tmp/helm_lint_log.1111111', actualCommands[2])
             assertEquals(resultCommand[1], actualCommands[3])
-            assertEquals('rm /tmp/helm_lint_log.1111111', actualCommands[4])
+            assertEquals('#!/bin/sh -e\nrm /tmp/helm_lint_log.1111111', actualCommands[4])
         }
     }
 
@@ -225,9 +225,9 @@ class HelmLint_LintAndTemplateError_Tests extends GroovyTestCase {
             if (command instanceof Map) {
                 actualCommands << command.script
                 if (command.returnStdout) {
-                    if (command.script == 'mktemp /tmp/helm_lint_log.XXXXXX') {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_lint_log.XXXXXX') {
                         return "/tmp/helm_lint_log.1111111"
-                    } else if (command.script == 'cat /tmp/helm_lint_log.1111111'){
+                    } else if (command.script == '#!/bin/sh -e\ncat /tmp/helm_lint_log.1111111'){
                         return '[ERROR] Chart.yaml: directory name (chart) and chart name (site) must be the same\n[Info]: info'
                     }
                 } else if (command.returnStatus) {
@@ -250,11 +250,11 @@ class HelmLint_LintAndTemplateError_Tests extends GroovyTestCase {
         helmLint_ namespace: namespace, set: args
 
         assertEquals(5, actualCommands.size())
-        assertEquals('mktemp /tmp/helm_lint_log.XXXXXX', actualCommands[0])
+        assertEquals('#!/bin/sh -e\nmktemp /tmp/helm_lint_log.XXXXXX', actualCommands[0])
         assertEquals(resultCommand[0] + ' &>/tmp/helm_lint_log.1111111', actualCommands[1])
-        assertEquals('cat /tmp/helm_lint_log.1111111', actualCommands[2])
+        assertEquals('#!/bin/sh -e\ncat /tmp/helm_lint_log.1111111', actualCommands[2])
         assertEquals(resultCommand[1], actualCommands[3])
-        assertEquals('rm /tmp/helm_lint_log.1111111', actualCommands[4])
+        assertEquals('#!/bin/sh -e\nrm /tmp/helm_lint_log.1111111', actualCommands[4])
     }
 
     @Test
@@ -264,9 +264,9 @@ class HelmLint_LintAndTemplateError_Tests extends GroovyTestCase {
             if (command instanceof Map) {
                 actualCommands << command.script
                 if (command.returnStdout) {
-                    if (command.script == 'mktemp /tmp/helm_lint_log.XXXXXX') {
+                    if (command.script == '#!/bin/sh -e\nmktemp /tmp/helm_lint_log.XXXXXX') {
                         return "/tmp/helm_lint_log.1111111"
-                    } else if (command.script == 'cat /tmp/helm_lint_log.1111111'){
+                    } else if (command.script == '#!/bin/sh -e\ncat /tmp/helm_lint_log.1111111'){
                         return '[ERROR] Chart.yaml: directory name (chart) and chart name (site) must be the same\n[Info]: info'
                     }
                 } else if (command.returnStatus) {
@@ -289,11 +289,11 @@ class HelmLint_LintAndTemplateError_Tests extends GroovyTestCase {
         helmLint_ namespace: namespace, set: args
 
         assertEquals(5, actualCommands.size())
-        assertEquals('mktemp /tmp/helm_lint_log.XXXXXX', actualCommands[0])
+        assertEquals('#!/bin/sh -e\nmktemp /tmp/helm_lint_log.XXXXXX', actualCommands[0])
         assertEquals(resultCommand[0] + ' &>/tmp/helm_lint_log.1111111', actualCommands[1])
-        assertEquals('cat /tmp/helm_lint_log.1111111', actualCommands[2])
+        assertEquals('#!/bin/sh -e\ncat /tmp/helm_lint_log.1111111', actualCommands[2])
         assertEquals(resultCommand[1], actualCommands[3])
-        assertEquals('rm /tmp/helm_lint_log.1111111', actualCommands[4])
+        assertEquals('#!/bin/sh -e\nrm /tmp/helm_lint_log.1111111', actualCommands[4])
     }
 
 }

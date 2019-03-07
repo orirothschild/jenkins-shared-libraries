@@ -26,10 +26,10 @@ def call(Map params){
         }
         exposedArgs += ' '
     }
-    def helmLintLog = sh(returnStdout: true, script: 'mktemp /tmp/helm_lint_log.XXXXXX').trim()
+    def helmLintLog = sh(returnStdout: true, script: '#!/bin/sh -e\n' + 'mktemp /tmp/helm_lint_log.XXXXXX').trim()
     try{
         def status = sh(returnStatus: true, script: "helm lint -f \"chart/values-${namespace}.yaml\" --namespace \"${namespace}\"${exposedArgs}chart/ &>${helmLintLog}")
-        def errorText = sh(returnStdout: true, script: "cat ${helmLintLog}").trim()
+        def errorText = sh(returnStdout: true, script: '#!/bin/sh -e\n' + "cat ${helmLintLog}").trim()
         if (errorText) echo "${errorText}"
         sh(returnStatus: true, script: "helm template -f \"chart/values-${namespace}.yaml\" --namespace \"${namespace}\"${exposedArgs}chart/")
         if (status != 0){
@@ -51,6 +51,6 @@ def call(Map params){
             }
         }
     }finally{
-        sh  returnStdout: true, script: "rm ${helmLintLog}"
+        sh  returnStdout: true, script: '#!/bin/sh -e\n' + "rm ${helmLintLog}"
     }
 }

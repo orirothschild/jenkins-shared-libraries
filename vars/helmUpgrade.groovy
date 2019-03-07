@@ -31,11 +31,11 @@ def call(Map params){
         exposedArgs += ' '
     }
     def releaseName = "${imageName()}-${namespace}"
-    def stdErr = sh(returnStdout: true, script: 'mktemp /tmp/helm_upgrade_stderr.XXXXXX').trim()
+    def stdErr = sh(returnStdout: true, script: '#!/bin/sh -e\n' + 'mktemp /tmp/helm_upgrade_stderr.XXXXXX').trim()
     try{
         def status = sh(returnStatus: true, script: "helm upgrade -f \"chart/values-${namespace}.yaml\" --install --force --wait --namespace \"${namespace}\"${exposedArgs}\"${releaseName}\" chart/ 2>${stdErr}")
         if (status != 0){
-            def errorText = sh(returnStdout: true, script: "cat ${stdErr}").trim()
+            def errorText = sh(returnStdout: true, script: '#!/bin/sh -e\n' + "cat ${stdErr}").trim()
             if (errorText){
                 echo "${errorText}"
                 if (errorText.contains('UPGRADE FAILED')){
@@ -54,6 +54,6 @@ def call(Map params){
             error "Helm upgrade exit code ${status}"
         }
     }finally{
-        sh  returnStdout: true, script: "rm ${stdErr}"
+        sh  returnStdout: true, script: '#!/bin/sh -e\n' + "rm ${stdErr}"
     }
 }
