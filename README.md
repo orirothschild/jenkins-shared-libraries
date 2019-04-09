@@ -55,8 +55,9 @@ steps {
 * `bitbucketStatusInProgress([repoSlug: 'repo_name', ignoreMaster: true(default), false])`
 * `commitId()`
     * Get last commit ID  
-* `deploy([namespace: String, helmArgs: Map, postDeploy: List<Map>])`
+* `deploy([namespace: String, helmArgs: Map, postDeploy: List<Map>, valuesPath: String])`
     * **namespace** - k8s namespace of the deployment
+    * **valuesPath** - custom path for values
     * **helmArgs** - --set arguments for helm
     * **postDeploy** - jobs to be run after the deployment (suitable for runTests)
     * Requires **helmUpgrade()**
@@ -65,7 +66,7 @@ steps {
     * Requires **Lockable Resources plugin**
 ```groovy
 container('helm') {
-    deploy namespace: 'test',
+    deploy namespace: 'test', valuesPath: 'values_path.yaml',
         helmArgs: ['image.tag': imageTag()],
         postDeploy: [
             [
@@ -147,20 +148,22 @@ steps {
     }
 }
 ```    
-* `helmLint([namespace: 'namespace', set: Map)`
+* `helmLint([namespace: 'namespace', set: Map, valuesPath: String])`
     * **namespace** must be valid, not null, empty or only whitespaces
     * **helmArgs** will be set via --set
+    * **valuesPath** - custom path for values
 ```groovy
 steps {
-    helmLint namespace: 'test', set: ['account.image.tag': imageTag()]
+    helmLint namespace: 'test', set: ['account.image.tag': imageTag()], valuesPath: 'values_path.yaml'
 }
 ```  
-* `helmUpgrade([namespace: 'namespace', set: Map)`
+* `helmUpgrade([namespace: 'namespace', set: Map, valuesPath: String])`
     * **namespace** must be valid, not null, empty or only whitespaces
     * **helmArgs** will be set via --set
+    * **valuesPath** - custom path for values
 ```groovy
 steps {
-    helmUpgrade namespace: 'test', set: ['account.image.tag': imageTag()]
+    helmUpgrade namespace: 'test', set: ['account.image.tag': imageTag()], valuesPath: 'values_path.yaml'
 }
 ```   
 * `kubernetesLabel()`

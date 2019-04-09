@@ -2,11 +2,13 @@
 def call(Map params){
 
     def namespace = null
+    def valuesPath = null
     def args = [:]
 
     if (params != null){
         namespace = params.namespace?.trim()
         args = params.set
+        valuesPath = params.valuesPath?.trim()
     }
 
     if (!namespace){
@@ -25,12 +27,20 @@ def call(Map params){
         }
         exposedArgs += ' '
     }
+
+    def values = ' '
+    if (valuesPath == null){
+        values = """ -f "chart/values-${namespace}.yaml" """
+    }else if(valuesPath != ''){
+        values = """ -f "${valuesPath}" """
+    }
+
     def helmLintLog = sh(returnStdout: true, script: '#!/bin/sh -e\n' + 'mktemp /tmp/helm_lint_log.XXXXXX').trim()
     try{
-        def status = sh(returnStatus: true, script: "helm lint -f \"chart/values-${namespace}.yaml\" --namespace \"${namespace}\"${exposedArgs}chart/ &>${helmLintLog}")
+        def status = sh(returnStatus: true, script: "helm lint${values}--namespace \"${namespace}\"${exposedArgs}chart/ &>${helmLintLog}")
         def errorText = sh(returnStdout: true, script: '#!/bin/sh -e\n' + "cat ${helmLintLog}").trim()
         if (errorText) echo "${errorText}"
-        sh(returnStatus: true, script: "helm template -f \"chart/values-${namespace}.yaml\" --namespace \"${namespace}\"${exposedArgs}chart/")
+        sh(returnStatus: true, script: "helm template${values}--namespace \"${namespace}\"${exposedArgs}chart/")
         if (status != 0){
             if (errorText){
                 errorText.split('\n').each {

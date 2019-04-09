@@ -6,11 +6,13 @@ def call(String namespaceParameter, Map args=[:]){
 def call(Map params){
 
     def namespace = null
+    def valuesPath = null
     def args = [:]
 
     if (params != null){
         namespace = params.namespace?.trim()
         args = params.set
+        valuesPath = params.valuesPath?.trim()
     }
 
     if (!namespace){
@@ -29,10 +31,18 @@ def call(Map params){
         }
         exposedArgs += ' '
     }
+
+    def values = ' '
+    if (valuesPath == null){
+        values = """ -f "chart/values-${namespace}.yaml" """
+    }else if(valuesPath != ''){
+        values = """ -f "${valuesPath}" """
+    }
+
     def releaseName = "${imageName()}-${namespace}"
     def stdErr = sh(returnStdout: true, script: '#!/bin/sh -e\n' + 'mktemp /tmp/helm_upgrade_stderr.XXXXXX').trim()
     try{
-        def status = sh(returnStatus: true, script: "helm upgrade -f \"chart/values-${namespace}.yaml\" --install --force --wait --namespace \"${namespace}\"${exposedArgs}\"${releaseName}\" chart/ 2>${stdErr}")
+        def status = sh(returnStatus: true, script: "helm upgrade${values}--install --force --wait --namespace \"${namespace}\"${exposedArgs}\"${releaseName}\" chart/ 2>${stdErr}")
         if (status != 0){
             def errorText = sh(returnStdout: true, script: '#!/bin/sh -e\n' + "cat ${stdErr}").trim()
             if (errorText){
