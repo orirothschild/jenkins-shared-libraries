@@ -7,6 +7,7 @@ def call() {
 	for (def build : currentJob.builds) {
 		if (build.isBuilding() && build.number.toInteger() < buildNumber) {
 			build.doStop()
+			echo "build ${build.number.toInteger()} is aborted"
 		}
 	}
 }
