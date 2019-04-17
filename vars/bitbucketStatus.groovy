@@ -3,10 +3,10 @@ import groovy.json.JsonSlurper
 import groovy.transform.Field
 
 @Field
-Map buildStateMap = ['SUCCESS': 'SUCCESSFUL', 'FAILURE': 'FAILED', 'UNSTABLE': 'FAILED']
+Map buildStateMap = ['SUCCESS': 'SUCCESSFUL', 'FAILURE': 'FAILED', 'UNSTABLE': 'FAILED', 'ABORTED': 'STOPPED']
 
 @Field
-List bitbucketStatuses = ['INPROGRESS', 'SUCCESSFUL', 'FAILED']
+List bitbucketStatuses = ['INPROGRESS', 'SUCCESSFUL', 'FAILED', 'STOPPED']
 
 def call(String statusParam=null, String repoSlugParam=null) {
     call status: statusParam, repoSlug: repoSlugParam

@@ -39,7 +39,7 @@ static httpRequestMock(Map map){
 
 }
 
-static buildStateMap(){ ['SUCCESS': 'SUCCESSFUL', 'FAILURE': 'FAILED', 'UNSTABLE': 'FAILED'] }
+static buildStateMap(){ ['SUCCESS': 'SUCCESSFUL', 'FAILURE': 'FAILED', 'UNSTABLE': 'FAILED', 'ABORTED': 'STOPPED'] }
 
 static List<Object[]> suite_DefinedBuildStatus_ValidBitbucketStatuses(){
     TestDataCombination.join(definedBuildStatuses(), validBitbucketStatuses())
@@ -58,15 +58,15 @@ static List<Object[]> suite_UndefinedBuildStatus_InvalidBitbucketStatuses(){
 }
 
 static definedBuildStatuses(){
-    ['SUCCESS', 'UNSTABLE', 'FAILURE']
+    ['SUCCESS', 'UNSTABLE', 'FAILURE', 'ABORTED']
 }
 
 static undefinedBuildStatuses(){
-    ['UNDEFINED', '', ' ', null, 'ABORTED']
+    ['UNDEFINED', '', ' ', null, 'NOT_BUILT']
 }
 
 static validBitbucketStatuses(){
-    ['INPROGRESS', 'SUCCESSFUL', 'FAILED']
+    ['INPROGRESS', 'SUCCESSFUL', 'FAILED', 'STOPPED']
 }
 
 static invalidBitbucketStatuses(){
