@@ -11,6 +11,7 @@
 	* Select "Modern SCM": Git with parameters:
 		* Project Repository: https://github.com/bilderlings/jenkins-shared-libraries.git
 		* Credentials: <empty>
+		* Credentials: <empty>deploy
 
 ## Add shared libraries to Jenkinsfile
 For using Shared libraries You should add anotation at the beginning of Jenkinsfile: 
@@ -55,7 +56,7 @@ steps {
 * `bitbucketStatusInProgress([repoSlug: 'repo_name', ignoreMaster: true(default), false])`
 * `commitId()`
     * Get last commit ID  
-* `deploy([namespace: String, helmArgs: Map, postDeploy: List<Map>, helmValuesPath: String])`
+* `deploy([namespace: String, helmArgs: Map, postDeploy: List<Map>, helmValuesPath: String, lockResourceName: String])`
     * **namespace** - k8s namespace of the deployment
     * **valuesPath** - custom path for values
     * **helmArgs** - --set arguments for helm
