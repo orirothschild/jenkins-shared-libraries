@@ -56,7 +56,7 @@ steps {
 * `bitbucketStatusInProgress([repoSlug: 'repo_name', ignoreMaster: true(default), false])`
 * `commitId()`
     * Get last commit ID  
-* `deploy([namespace: String, helmArgs: Map, postDeploy: List<Map>, helmValuesPath: String, lockResourceName: String])`
+* `deploy([namespace: String, helmArgs: Map, postDeploy: List<Map>, helmValuesPath: String, lockResourceName: String, inverseLockPrecedence: Boolean])`
     * **namespace** - k8s namespace of the deployment
     * **valuesPath** - custom path for values
     * **helmArgs** - --set arguments for helm
@@ -65,6 +65,7 @@ steps {
     * Requires **runTests()**
     * Requires **imageName()**
     * Requires **Lockable Resources plugin**
+    * inverseLockPrecedence - default true
 ```groovy
 container('helm') {
     deploy namespace: 'test', helmValuesPath: 'values_path.yaml',

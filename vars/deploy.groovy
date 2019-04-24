@@ -4,37 +4,42 @@ def call(String namespace, Map helmArgs=[:], List<Map> postDeploy=[]) {
 
 def call(Map params) {
     def lockResourceName = params['lockResourceName']
+	def inverseLockPrecedence = params['inverseLockPrecedence']
+
     if (lockResourceName == null || ((String)lockResourceName).trim() == ''){
         lockResourceName = "${(String)params['namespace']}-${imageName()}"
     }
-    try {
-        lock(resource: lockResourceName, inversePrecedence: true) {
-            helmLint namespace: (String)params['namespace'], set: (Map)params['helmArgs'], valuesPath: (String)params['helmValuesPath']
-            helmUpgrade namespace: (String)params['namespace'], set: (Map)params['helmArgs'], valuesPath: (String)params['helmValuesPath']
-            List<Map> jobList = []
-            if (params.containsKey('postDeploy')) {
-                jobList = (List<Map>)params['postDeploy']
-            }
-            if (jobList.size() < 1) {
-                return
-            }
-            if (jobList.size() == 1) {
-                sanitizeThenRun(jobList[0])
-                return
-            }
-            def batch = [:]
-            jobList.each { job ->
-                batch.put(job['job']?.trim(), {
-                    sanitizeThenRun(job)
-                })
-            }
-            parallel(batch)
-        }
-    } catch (Exception e) {
-        throw e
-    } finally {
+
+	if (inverseLockPrecedence == null){
+		inverseLockPrecedence = true
+	}else {
+		inverseLockPrecedence = inverseLockPrecedence.toString().toBoolean()
+	}
+
+    lock(resource: lockResourceName, inversePrecedence: inverseLockPrecedence) {
         milestone()
+        helmLint namespace: (String)params['namespace'], set: (Map)params['helmArgs'], valuesPath: (String)params['helmValuesPath']
+        helmUpgrade namespace: (String)params['namespace'], set: (Map)params['helmArgs'], valuesPath: (String)params['helmValuesPath']
+        List<Map> jobList = []
+        if (params.containsKey('postDeploy')) {
+            jobList = (List<Map>)params['postDeploy']
+        }
+        if (jobList.size() < 1) {
+            return
+        }
+        if (jobList.size() == 1) {
+            sanitizeThenRun(jobList[0])
+            return
+        }
+        def batch = [:]
+        jobList.each { job ->
+            batch.put(job['job']?.trim(), {
+                sanitizeThenRun(job)
+            })
+        }
+        parallel(batch)
     }
+
 }
 
 def sanitizeThenRun(Map runnable) {
