@@ -29,6 +29,15 @@ class Deploy_CommonTests extends GroovyTestCase {
     }
 
     @Test
+    void test_Deploy_CustomLockIsCalled() {
+        def lockParameters = [:]
+        deploy_.lock = {Map map, Closure body -> lockParameters = map; return null}
+        deploy_.imageName = {return "foo"}
+        deploy_ namespace: 'test', lockResourceName: "lock_resource"
+        assertEquals(lockParameters['resource'], "lock_resource")
+    }
+
+    @Test
     void test_Deploy_MilestoneIsCalled() {
         def milestoneCalled = false
         deploy_.milestone = {milestoneCalled = true; return null}
