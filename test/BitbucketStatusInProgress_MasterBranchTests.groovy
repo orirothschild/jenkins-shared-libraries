@@ -1,5 +1,5 @@
 import TestData.BitbucketStatusTestData
-import TestData.CommitIdTestData
+import TestData.ShellTestData
 import Utils.Helper
 import org.junit.Before
 import org.junit.Test
@@ -43,7 +43,7 @@ class BitbucketStatusInProgress_MasterBranchTests extends GroovyTestCase {
         def variables = BitbucketStatusTestData.commonVariables()
         Helper.setEnvVariables(variables, bitbucketStatusInProgress_)
         InjectVars.injectTo(bitbucketStatusInProgress_, 'commitId', 'imageName')
-        InjectVars.injectClosureTo(bitbucketStatusInProgress_, 'sh', CommitIdTestData.lastCommitIdClosure)
+        InjectVars.injectClosureTo(bitbucketStatusInProgress_, 'sh', ShellTestData.shellClosure)
         def httpRequestIsExecuted = false
         bitbucketStatusInProgress_.httpRequest = { Map map ->
             httpRequestIsExecuted = true

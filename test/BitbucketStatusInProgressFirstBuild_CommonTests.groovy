@@ -1,5 +1,5 @@
 import TestData.BitbucketStatusTestData
-import TestData.CommitIdTestData
+import TestData.ShellTestData
 import Utils.Helper
 import groovy.json.JsonOutput
 import org.junit.Before
@@ -14,7 +14,7 @@ class BitbucketStatusInProgressFirstBuild_CommonTests extends GroovyTestCase {
         def variables = BitbucketStatusTestData.commonVariablesForFirstBuild()
         Helper.setEnvVariables(variables, bitbucketStatusInProgress_)
         InjectVars.injectTo(bitbucketStatusInProgress_, 'bitbucketStatus', 'commitId', 'imageName')
-        InjectVars.injectClosureTo(bitbucketStatusInProgress_, 'sh', CommitIdTestData.lastCommitIdClosure)
+        InjectVars.injectClosureTo(bitbucketStatusInProgress_, 'sh', ShellTestData.shellClosure)
     }
 
     @Test

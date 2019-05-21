@@ -2,7 +2,9 @@
 static injectTo(Script script, String ... propertyNames){
     propertyNames.each { propertyName ->
         def instance = getInstance(propertyName)
-        instance.binding = script.binding
+        if (instance.hasProperty('binding')) {
+            instance.binding = script.binding
+        }
         script[propertyName] = instance
     }
 
@@ -20,6 +22,7 @@ private static getInstance(String propertyName){
         case 'commitId': return new commitId()
         case 'bitbucketStatus': return new bitbucketStatus()
         case 'successBuild': return new successBuild()
+        case 'TOKEN': return '123'
         default: throw new IllegalArgumentException("Undefined property nmae: ${propertyName}")
     }
 }

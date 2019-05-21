@@ -1,5 +1,5 @@
 import TestData.BitbucketStatusTestData
-import TestData.CommitIdTestData
+import TestData.ShellTestData
 import Utils.Helper
 import org.junit.Before
 import org.junit.Test
@@ -29,7 +29,7 @@ class BitbucketStatus_UndefinedBuildStatus_ValidBitBucketStatus_Tests extends Gr
         def variables = BitbucketStatusTestData.commonVariables()
         Helper.setEnvVariables(variables, bitbucketStatus_)
         InjectVars.injectTo(bitbucketStatus_, 'imageTag', 'commitId', 'imageName')
-        InjectVars.injectClosureTo(bitbucketStatus_, 'sh', CommitIdTestData.lastCommitIdClosure)
+        InjectVars.injectClosureTo(bitbucketStatus_, 'sh', ShellTestData.shellClosure)
     }
 
     @Test

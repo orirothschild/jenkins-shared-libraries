@@ -1,5 +1,5 @@
 import TestData.BitbucketStatusTestData
-import TestData.CommitIdTestData
+import TestData.ShellTestData
 import Utils.Helper
 import org.junit.Before
 import org.junit.Test
@@ -13,7 +13,7 @@ class BitbucketStatusSuccessful_CommonTests extends GroovyTestCase {
         def variables = BitbucketStatusTestData.commonVariables()
         Helper.setEnvVariables(variables, bitbucketStatusSuccessful_)
         InjectVars.injectTo(bitbucketStatusSuccessful_, 'bitbucketStatus', 'commitId', 'imageName')
-        InjectVars.injectClosureTo(bitbucketStatusSuccessful_, 'sh', CommitIdTestData.lastCommitIdClosure)
+        InjectVars.injectClosureTo(bitbucketStatusSuccessful_, 'sh', ShellTestData.shellClosure)
     }
 
     @Test

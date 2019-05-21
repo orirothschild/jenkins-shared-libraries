@@ -1,5 +1,4 @@
-import TestData.CommitIdTestData
-import TestData.Docker.DockerPushLatestTestData
+import TestData.ShellTestData
 import Utils.Helper
 import org.junit.Before
 import org.junit.Test
@@ -11,7 +10,7 @@ class ImageTag_CommonTests extends GroovyTestCase {
     @Before
     void setUp(){
         InjectVars.injectTo(imageTag_, 'commitId')
-        InjectVars.injectClosureTo(imageTag_, 'sh', CommitIdTestData.lastCommitIdClosure)
+        InjectVars.injectClosureTo(imageTag_, 'sh', ShellTestData.shellClosure)
     }
 
     @Test

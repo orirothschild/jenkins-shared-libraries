@@ -1,4 +1,4 @@
-import TestData.CommitIdTestData
+import TestData.ShellTestData
 import TestData.Docker.DockerPushTestData
 import Utils.Helper
 import org.junit.Before
@@ -20,7 +20,7 @@ class DockerPush_CommonTests extends GroovyTestCase {
         def actualCommands = []
         dockerPush_.sh = { command ->
             if (command instanceof Map){
-                return CommitIdTestData.lastCommitIdClosure(command)
+                return ShellTestData.shellClosure(command)
             }
             actualCommands << command; return null
         }
