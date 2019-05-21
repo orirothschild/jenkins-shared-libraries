@@ -1,5 +1,5 @@
 import TestData.BitbucketStatusTestData
-import TestData.CommitIdTestData
+import TestData.ShellTestData
 import Utils.Exceptions.InvalidBitbucketStatusException
 import Utils.Helper
 import org.junit.Before
@@ -35,7 +35,7 @@ class BitbucketStatusFirstBuild_UndefinedBuildStatus_InvalidBitbucketStatus_Test
         def variables = BitbucketStatusTestData.commonVariablesForFirstBuild()
         Helper.setEnvVariables(variables, bitbucketStatus_)
         InjectVars.injectTo(bitbucketStatus_, 'commitId', 'imageName')
-        InjectVars.injectClosureTo(bitbucketStatus_, 'sh', CommitIdTestData.lastCommitIdClosure)
+        InjectVars.injectClosureTo(bitbucketStatus_, 'sh', ShellTestData.shellClosure)
     }
 
     @Test

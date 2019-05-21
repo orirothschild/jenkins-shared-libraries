@@ -1,4 +1,4 @@
-import TestData.CommitIdTestData
+import TestData.ShellTestData
 import TestData.Docker.DockerPushTestData
 import TestData.Docker.DockerTestData
 import Utils.Helper
@@ -34,7 +34,7 @@ class DockerPush_DefaultImageName_Tests extends GroovyTestCase {
         def actualCommands = []
         dockerPush_.sh = { command ->
             if (command instanceof Map){
-                return CommitIdTestData.lastCommitIdClosure(command)
+                return ShellTestData.shellClosure(command)
             }
             actualCommands << command; return null
         }

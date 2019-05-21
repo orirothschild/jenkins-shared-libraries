@@ -1,9 +1,7 @@
 import TestData.BitbucketStatusTestData
-import TestData.CommitIdTestData
 import Utils.Helper
 import org.junit.Before
 import org.junit.Test
-import org.omg.PortableInterceptor.SUCCESSFUL
 
 class BitbucketStatus_MasterBranchTests extends GroovyTestCase {
 

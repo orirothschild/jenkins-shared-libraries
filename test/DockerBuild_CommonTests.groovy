@@ -1,4 +1,4 @@
-import TestData.CommitIdTestData
+import TestData.ShellTestData
 import TestData.Docker.DockerBuildTestData
 import Utils.Helper
 import org.junit.Before
@@ -20,7 +20,7 @@ class DockerBuild_CommonTests extends GroovyTestCase {
         def actualCommands = []
         dockerBuild_.sh = { command ->
             if (command instanceof Map){
-                return CommitIdTestData.lastCommitIdClosure(command)
+                return ShellTestData.shellClosure(command)
             }
             actualCommands << command; return null
         }
@@ -39,7 +39,7 @@ class DockerBuild_CommonTests extends GroovyTestCase {
         def actualCommands = []
         dockerBuild_.sh = { command ->
             if (command instanceof Map){
-                return CommitIdTestData.lastCommitIdClosure(command)
+                return ShellTestData.shellClosure(command)
             }
             actualCommands << command; return null
         }
@@ -58,7 +58,7 @@ class DockerBuild_CommonTests extends GroovyTestCase {
         def actualCommands = []
         dockerBuild_.sh = { command ->
             if (command instanceof Map){
-                return CommitIdTestData.lastCommitIdClosure(command)
+                return ShellTestData.shellClosure(command)
             }
             actualCommands << command; return null
         }
