@@ -32,7 +32,7 @@ def call(Map params) {
 
         def state = isRunning ? 'running' : jenkinsStatusToGitlabState.get(currentBuild.currentResult)
         def branch = env.BRANCH_NAME
-        def name = "Jenkins"
+        def name = "Jenkins #${env.BUILD_NUMBER}"
         def targetUrl = env.BUILD_URL
 
         def data = [
