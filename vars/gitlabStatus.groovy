@@ -42,6 +42,8 @@ def call(Map params) {
                 target_url: targetUrl
         ]
 
+        println "Gitlab update status for ${currentBuild.currentResult} with $data"
+
         // Update status
         httpRequest url: "https://gitlab.com/api/v4/projects/$project/statuses/$commitId",
                 httpMode: 'POST',
