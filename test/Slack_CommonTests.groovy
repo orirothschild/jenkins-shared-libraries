@@ -103,4 +103,17 @@ class Slack_CommonTests extends GroovyTestCase {
 
     }
 
+    @Test
+    void test_Slack_MapParametersBlueOceanFalse_MessageIsCorrect(){
+        Helper.setBuildStatus('SUCCESS', slack_)
+        Map actualParameters = [:]
+        slack_.slackSend = { Map map -> actualParameters = map; return null}
+        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! (<http://jenkins.k8s.iamoffice.lv/job/FAKE_Job_Name/job/FAKE_Branch_Name/1234/|1234>)'
+
+        slack_ channel: "#channel", allure: false, blueocean: false
+
+        assertEquals(expectedMessage, actualParameters['message'])
+
+    }
+
 }
