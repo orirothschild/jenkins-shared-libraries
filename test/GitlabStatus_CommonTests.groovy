@@ -116,4 +116,114 @@ class GitlabStatus_CommonTests extends GroovyTestCase {
         )
     }
 
+    @Test
+    void test_GitlabStatus_customPipelineName() {
+        Helper.setBuildStatus(this.jenkinsStatus, gitlabStatus_)
+
+        def actualHttpRequestParameters = []
+        gitlabStatus_.httpRequest = { Map map ->
+            actualHttpRequestParameters << map
+            return BitbucketStatusTestData.httpRequestMock(map)
+        }
+
+        gitlabStatus_ isRunning: true, pipelineName: 'hash_commit'
+
+        assertTrue('We should have 1 request', actualHttpRequestParameters.size() == 1)
+
+        def parameters = actualHttpRequestParameters[0]
+        def jsonSlurper = new JsonSlurper()
+        def data = jsonSlurper.parseText(parameters.requestBody)
+
+        assertEquals(
+                'https://gitlab.com/api/v4/projects/bilderlings%2Fjenkins-shared-libraries/statuses/1111111222222222222222222222222222222222',
+                parameters['url']
+        )
+        assertEquals(
+                [[name: 'private-token', value: '123']],
+                parameters['customHeaders']
+        )
+        assertEquals(
+                [
+                        state     : 'running',
+                        ref       : 'not_master',
+                        name      : 'hash_commit',
+                        target_url: 'http://jenkins.k8s.iamoffice.lv/job/test/1'
+                ],
+                data
+        )
+    }
+
+    @Test
+    void test_GitlabStatus_customPipelineNameNull_defaultName() {
+        Helper.setBuildStatus(this.jenkinsStatus, gitlabStatus_)
+
+        def actualHttpRequestParameters = []
+        gitlabStatus_.httpRequest = { Map map ->
+            actualHttpRequestParameters << map
+            return BitbucketStatusTestData.httpRequestMock(map)
+        }
+
+        gitlabStatus_ isRunning: true, pipelineName: null
+
+        assertTrue('We should have 1 request', actualHttpRequestParameters.size() == 1)
+
+        def parameters = actualHttpRequestParameters[0]
+        def jsonSlurper = new JsonSlurper()
+        def data = jsonSlurper.parseText(parameters.requestBody)
+
+        assertEquals(
+                'https://gitlab.com/api/v4/projects/bilderlings%2Fjenkins-shared-libraries/statuses/1111111222222222222222222222222222222222',
+                parameters['url']
+        )
+        assertEquals(
+                [[name: 'private-token', value: '123']],
+                parameters['customHeaders']
+        )
+        assertEquals(
+                [
+                        state     : 'running',
+                        ref       : 'not_master',
+                        name      : 'Jenkins #1',
+                        target_url: 'http://jenkins.k8s.iamoffice.lv/job/test/1'
+                ],
+                data
+        )
+    }
+
+    @Test
+    void test_GitlabStatus_customPipelineNameEmpty_defaultName() {
+        Helper.setBuildStatus(this.jenkinsStatus, gitlabStatus_)
+
+        def actualHttpRequestParameters = []
+        gitlabStatus_.httpRequest = { Map map ->
+            actualHttpRequestParameters << map
+            return BitbucketStatusTestData.httpRequestMock(map)
+        }
+
+        gitlabStatus_ isRunning: true, pipelineName: ''
+
+        assertTrue('We should have 1 request', actualHttpRequestParameters.size() == 1)
+
+        def parameters = actualHttpRequestParameters[0]
+        def jsonSlurper = new JsonSlurper()
+        def data = jsonSlurper.parseText(parameters.requestBody)
+
+        assertEquals(
+                'https://gitlab.com/api/v4/projects/bilderlings%2Fjenkins-shared-libraries/statuses/1111111222222222222222222222222222222222',
+                parameters['url']
+        )
+        assertEquals(
+                [[name: 'private-token', value: '123']],
+                parameters['customHeaders']
+        )
+        assertEquals(
+                [
+                        state     : 'running',
+                        ref       : 'not_master',
+                        name      : 'Jenkins #1',
+                        target_url: 'http://jenkins.k8s.iamoffice.lv/job/test/1'
+                ],
+                data
+        )
+    }
 }
