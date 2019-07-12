@@ -18,9 +18,13 @@ def call(Map params) {
     withCredentials([string(credentialsId: 'gitlab_api_token', variable: 'TOKEN')]) {
         // Parameters
         def isRunning = false
+        def name = "Jenkins #${env.BUILD_NUMBER}"
 
         if (params != null) {
             isRunning = params.isRunning ?: false
+            if (params.pipelineName?.toString()?.trim()){
+                name = params.pipelineName
+            }
         }
 
         // Data
@@ -32,7 +36,7 @@ def call(Map params) {
 
         def state = isRunning ? 'running' : jenkinsStatusToGitlabState.get(currentBuild.currentResult)
         def branch = env.BRANCH_NAME
-        def name = "Jenkins #${env.BUILD_NUMBER}"
+
         def targetUrl = env.BUILD_URL
 
         def data = [
