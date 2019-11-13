@@ -13,7 +13,7 @@ def call(Map params){
 
     def channelParameter = null
     def allureParameter = null
-    def blueOceanParameter = true
+    def blueOceanParameter = false
 
     if (params != null){
         channelParameter = params.channel

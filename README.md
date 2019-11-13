@@ -180,7 +180,7 @@ steps {
     runTests job: 'JOB_NAME/master', parameters: [TAGS: 'TEST_CATEGORY']    
 }
 ```   
-* `slack([channel: channel_name, allure: boolean_value, blueocean: true])`
+* `slack([channel: channel_name, allure: boolean_value, blueocean: false])`
 	* Required **Multibranch plugin**
 	* **Default channel** will be taken from Slack configuration in Jenkins
 	* Build status will be taken from jenkins variable **currentBuild.currentResult**
