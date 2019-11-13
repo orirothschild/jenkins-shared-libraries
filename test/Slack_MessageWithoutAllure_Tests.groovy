@@ -38,7 +38,7 @@ class Slack_MessageWithoutAllure_Tests extends GroovyTestCase {
         Helper.setBuildStatus('SUCCESS', slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
-        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
+        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build passed! (<http://jenkins.k8s.iamoffice.lv/job/FAKE_Job_Name/job/FAKE_Branch_Name/1234/|1234>)'
 
         slack_ channel: channel, allure: allure
 
@@ -51,7 +51,7 @@ class Slack_MessageWithoutAllure_Tests extends GroovyTestCase {
         Helper.setBuildStatus('FAILURE', slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
-        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build failed! (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
+        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name build failed! (<http://jenkins.k8s.iamoffice.lv/job/FAKE_Job_Name/job/FAKE_Branch_Name/1234/|1234>)'
 
         slack_ channel: channel, allure: allure
 
@@ -64,7 +64,7 @@ class Slack_MessageWithoutAllure_Tests extends GroovyTestCase {
         Helper.setBuildStatus('UNSTABLE', slack_)
         Map actualParameters = [:]
         slack_.slackSend = { Map map -> actualParameters = map; return null}
-        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name tests failed! (<http://jenkins.k8s.iamoffice.lv/blue/organizations/jenkins/FAKE_Job_Name/detail/FAKE_Branch_Name/1234/pipeline/|1234>)'
+        def expectedMessage = 'FAKE_Job_Name branch FAKE_Branch_Name tests failed! (<http://jenkins.k8s.iamoffice.lv/job/FAKE_Job_Name/job/FAKE_Branch_Name/1234/|1234>)'
 
         slack_ channel: channel, allure: allure
 

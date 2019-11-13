@@ -6,7 +6,8 @@ static Map commonVariables(){
         BUILD_ID: 2,
         BUILD_URL: 'http://jenkins.k8s.iamoffice.lv/job/test/1',
         JENKINS_URL: 'http://jenkins.k8s.iamoffice.lv/',
-        BRANCH_NAME: 'not_master'
+        BRANCH_NAME: 'not_master',
+        BUILD_NUMBER: '1'
     ]
 }
 static Map commonVariablesForFirstBuild(){
