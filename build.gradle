@@ -7,7 +7,7 @@
 
 
 plugins {
-    id 'com.gradle.build-scan' version '1.16'
+    id 'com.gradle.build-scan' version '2.4.2'
 }
 
 apply plugin: 'groovy'
@@ -39,7 +39,3 @@ sourceSets {
     }
 }
 
-buildScan {
-    licenseAgreementUrl = "https://gradle.com/terms-of-service"
-    licenseAgree = "yes"
-}

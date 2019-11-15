@@ -13,10 +13,14 @@ def call(Map params){
 
     def channelParameter = null
     def allureParameter = null
+    def blueOceanParameter = false
 
     if (params != null){
         channelParameter = params.channel
         allureParameter = params.allure
+        if (params.blueocean != null){
+            blueOceanParameter = params.blueocean.toString()?.toBoolean()
+        }
     }
 
     def result = currentBuild.currentResult
@@ -29,7 +33,7 @@ def call(Map params){
 
     def slackParams = [
             color: colorMap.get(result),
-            message: generateSlackMessage(allure)
+            message: generateSlackMessage(allure, blueOceanParameter)
     ]
     if (channel){
         slackParams.channel = "$channel"
@@ -41,7 +45,7 @@ def call(Map params){
 @Field
 Map resultMessageMap = ['SUCCESS': 'build passed', 'FAILURE': 'build failed', 'UNSTABLE': 'tests failed']
 
-private generateSlackMessage(Boolean allureIsUsed){
+private generateSlackMessage(Boolean allureIsUsed, Boolean blueOcean){
     def result = currentBuild.currentResult
     def resultMessage = resultMessageMap.get(result)
     def imageNameLocal = imageName()
@@ -50,8 +54,7 @@ private generateSlackMessage(Boolean allureIsUsed){
         message += " <${BUILD_URL}allure/|build-tests>"
     }
     message += getAllureReportsMessage()
-    def blueOceanPipelineUrl = "${JENKINS_URL}blue/organizations/jenkins/${imageNameLocal}/detail/${BRANCH_NAME}/${BUILD_ID}/pipeline/"
-    message += " (<${blueOceanPipelineUrl}|${BUILD_ID}>)"
+    message += blueOcean? getBlueOceanLink(imageNameLocal) : getClassicLink(imageNameLocal)
     message
 }
 
@@ -66,4 +69,14 @@ private getAllureReportsMessage(){
         }
     }
     message
+}
+
+private getBlueOceanLink(imageName){
+    def url = "${JENKINS_URL}blue/organizations/jenkins/${imageName}/detail/${BRANCH_NAME}/${BUILD_ID}/pipeline/"
+    " (<${url}|${BUILD_ID}>)"
+}
+
+private getClassicLink(imageName){
+    def url = "${JENKINS_URL}job/${imageName}/job/${BRANCH_NAME}/${BUILD_ID}/"
+    " (<${url}|${BUILD_ID}>)"
 }
