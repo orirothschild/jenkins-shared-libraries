@@ -61,6 +61,6 @@ def call(Map params){
             error "Helm upgrade exit code ${status}"
         }
     }finally{
-        sh  returnStdout: true, script: '#!/bin/sh -e\n' + "rm ${stdErr}"
+        //sh  returnStdout: true, script: '#!/bin/sh -e\n' + "rm ${stdErr}"
     }
 }
