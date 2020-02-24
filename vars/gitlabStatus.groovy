@@ -24,10 +24,8 @@ def call(Map params) {
         }
 
         // Data
-        def remote = sh(returnStdout: true, script: "git config remote.origin.url")
-        def project = remote
-                .substring(remote.indexOf(":") + 1, remote.lastIndexOf("."))
-                .replace("/", "%2F")
+        String remote = sh(returnStdout: true, script: "git config remote.origin.url")
+        def project = remote.replaceFirst(".*gitlab.com(:|/)(.*)/(.*)/(.*).git", '$2%2F$3%2F$4')
         def commitId = commitId()
 
         def state = isRunning ? 'running' : jenkinsStatusToGitlabState.get(currentBuild.currentResult)

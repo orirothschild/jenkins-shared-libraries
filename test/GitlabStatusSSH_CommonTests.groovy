@@ -8,7 +8,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized.class)
-class GitlabStatus_CommonTests extends GroovyTestCase {
+class GitlabStatusSSH_CommonTests extends GroovyTestCase {
 
     @Parameterized.Parameters(name = "{0}")
     static Collection<Object> data() {
@@ -25,7 +25,7 @@ class GitlabStatus_CommonTests extends GroovyTestCase {
     protected String jenkinsStatus
     protected String gitlabState
 
-    GitlabStatus_CommonTests(String jenkinsStatus, String gitlabState) {
+    GitlabStatusSSH_CommonTests(String jenkinsStatus, String gitlabState) {
         this.jenkinsStatus = jenkinsStatus
         this.gitlabState = gitlabState
     }
@@ -35,7 +35,7 @@ class GitlabStatus_CommonTests extends GroovyTestCase {
         def variables = BitbucketStatusTestData.commonVariables()
         Helper.setEnvVariables(variables, gitlabStatus_)
         InjectVars.injectTo(gitlabStatus_, 'commitId', 'TOKEN')
-        InjectVars.injectClosureTo(gitlabStatus_, 'sh', ShellTestData.getShellClosure())
+        InjectVars.injectClosureTo(gitlabStatus_, 'sh', ShellTestData.getShellClosureSSH())
         InjectVars.injectClosureTo(gitlabStatus_, 'string', {})
         InjectVars.injectClosureTo(gitlabStatus_, 'withCredentials', {
             Object object, Closure closure -> closure()
@@ -61,7 +61,7 @@ class GitlabStatus_CommonTests extends GroovyTestCase {
         def data = jsonSlurper.parseText(parameters.requestBody)
 
         assertEquals(
-                'https://gitlab.com/api/v4/projects/bilderlings%2Fjenkins-shared-libraries/statuses/1111111222222222222222222222222222222222',
+                'https://gitlab.com/api/v4/projects/company%2Fproject%2Frepository/statuses/1111111222222222222222222222222222222222',
                 parameters['url']
         )
         assertEquals(
@@ -98,7 +98,7 @@ class GitlabStatus_CommonTests extends GroovyTestCase {
         def data = jsonSlurper.parseText(parameters.requestBody)
 
         assertEquals(
-                'https://gitlab.com/api/v4/projects/bilderlings%2Fjenkins-shared-libraries/statuses/1111111222222222222222222222222222222222',
+                'https://gitlab.com/api/v4/projects/company%2Fproject%2Frepository/statuses/1111111222222222222222222222222222222222',
                 parameters['url']
         )
         assertEquals(
