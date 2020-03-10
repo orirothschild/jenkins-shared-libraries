@@ -11,7 +11,7 @@ def call(Map params) {
     }
 
 	if (inverseLockPrecedence == null){
-		inverseLockPrecedence = true
+		inverseLockPrecedence = false
 	}else {
 		inverseLockPrecedence = inverseLockPrecedence.toString().toBoolean()
 	}
