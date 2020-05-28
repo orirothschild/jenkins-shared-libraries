@@ -72,7 +72,7 @@ class GitlabStatusSSH_CommonTests extends GroovyTestCase {
                 [
                         state     : this.gitlabState,
                         ref       : 'not_master',
-                        name      : 'Jenkins #1',
+                        name      : 'Jenkins',
                         target_url: 'http://jenkins.k8s.iamoffice.lv/job/test/1'
                 ],
                 data
@@ -109,7 +109,7 @@ class GitlabStatusSSH_CommonTests extends GroovyTestCase {
                 [
                         state     : 'running',
                         ref       : 'not_master',
-                        name      : 'Jenkins #1',
+                        name      : 'Jenkins',
                         target_url: 'http://jenkins.k8s.iamoffice.lv/job/test/1'
                 ],
                 data
