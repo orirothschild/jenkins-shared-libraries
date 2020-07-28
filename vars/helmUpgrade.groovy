@@ -7,12 +7,14 @@ def call(Map params){
 
     def namespace = null
     def valuesPath = null
+    def releaseName = null
     def args = [:]
 
     if (params != null){
         namespace = params.namespace?.trim()
         args = params.set
         valuesPath = params.valuesPath?.trim()
+        releaseName = params.releaseName?.trim()
     }
 
     if (!namespace){
@@ -39,6 +41,6 @@ def call(Map params){
         values = """ -f "${valuesPath}" """
     }
 
-    def releaseName = "${imageName()}-${namespace}"
+    releaseName = releaseName ?: "${imageName()}-${namespace}"
     sh "helm upgrade${values}--install --force --wait --namespace \"${namespace}\"${exposedArgs}\"${releaseName}\" chart/"
 }
