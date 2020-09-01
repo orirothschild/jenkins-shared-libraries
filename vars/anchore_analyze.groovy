@@ -1,5 +1,9 @@
 
 def call(String imageName){
     writeFile file: 'anchore_images', text: imageName
-    anchore name: 'anchore_images'
+    try {
+        anchore name: 'anchore_images'
+    } catch(Exception e) {
+        echo "${e}"
+    }
 }
