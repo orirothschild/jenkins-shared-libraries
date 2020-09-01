@@ -27,4 +27,5 @@ def call(Map params){
 
     sh "docker push \"${dockerImageName}:${BRANCH_NAME}-${BUILD_ID}\""
     sh "docker push \"${dockerImageName}:${imageTag()}\""
+    anchore_analyze("${dockerImageName}:${imageTag()}")
 }
