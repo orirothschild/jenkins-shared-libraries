@@ -23,7 +23,7 @@ def call(Map params){
         error 'Variable DOCKER_REGISTRY is not defined'
     }
 
-    def dockerImageName = "${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}"
+    def dockerImageName = "${env.DOCKER_REGISTRY}/${imageNameLocal}"
 
     sh "docker push \"${dockerImageName}:${BRANCH_NAME}-${BUILD_ID}\""
     sh "docker push \"${dockerImageName}:${imageTag()}\""
