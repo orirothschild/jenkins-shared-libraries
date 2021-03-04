@@ -26,7 +26,7 @@ def call(Map params){
 
     def dockerImageName = "${env.DOCKER_REGISTRY}/bilderlings/${imageNameLocal}"
 
-    sh "docker build . -f \"${dockerFilePathLocal}\" -t \"${dockerImageName}:${env.BRANCH_NAME}-${BUILD_ID}\" -t \"${dockerImageName}:${imageTag()}\""
+    sh "docker build . -f \"${dockerFilePathLocal}\" -t \"${dockerImageName}:${BRANCH_NAME}-${BUILD_ID}\" -t \"${dockerImageName}:${imageTag()}\""
 }
 
 def call(String dockerFilePath=null, String imageNameParam=null){
