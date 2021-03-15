@@ -25,7 +25,7 @@ def call(Map params){
     }
 
     def dockerImageName = "${env.ARTIFACTORY_SERVER}/${imageNameLocal}"
-
+    
     rtServer (
         id: "jenkins-artifactory-server",
         url: 'https://repository.securedtouch.com/artifactory',
@@ -53,8 +53,6 @@ def call(Map params){
         goals: ' clean versions:set -DnewVersion=2.2.${BUILD_NUMBER} versions:commit -V -B'
         
     )
-    
-    // sh "docker build . -f \"${repoFilePathLocal}\" -t \"${dockerImageName}:${BRANCH_NAME}-${BUILD_ID}\" -t \"${dockerImageName}:${imageTag()}\""
 }
 
 def call(String repoFilePath=null, String imageNameParam=null){
